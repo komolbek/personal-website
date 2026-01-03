@@ -57,10 +57,10 @@ export default function AboutPage() {
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
             {[
-              { value: '3+', label: 'Years' },
-              { value: '5+', label: 'Apps' },
-              { value: '10K+', label: 'Downloads' },
-              { value: '4.5', label: 'Avg Rating' },
+              { value: '3+', label: (t.about as { stats: { years: string } }).stats.years },
+              { value: '5+', label: (t.about as { stats: { apps: string } }).stats.apps },
+              { value: '10K+', label: (t.about as { stats: { downloads: string } }).stats.downloads },
+              { value: '4.5', label: (t.about as { stats: { avgRating: string } }).stats.avgRating },
             ].map((stat, index) => (
               <div
                 key={index}
@@ -102,7 +102,7 @@ export default function AboutPage() {
           {/* CTA */}
           <div className="text-center pt-8">
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Interested in working together?
+              {(t.about as { cta: string }).cta}
             </p>
             <Link
               href="/contact"

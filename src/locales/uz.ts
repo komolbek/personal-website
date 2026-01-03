@@ -38,6 +38,13 @@ export const uz = {
       { title: 'Kross-platforma', desc: 'Samarali multiplatforma yetkazib berish uchun React Native' },
       { title: 'Backend & API', desc: 'Ilovalaringiz uchun kengaytiriladigan server yechimlari' },
     ],
+    stats: {
+      years: 'Yil',
+      apps: 'Ilovalar',
+      downloads: 'Yuklamalar',
+      avgRating: 'O\'rtacha reyting',
+    },
+    cta: 'Birga ishlashni xohlaysizmi?',
   },
   contact: {
     title: 'Bog\'lanish',

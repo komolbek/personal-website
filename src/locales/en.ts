@@ -38,6 +38,13 @@ export const en = {
       { title: 'Cross-Platform', desc: 'React Native for efficient multi-platform delivery' },
       { title: 'Backend & API', desc: 'Scalable backend solutions to power your apps' },
     ],
+    stats: {
+      years: 'Years',
+      apps: 'Apps',
+      downloads: 'Downloads',
+      avgRating: 'Avg Rating',
+    },
+    cta: 'Interested in working together?',
   },
   contact: {
     title: 'Get in Touch',
