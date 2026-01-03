@@ -36,8 +36,8 @@ export function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-[var(--background)]/90 backdrop-blur-md shadow-lg shadow-indigo-500/5'
+        isScrolled || isMenuOpen
+          ? 'bg-[var(--background)] backdrop-blur-md shadow-lg shadow-indigo-500/5'
           : 'bg-transparent'
       }`}
     >
