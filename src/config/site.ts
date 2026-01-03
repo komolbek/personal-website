@@ -81,7 +81,52 @@ export const apps: App[] = [
     featured: true,
     color: '#6366f1', // Brand color for this app
   },
-  // Add more apps as you publish them
+  {
+    id: 'moneycontrol',
+    name: 'Money Control',
+    description: {
+      en: 'Personal finance tracker to manage your debts and IOUs. Track who owes you and who you owe with ease.',
+      ru: 'Персональный финансовый трекер для управления долгами. Легко отслеживайте, кто вам должен и кому должны вы.',
+      uz: 'Qarzlaringizni boshqarish uchun shaxsiy moliya trekeri. Kim sizga qarz va kimga qarzdorligingizni oson kuzating.',
+    },
+    longDescription: {
+      en: 'Money Control is a simple yet powerful app designed to help you track personal debts and IOUs. Whether you lent money to a friend or borrowed from family, Money Control keeps everything organized in one place. With an intuitive interface and smart reminders, you\'ll never forget who owes you or who you owe.',
+      ru: 'Money Control - это простое, но мощное приложение, разработанное для отслеживания личных долгов. Независимо от того, одолжили ли вы деньги другу или заняли у семьи, Money Control хранит всё организованно в одном месте. С интуитивным интерфейсом и умными напоминаниями вы никогда не забудете, кто вам должен или кому должны вы.',
+      uz: 'Money Control - shaxsiy qarzlarni kuzatishga yordam beradigan oddiy, lekin kuchli ilova. Do\'stingizga pul qarz berdingizmi yoki oilangizdan qarz oldingizmi, Money Control hammasini bir joyda tartibli saqlaydi. Intuitiv interfeys va aqlli eslatmalar bilan siz hech qachon kim sizga qarz yoki kimga qarzdorligingizni unutmaysiz.',
+    },
+    features: {
+      en: [
+        'Track debts you owe and debts owed to you',
+        'Add notes and due dates to each debt',
+        'View debt history and statistics',
+        'Clean and intuitive user interface',
+        'Local data storage for privacy',
+        'Multi-language support',
+      ],
+      ru: [
+        'Отслеживание ваших долгов и долгов вам',
+        'Добавление заметок и сроков к каждому долгу',
+        'Просмотр истории и статистики долгов',
+        'Чистый и интуитивный интерфейс',
+        'Локальное хранение данных для конфиденциальности',
+        'Поддержка нескольких языков',
+      ],
+      uz: [
+        'Qarzlaringiz va sizga bo\'lgan qarzlarni kuzatish',
+        'Har bir qarzga eslatma va muddat qo\'shish',
+        'Qarz tarixi va statistikasini ko\'rish',
+        'Toza va intuitiv foydalanuvchi interfeysi',
+        'Maxfiylik uchun mahalliy ma\'lumotlarni saqlash',
+        'Ko\'p tilli qo\'llab-quvvatlash',
+      ],
+    },
+    icon: '/apps/moneycontrol-icon.png',
+    screenshots: [],
+    appStoreUrl: 'https://apps.apple.com/app/money-control',
+    category: 'Finance',
+    featured: true,
+    color: '#10B981',
+  },
 ];
 
 export function getAppById(id: string): App | undefined {
