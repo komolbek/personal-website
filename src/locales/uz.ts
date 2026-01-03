@@ -51,6 +51,7 @@ export const uz = {
     error: 'Xabar yuborilmadi. Qaytadan urinib ko\'ring.',
     info: 'Aloqa ma\'lumotlari',
     followMe: 'Obuna bo\'lish',
+    responseNote: 'Odatda 24-48 soat ichida javob beraman. Shoshilinch masalalar uchun Telegramga yozing.',
   },
   footer: {
     rights: 'Barcha huquqlar himoyalangan.',
