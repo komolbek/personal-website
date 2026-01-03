@@ -51,6 +51,7 @@ export const en = {
     error: 'Failed to send message. Please try again.',
     info: 'Contact Information',
     followMe: 'Follow Me',
+    responseNote: 'I typically respond within 24-48 hours. For urgent matters, feel free to reach out via Telegram.',
   },
   footer: {
     rights: 'All rights reserved.',

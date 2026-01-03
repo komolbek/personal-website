@@ -116,7 +116,7 @@ export default function ContactPage() {
             {/* Quick note */}
             <div className="p-6 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-pink-500/10 border border-indigo-500/20">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                I typically respond within 24-48 hours. For urgent matters, feel free to reach out via Telegram.
+                {t.contact.responseNote}
               </p>
             </div>
           </div>

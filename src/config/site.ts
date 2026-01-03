@@ -13,22 +13,17 @@ export const siteConfig = {
 export const socialLinks: SocialLink[] = [
   {
     platform: 'GitHub',
-    url: 'https://github.com/yourusername', // Update this
+    url: 'https://github.com/komolbek',
     icon: 'github',
   },
   {
-    platform: 'LinkedIn',
-    url: 'https://linkedin.com/in/yourusername', // Update this
-    icon: 'linkedin',
-  },
-  {
     platform: 'Instagram',
-    url: 'https://instagram.com/yourusername', // Update this
+    url: 'https://instagram.com/komolllbek',
     icon: 'instagram',
   },
   {
     platform: 'Telegram',
-    url: 'https://t.me/yourusername', // Update this
+    url: 'https://t.me/ika_uk',
     icon: 'telegram',
   },
 ];
