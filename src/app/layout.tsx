@@ -20,32 +20,53 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: siteConfig.title,
-  description: siteConfig.description,
+  metadataBase: new URL('https://www.komolbek-ibragimov.com'),
+  title: {
+    default: 'Komolbek Ibragimov - Mobile App Developer | iOS & Android Apps',
+    template: '%s | Komolbek Ibragimov',
+  },
+  description: 'Komolbek Ibragimov is a mobile app developer specializing in iOS and Android applications. View my portfolio of apps and get in touch for your next project.',
   keywords: [
+    'Komolbek Ibragimov',
+    'Komolbek',
+    'Ibragimov',
     'mobile app developer',
     'iOS developer',
     'Android developer',
     'app development',
-    'Komolbek Ibragimov',
+    'Swift developer',
+    'Kotlin developer',
+    'Uzbekistan developer',
   ],
-  authors: [{ name: siteConfig.name }],
+  authors: [{ name: 'Komolbek Ibragimov', url: 'https://www.komolbek-ibragimov.com' }],
+  creator: 'Komolbek Ibragimov',
   openGraph: {
-    title: siteConfig.title,
-    description: siteConfig.description,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
+    title: 'Komolbek Ibragimov - Mobile App Developer',
+    description: 'Mobile app developer specializing in iOS and Android applications. View my portfolio and get in touch.',
+    url: 'https://www.komolbek-ibragimov.com',
+    siteName: 'Komolbek Ibragimov',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: siteConfig.title,
-    description: siteConfig.description,
+    title: 'Komolbek Ibragimov - Mobile App Developer',
+    description: 'Mobile app developer specializing in iOS and Android applications.',
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    // Add your Google Search Console verification code here after you get it
+    // google: 'your-google-verification-code',
   },
 };
 
