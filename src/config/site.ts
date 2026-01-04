@@ -4,7 +4,7 @@ export const siteConfig = {
   name: 'Komolbek Ibragimov',
   title: 'Komolbek Ibragimov - Mobile App Developer',
   description: 'Solo mobile app developer creating innovative iOS and Android applications',
-  url: 'https://komolbekibragimov.com',
+  url: 'https://komolbek-ibragimov.com',
   email: 'kamol.developer@gmail.com', // Update this
   defaultLocale: 'en' as const,
   locales: ['en', 'ru', 'uz'] as const,
