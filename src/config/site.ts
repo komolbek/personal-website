@@ -127,6 +127,58 @@ export const apps: App[] = [
     featured: true,
     color: '#10B981',
   },
+  {
+    id: 'memomind',
+    name: 'MemoMind',
+    description: {
+      en: 'AI-powered voice memo app that transforms your recordings into organized summaries, key points, and action items.',
+      ru: 'Голосовые заметки с ИИ, которые превращают ваши записи в организованные резюме, ключевые моменты и задачи.',
+      uz: 'Sun\'iy intellekt yordamida ovozli eslatmalaringizni tartibli xulosalar, asosiy fikrlar va vazifalar ro\'yxatiga aylantiradi.',
+    },
+    longDescription: {
+      en: 'MemoMind is an intelligent voice memo app that uses AI to automatically transcribe, summarize, and organize your recordings. Simply record your thoughts, meetings, or ideas, and MemoMind will extract key points, identify action items, and suggest relevant tags. Perfect for professionals, students, and anyone who wants to capture ideas on the go without spending time on manual note-taking.',
+      ru: 'MemoMind - это умное приложение для голосовых заметок, использующее ИИ для автоматической транскрипции, резюмирования и организации ваших записей. Просто запишите свои мысли, встречи или идеи, и MemoMind извлечёт ключевые моменты, определит задачи и предложит релевантные теги. Идеально подходит для профессионалов, студентов и всех, кто хочет фиксировать идеи на ходу без ручного ведения заметок.',
+      uz: 'MemoMind - bu sun\'iy intellekt yordamida yozuvlaringizni avtomatik transkripsiya qilish, xulosa chiqarish va tartibga solish uchun ishlatadigan aqlli ovozli eslatma ilovasi. Shunchaki fikrlaringizni, uchrashuvlaringizni yoki g\'oyalaringizni yozing, MemoMind asosiy fikrlarni ajratib oladi, vazifalarni aniqlaydi va tegishli teglarni taklif qiladi.',
+    },
+    features: {
+      en: [
+        'AI-powered transcription and summarization',
+        'Automatic key point extraction',
+        'Action item detection',
+        'Smart tag suggestions',
+        'Import audio files from other apps',
+        'Full-text search across all memos',
+        'Multiple summary lengths (short, medium, detailed)',
+        'Privacy-focused: recordings stored locally',
+      ],
+      ru: [
+        'Транскрипция и резюмирование на основе ИИ',
+        'Автоматическое извлечение ключевых моментов',
+        'Определение задач и действий',
+        'Умные предложения тегов',
+        'Импорт аудиофайлов из других приложений',
+        'Полнотекстовый поиск по всем заметкам',
+        'Различные длины резюме (короткое, среднее, подробное)',
+        'Конфиденциальность: записи хранятся локально',
+      ],
+      uz: [
+        'Sun\'iy intellekt yordamida transkripsiya va xulosa',
+        'Avtomatik asosiy fikrlarni ajratib olish',
+        'Vazifalar va harakatlarni aniqlash',
+        'Aqlli teg takliflari',
+        'Boshqa ilovalardan audio fayllarni import qilish',
+        'Barcha eslatmalar bo\'yicha to\'liq matnli qidiruv',
+        'Turli xulosa uzunliklari (qisqa, o\'rtacha, batafsil)',
+        'Maxfiylik: yozuvlar mahalliy saqlanadi',
+      ],
+    },
+    icon: '/apps/memomind-icon.png',
+    screenshots: [],
+    appStoreUrl: 'https://apps.apple.com/app/memomind',
+    category: 'Productivity',
+    featured: true,
+    color: '#6366F1',
+  },
 ];
 
 export function getAppById(id: string): App | undefined {
