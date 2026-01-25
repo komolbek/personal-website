@@ -6,10 +6,13 @@ import { usePathname } from 'next/navigation';
 import { useLocale } from '@/hooks/useLocale';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 import { MenuIcon, CloseIcon } from '@/components/ui/Icons';
+import { siteConfig } from '@/config/site';
 
 const navItems = [
   { key: 'home', href: '/' },
-  { key: 'apps', href: '/apps' },
+  { key: 'solutions', href: '/solutions' },
+  { key: 'projects', href: '/projects' },
+  { key: 'partners', href: '/partners' },
   { key: 'about', href: '/about' },
   { key: 'contact', href: '/contact' },
 ] as const;
@@ -46,13 +49,13 @@ export function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="font-bold text-2xl gradient-text hover:opacity-80 transition-opacity"
+            className="font-bold text-xl gradient-text hover:opacity-80 transition-opacity"
           >
-            KI
+            {siteConfig.name}
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.key}
@@ -75,7 +78,7 @@ export function Header() {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-indigo-500/10 transition-colors"
+              className="lg:hidden p-2 rounded-lg hover:bg-indigo-500/10 transition-colors"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? (
@@ -89,7 +92,7 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-indigo-500/10">
+          <nav className="lg:hidden py-4 border-t border-indigo-500/10">
             {navItems.map((item) => (
               <Link
                 key={item.key}

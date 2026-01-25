@@ -1,29 +1,47 @@
-import { App, SocialLink } from '@/types';
+import { App, SocialLink, CompanyStats } from '@/types';
 
 export const siteConfig = {
-  name: 'Komolbek Ibragimov',
-  title: 'Komolbek Ibragimov - Mobile App Developer',
-  description: 'Solo mobile app developer creating innovative iOS and Android applications',
-  url: 'https://komolbek-ibragimov.com',
-  email: 'kamol.developer@gmail.com', // Update this
+  name: 'Necto Automations',
+  title: 'Necto Automations - IT Solutions & Software Development',
+  description: 'Professional IT solutions including business automation, custom CRM, mobile apps, e-commerce, and AI integration. Transform your business with modern technology.',
+  url: 'https://nectoautomations.com',
+  email: 'info@nectoautomations.com',
+  phone: '+998 90 123 45 67',
+  address: {
+    en: 'Tashkent, Uzbekistan',
+    ru: 'Ташкент, Узбекистан',
+    uz: "Toshkent, O'zbekiston",
+  },
   defaultLocale: 'en' as const,
   locales: ['en', 'ru', 'uz'] as const,
+};
+
+export const companyStats: CompanyStats = {
+  projects: 50,
+  clients: 30,
+  years: 5,
+  satisfaction: 98,
 };
 
 export const socialLinks: SocialLink[] = [
   {
     platform: 'GitHub',
-    url: 'https://github.com/komolbek',
+    url: 'https://github.com/nectoautomations',
     icon: 'github',
   },
   {
+    platform: 'LinkedIn',
+    url: 'https://linkedin.com/company/nectoautomations',
+    icon: 'linkedin',
+  },
+  {
     platform: 'Instagram',
-    url: 'https://instagram.com/komolllbek',
+    url: 'https://instagram.com/nectoautomations',
     icon: 'instagram',
   },
   {
     platform: 'Telegram',
-    url: 'https://t.me/ika_uk',
+    url: 'https://t.me/nectoautomations',
     icon: 'telegram',
   },
 ];

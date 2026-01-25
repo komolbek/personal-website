@@ -1,7 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useLocale } from '@/hooks/useLocale';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 export function Hero() {
   const { t } = useLocale();
@@ -17,61 +18,48 @@ export function Hero() {
       </div>
 
       <div className="max-w-4xl mx-auto text-center">
-        {/* Greeting badge */}
+        {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-sm font-medium mb-6">
           <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          {t.hero.greeting}
+          {t.home.hero.badge}
         </div>
 
-        {/* Name */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 gradient-text leading-tight">
-          {t.hero.name}
+        {/* Title */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 gradient-text leading-tight">
+          {t.home.hero.title}
         </h1>
 
-        {/* Role */}
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-gray-600 dark:text-gray-300 mb-8">
-          {t.hero.role}
-        </h2>
-
-        {/* Description */}
-        <p className="text-gray-500 dark:text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
-          {t.hero.description}
+        {/* Subtitle */}
+        <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto mb-10 leading-relaxed">
+          {t.home.hero.subtitle}
         </p>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href="/apps"
-            className="group px-8 py-4 bg-gradient-to-r from-indigo-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white font-medium rounded-full transition-all duration-300 shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5"
-          >
+          <Button href="/solutions" size="lg">
             <span className="flex items-center gap-2">
-              {t.hero.cta}
+              {t.home.hero.cta}
               <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </span>
-          </Link>
-          <Link
-            href="/contact"
-            className="px-8 py-4 border-2 border-indigo-500/30 hover:border-indigo-500 text-gray-700 dark:text-gray-300 font-medium rounded-full transition-all duration-300 hover:bg-indigo-500/5"
-          >
-            {t.hero.contact}
-          </Link>
+          </Button>
+          <Button href="/contact" variant="outline" size="lg">
+            {t.home.hero.contact}
+          </Button>
         </div>
 
-        {/* Stats or quick info */}
-        <div className="mt-20 grid grid-cols-3 gap-8 max-w-lg mx-auto">
-          <div className="text-center">
-            <div className="text-3xl font-bold gradient-text">3+</div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Years</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold gradient-text">5+</div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Apps</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold gradient-text">10K+</div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Downloads</div>
+        {/* Tech Stack Preview */}
+        <div className="mt-16">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            Technologies we work with
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {['React', 'Next.js', 'React Native', 'Node.js', 'TypeScript', 'Python', 'AI/ML'].map((tech) => (
+              <Badge key={tech} variant="default" size="md">
+                {tech}
+              </Badge>
+            ))}
           </div>
         </div>
       </div>

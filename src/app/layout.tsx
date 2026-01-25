@@ -5,6 +5,7 @@ import './globals.css';
 import { LocaleProvider } from '@/hooks/useLocale';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { siteConfig } from '@/config/site';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -19,38 +20,39 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.komolbek-ibragimov.com'),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: 'Komolbek Ibragimov - Mobile App Developer | iOS & Android Apps',
-    template: '%s | Komolbek Ibragimov',
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
   },
-  description: 'Komolbek Ibragimov is a mobile app developer specializing in iOS and Android applications. View my portfolio of apps and get in touch for your next project.',
+  description: siteConfig.description,
   keywords: [
-    'Komolbek Ibragimov',
-    'Komolbek',
-    'Ibragimov',
-    'mobile app developer',
-    'iOS developer',
-    'Android developer',
-    'app development',
-    'Swift developer',
-    'Kotlin developer',
-    'Uzbekistan developer',
+    'Necto Automations',
+    'IT solutions',
+    'software development',
+    'business automation',
+    'custom CRM',
+    'mobile app development',
+    'AI integration',
+    'web development',
+    'e-commerce solutions',
+    'Uzbekistan',
+    'software company',
   ],
-  authors: [{ name: 'Komolbek Ibragimov', url: 'https://www.komolbek-ibragimov.com' }],
-  creator: 'Komolbek Ibragimov',
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
   openGraph: {
-    title: 'Komolbek Ibragimov - Mobile App Developer',
-    description: 'Mobile app developer specializing in iOS and Android applications. View my portfolio and get in touch.',
-    url: 'https://www.komolbek-ibragimov.com',
-    siteName: 'Komolbek Ibragimov',
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Komolbek Ibragimov - Mobile App Developer',
-    description: 'Mobile app developer specializing in iOS and Android applications.',
+    title: siteConfig.title,
+    description: siteConfig.description,
   },
   robots: {
     index: true,
