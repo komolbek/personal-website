@@ -1,0 +1,176 @@
+// Prisma schema for Necto Automations website admin panel
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Admin user for authentication
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Company statistics (Years, Projects, Clients, etc.)
+model CompanyStat {
+  id        String   @id @default(cuid())
+  key       String   @unique // e.g., "years", "projects", "clients", "satisfaction"
+  value     Int
+  label_en  String
+  label_ru  String
+  label_uz  String
+  suffix    String   @default("+") // e.g., "+", "%"
+  order     Int      @default(0)
+  isVisible Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Products/Solutions - services the company offers
+model Product {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  title_en         String
+  title_ru         String
+  title_uz         String
+  shortDesc_en     String
+  shortDesc_ru     String
+  shortDesc_uz     String
+  fullDesc_en      String   @db.Text
+  fullDesc_ru      String   @db.Text
+  fullDesc_uz      String   @db.Text
+  icon             String
+  features_en      String[] // Array of features
+  features_ru      String[]
+  features_uz      String[]
+  benefits_en      String[]
+  benefits_ru      String[]
+  benefits_uz      String[]
+  order            Int      @default(0)
+  isVisible        Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relation to client projects
+  clientProjects   ClientProject[]
+}
+
+// Client Projects - work done for clients
+model ClientProject {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title_en      String
+  title_ru      String
+  title_uz      String
+  clientName    String?
+  clientLogo    String?
+  category      String   // mobile, website, crm, ai, ecommerce
+  desc_en       String   @db.Text
+  desc_ru       String   @db.Text
+  desc_uz       String   @db.Text
+  challenge_en  String   @db.Text
+  challenge_ru  String   @db.Text
+  challenge_uz  String   @db.Text
+  solution_en   String   @db.Text
+  solution_ru   String   @db.Text
+  solution_uz   String   @db.Text
+  results_en    String?  @db.Text
+  results_ru    String?  @db.Text
+  results_uz    String?  @db.Text
+  images        String[]
+  thumbnail     String
+  appStoreUrl   String?
+  playStoreUrl  String?
+  websiteUrl    String?
+  completedDate DateTime?
+  featured      Boolean  @default(false)
+  isVisible     Boolean  @default(true)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relation to products/solutions
+  productId     String?
+  product       Product? @relation(fields: [productId], references: [id])
+}
+
+// Partners
+model Partner {
+  id           String   @id @default(cuid())
+  name         String
+  logo         String
+  website      String?
+  desc_en      String?
+  desc_ru      String?
+  desc_uz      String?
+  featured     Boolean  @default(false)
+  isVisible    Boolean  @default(true)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relation to feedback/testimonials
+  testimonials Feedback[]
+}
+
+// Feedback/Testimonials with approval workflow
+model Feedback {
+  id           String         @id @default(cuid())
+  authorName   String
+  authorEmail  String?
+  position_en  String?
+  position_ru  String?
+  position_uz  String?
+  avatar       String?
+  quote_en     String         @db.Text
+  quote_ru     String?        @db.Text
+  quote_uz     String?        @db.Text
+  rating       Int?           @default(5) // 1-5 stars
+  status       FeedbackStatus @default(PENDING)
+  featured     Boolean        @default(false)
+  isVisible    Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  // Optional relation to partner
+  partnerId    String?
+  partner      Partner?       @relation(fields: [partnerId], references: [id])
+}
+
+enum FeedbackStatus {
+  PENDING   // Awaiting admin approval
+  APPROVED  // Approved and visible
+  REJECTED  // Rejected by admin
+}
+
+// Contact form submissions
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String
+  company   String?
+  service   String?
+  budget    String?
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// Site settings (for miscellaneous configurable items)
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  type      String   @default("string") // string, boolean, number, json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

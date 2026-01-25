@@ -2,7 +2,6 @@
 
 import { useLocale } from '@/hooks/useLocale';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 
 export function Hero() {
   const { t } = useLocale();
@@ -47,20 +46,6 @@ export function Hero() {
           <Button href="/contact" variant="outline" size="lg">
             {t.home.hero.contact}
           </Button>
-        </div>
-
-        {/* Tech Stack Preview */}
-        <div className="mt-16">
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-            Technologies we work with
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {['React', 'Next.js', 'React Native', 'Node.js', 'TypeScript', 'Python', 'AI/ML'].map((tech) => (
-              <Badge key={tech} variant="default" size="md">
-                {tech}
-              </Badge>
-            ))}
-          </div>
         </div>
       </div>
     </section>

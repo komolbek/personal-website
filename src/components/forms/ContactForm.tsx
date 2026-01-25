@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useLocale } from '@/hooks/useLocale';
-import { solutions } from '@/config/solutions';
 import { Button } from '@/components/ui/Button';
 
 interface FormData {
@@ -14,6 +13,64 @@ interface FormData {
   budget: string;
   message: string;
 }
+
+// Modern service options
+const serviceOptions = {
+  en: [
+    { value: 'business-automation', label: 'Business Automation' },
+    { value: 'crm-system', label: 'CRM System' },
+    { value: 'website', label: 'Website Development' },
+    { value: 'ecommerce', label: 'E-commerce Solution' },
+    { value: 'mobile-app', label: 'Mobile Application' },
+    { value: 'ai-integration', label: 'AI Integration' },
+    { value: 'consulting', label: 'IT Consulting' },
+    { value: 'other', label: 'Other' },
+  ],
+  ru: [
+    { value: 'business-automation', label: 'Автоматизация бизнеса' },
+    { value: 'crm-system', label: 'CRM система' },
+    { value: 'website', label: 'Разработка сайта' },
+    { value: 'ecommerce', label: 'E-commerce решение' },
+    { value: 'mobile-app', label: 'Мобильное приложение' },
+    { value: 'ai-integration', label: 'Интеграция ИИ' },
+    { value: 'consulting', label: 'IT консалтинг' },
+    { value: 'other', label: 'Другое' },
+  ],
+  uz: [
+    { value: 'business-automation', label: 'Biznes avtomatlashtirish' },
+    { value: 'crm-system', label: 'CRM tizimi' },
+    { value: 'website', label: 'Veb-sayt yaratish' },
+    { value: 'ecommerce', label: 'E-commerce yechimi' },
+    { value: 'mobile-app', label: 'Mobil ilova' },
+    { value: 'ai-integration', label: "Sun'iy intellekt integratsiyasi" },
+    { value: 'consulting', label: 'IT konsalting' },
+    { value: 'other', label: 'Boshqa' },
+  ],
+};
+
+const budgetOptions = {
+  en: [
+    { value: 'under-5k', label: 'Up to $5,000' },
+    { value: '5k-15k', label: '$5,000 - $15,000' },
+    { value: '15k-50k', label: '$15,000 - $50,000' },
+    { value: 'over-50k', label: '$50,000+' },
+    { value: 'not-sure', label: 'Not sure yet' },
+  ],
+  ru: [
+    { value: 'under-5k', label: 'До $5,000' },
+    { value: '5k-15k', label: '$5,000 - $15,000' },
+    { value: '15k-50k', label: '$15,000 - $50,000' },
+    { value: 'over-50k', label: '$50,000+' },
+    { value: 'not-sure', label: 'Пока не определился' },
+  ],
+  uz: [
+    { value: 'under-5k', label: '$5,000 gacha' },
+    { value: '5k-15k', label: '$5,000 - $15,000' },
+    { value: '15k-50k', label: '$15,000 - $50,000' },
+    { value: 'over-50k', label: '$50,000+' },
+    { value: 'not-sure', label: 'Hali aniq emas' },
+  ],
+};
 
 export function ContactForm() {
   const { locale, t } = useLocale();
@@ -33,6 +90,14 @@ export function ContactForm() {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleServiceSelect = (value: string) => {
+    setFormData((prev) => ({ ...prev, service: prev.service === value ? '' : value }));
+  };
+
+  const handleBudgetSelect = (value: string) => {
+    setFormData((prev) => ({ ...prev, budget: prev.budget === value ? '' : value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,9 +136,12 @@ export function ContactForm() {
   const inputClasses =
     'w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all';
 
+  const services = serviceOptions[locale] || serviceOptions.en;
+  const budgets = budgetOptions[locale] || budgetOptions.en;
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Name & Email Row */}
+      {/* Name & Phone Row */}
       <div className="grid md:grid-cols-2 gap-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -90,8 +158,28 @@ export function ContactForm() {
           />
         </div>
         <div>
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            {t.contact.form.phone} *
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+            placeholder="+998 XX XXX XX XX"
+            className={inputClasses}
+          />
+        </div>
+      </div>
+
+      {/* Email & Company Row */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            {t.contact.form.email} *
+            {t.contact.form.email}
+            <span className="text-gray-400 ml-1 font-normal">({t.contact.form.companyPlaceholder})</span>
           </label>
           <input
             type="email"
@@ -99,18 +187,13 @@ export function ContactForm() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            required
             className={inputClasses}
           />
         </div>
-      </div>
-
-      {/* Company & Phone Row */}
-      <div className="grid md:grid-cols-2 gap-4">
         <div>
           <label htmlFor="company" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {t.contact.form.company}
-            <span className="text-gray-400 ml-1">({t.contact.form.companyPlaceholder})</span>
+            <span className="text-gray-400 ml-1 font-normal">({t.contact.form.companyPlaceholder})</span>
           </label>
           <input
             type="text"
@@ -121,60 +204,51 @@ export function ContactForm() {
             className={inputClasses}
           />
         </div>
-        <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            {t.contact.form.phone}
-            <span className="text-gray-400 ml-1">({t.contact.form.phonePlaceholder})</span>
-          </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className={inputClasses}
-          />
+      </div>
+
+      {/* Service Selection - Modern Pills */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+          {t.contact.form.service}
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {services.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => handleServiceSelect(option.value)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                formData.service === option.value
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/25'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Service & Budget Row */}
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="service" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            {t.contact.form.service}
-          </label>
-          <select
-            id="service"
-            name="service"
-            value={formData.service}
-            onChange={handleChange}
-            className={inputClasses}
-          >
-            <option value="">{t.contact.form.selectService}</option>
-            {solutions.map((solution) => (
-              <option key={solution.slug} value={solution.slug}>
-                {solution.title[locale]}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="budget" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            {t.contact.form.budget}
-          </label>
-          <select
-            id="budget"
-            name="budget"
-            value={formData.budget}
-            onChange={handleChange}
-            className={inputClasses}
-          >
-            <option value="">{t.contact.form.selectBudget}</option>
-            <option value="small">{t.contact.form.budgetRanges.small}</option>
-            <option value="medium">{t.contact.form.budgetRanges.medium}</option>
-            <option value="large">{t.contact.form.budgetRanges.large}</option>
-            <option value="enterprise">{t.contact.form.budgetRanges.enterprise}</option>
-          </select>
+      {/* Budget Selection - Modern Pills */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+          {t.contact.form.budget}
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {budgets.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => handleBudgetSelect(option.value)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                formData.budget === option.value
+                  ? 'bg-green-600 text-white shadow-lg shadow-green-500/25'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
         </div>
       </div>
 
