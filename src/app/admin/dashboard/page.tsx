@@ -3,7 +3,28 @@ import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
-async function getStats() {
+interface CompanyStat {
+  id: string;
+  key: string;
+  value: number;
+  suffix: string | null;
+  label_en: string;
+  label_ru: string | null;
+  label_uz: string | null;
+  isVisible: boolean;
+  order: number;
+}
+
+interface DashboardData {
+  productsCount: number;
+  projectsCount: number;
+  partnersCount: number;
+  pendingFeedback: number;
+  unreadContacts: number;
+  stats: CompanyStat[];
+}
+
+async function getStats(): Promise<DashboardData> {
   try {
     const [
       productsCount,
