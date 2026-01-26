@@ -2,11 +2,28 @@ import { prisma } from '@/lib/prisma';
 import { companyStats } from '@/config/site';
 import { AboutPageClient } from '@/components/AboutPageClient';
 
-async function getStats() {
+interface StatFromDB {
+  key: string;
+  value: number;
+  suffix: string | null;
+  label_en: string;
+  label_ru: string | null;
+  label_uz: string | null;
+}
+
+async function getStats(): Promise<StatFromDB[] | null> {
   try {
     const stats = await prisma.companyStat.findMany({
       where: { isVisible: true },
       orderBy: { order: 'asc' },
+      select: {
+        key: true,
+        value: true,
+        suffix: true,
+        label_en: true,
+        label_ru: true,
+        label_uz: true,
+      },
     });
     return stats;
   } catch {
@@ -23,10 +40,10 @@ export default async function AboutPage() {
     ? dbStats.map(stat => ({
         key: stat.key,
         value: stat.value,
-        suffix: stat.suffix,
+        suffix: stat.suffix || '+',
         label_en: stat.label_en,
-        label_ru: stat.label_ru,
-        label_uz: stat.label_uz,
+        label_ru: stat.label_ru || stat.label_en,
+        label_uz: stat.label_uz || stat.label_en,
       }))
     : [
         { key: 'years', value: companyStats.years, suffix: '+', label_en: 'Years in Business', label_ru: 'Лет в бизнесе', label_uz: 'Yil biznesda' },
