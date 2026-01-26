@@ -4,7 +4,26 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import Link from 'next/link';
 
-async function getProjects() {
+interface ClientProject {
+  id: string;
+  slug: string;
+  title_en: string;
+  title_ru: string;
+  title_uz: string;
+  clientName: string | null;
+  clientLogo: string | null;
+  category: string;
+  desc_en: string;
+  desc_ru: string;
+  desc_uz: string;
+  thumbnail: string;
+  featured: boolean;
+  isVisible: boolean;
+  order: number;
+  product: { id: string; title_en: string } | null;
+}
+
+async function getProjects(): Promise<ClientProject[]> {
   return prisma.clientProject.findMany({
     orderBy: { order: 'asc' },
     include: { product: true },

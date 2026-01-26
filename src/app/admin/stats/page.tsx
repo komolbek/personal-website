@@ -3,7 +3,19 @@ import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
-async function getStats() {
+interface CompanyStat {
+  id: string;
+  key: string;
+  value: number;
+  suffix: string | null;
+  label_en: string;
+  label_ru: string | null;
+  label_uz: string | null;
+  isVisible: boolean;
+  order: number;
+}
+
+async function getStats(): Promise<CompanyStat[]> {
   return prisma.companyStat.findMany({
     orderBy: { order: 'asc' },
   });
@@ -130,7 +142,7 @@ export default async function StatsPage() {
                     <input
                       type="text"
                       name="suffix"
-                      defaultValue={stat.suffix}
+                      defaultValue={stat.suffix || ''}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
                   </div>
@@ -150,7 +162,7 @@ export default async function StatsPage() {
                     <input
                       type="text"
                       name="label_ru"
-                      defaultValue={stat.label_ru}
+                      defaultValue={stat.label_ru || ''}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
                   </div>
@@ -160,7 +172,7 @@ export default async function StatsPage() {
                     <input
                       type="text"
                       name="label_uz"
-                      defaultValue={stat.label_uz}
+                      defaultValue={stat.label_uz || ''}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
                   </div>
