@@ -4,7 +4,21 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import Link from 'next/link';
 
-async function getPartners() {
+interface Partner {
+  id: string;
+  name: string;
+  logo: string | null;
+  website: string | null;
+  desc_en: string | null;
+  desc_ru: string | null;
+  desc_uz: string | null;
+  featured: boolean;
+  isVisible: boolean;
+  order: number;
+  _count: { testimonials: number };
+}
+
+async function getPartners(): Promise<Partner[]> {
   return prisma.partner.findMany({
     orderBy: { order: 'asc' },
     include: { _count: { select: { testimonials: true } } },
