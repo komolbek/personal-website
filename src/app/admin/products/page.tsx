@@ -4,7 +4,31 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import Link from 'next/link';
 
-async function getProducts() {
+interface Product {
+  id: string;
+  slug: string;
+  icon: string;
+  title_en: string;
+  title_ru: string;
+  title_uz: string;
+  shortDesc_en: string;
+  shortDesc_ru: string;
+  shortDesc_uz: string;
+  fullDesc_en: string;
+  fullDesc_ru: string;
+  fullDesc_uz: string;
+  features_en: string[];
+  features_ru: string[];
+  features_uz: string[];
+  benefits_en: string[];
+  benefits_ru: string[];
+  benefits_uz: string[];
+  isVisible: boolean;
+  order: number;
+  _count: { clientProjects: number };
+}
+
+async function getProducts(): Promise<Product[]> {
   return prisma.product.findMany({
     orderBy: { order: 'asc' },
     include: { _count: { select: { clientProjects: true } } },
