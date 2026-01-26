@@ -3,7 +3,28 @@ import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
-async function getFeedback() {
+interface FeedbackItem {
+  id: string;
+  authorName: string;
+  authorEmail: string | null;
+  position_en: string | null;
+  position_ru: string | null;
+  position_uz: string | null;
+  quote_en: string | null;
+  quote_ru: string | null;
+  quote_uz: string | null;
+  rating: number | null;
+  avatar: string | null;
+  featured: boolean;
+  isVisible: boolean;
+  status: string;
+  partnerId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  partner: { name: string; logo: string | null } | null;
+}
+
+async function getFeedback(): Promise<FeedbackItem[]> {
   return prisma.feedback.findMany({
     orderBy: { createdAt: 'desc' },
     include: { partner: true },
