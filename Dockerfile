@@ -24,6 +24,9 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Generate Prisma client
+RUN pnpm exec prisma generate
+
 # Build the application
 RUN pnpm build
 
