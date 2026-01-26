@@ -3,7 +3,20 @@ import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
-async function getContacts() {
+interface Contact {
+  id: string;
+  name: string;
+  email: string | null;
+  phone: string;
+  company: string | null;
+  service: string | null;
+  budget: string | null;
+  message: string;
+  isRead: boolean;
+  createdAt: Date;
+}
+
+async function getContacts(): Promise<Contact[]> {
   return prisma.contactSubmission.findMany({
     orderBy: { createdAt: 'desc' },
   });
