@@ -4,34 +4,10 @@ import { hashPassword } from '@/lib/auth';
 
 async function ensureTablesExist() {
   try {
-    await prisma.$executeRawUnsafe(`
-      CREATE TABLE IF NOT EXISTS "AdminUser" (
-        "id" TEXT NOT NULL,
-        "email" TEXT NOT NULL,
-        "password" TEXT NOT NULL,
-        "name" TEXT NOT NULL,
-        "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        "updatedAt" TIMESTAMP(3) NOT NULL,
-        CONSTRAINT "AdminUser_pkey" PRIMARY KEY ("id")
-      );
-      CREATE UNIQUE INDEX IF NOT EXISTS "AdminUser_email_key" ON "AdminUser"("email");
-
-      CREATE TABLE IF NOT EXISTS "CompanyStat" (
-        "id" TEXT NOT NULL,
-        "key" TEXT NOT NULL,
-        "value" INTEGER NOT NULL,
-        "label_en" TEXT NOT NULL,
-        "label_ru" TEXT NOT NULL,
-        "label_uz" TEXT NOT NULL,
-        "suffix" TEXT NOT NULL DEFAULT '+',
-        "order" INTEGER NOT NULL DEFAULT 0,
-        "isVisible" BOOLEAN NOT NULL DEFAULT true,
-        "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        "updatedAt" TIMESTAMP(3) NOT NULL,
-        CONSTRAINT "CompanyStat_pkey" PRIMARY KEY ("id")
-      );
-      CREATE UNIQUE INDEX IF NOT EXISTS "CompanyStat_key_key" ON "CompanyStat"("key");
-    `);
+    await prisma.$executeRawUnsafe(`CREATE TABLE IF NOT EXISTS "AdminUser" ("id" TEXT NOT NULL, "email" TEXT NOT NULL, "password" TEXT NOT NULL, "name" TEXT NOT NULL, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "AdminUser_pkey" PRIMARY KEY ("id"))`);
+    await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "AdminUser_email_key" ON "AdminUser"("email")`);
+    await prisma.$executeRawUnsafe(`CREATE TABLE IF NOT EXISTS "CompanyStat" ("id" TEXT NOT NULL, "key" TEXT NOT NULL, "value" INTEGER NOT NULL, "label_en" TEXT NOT NULL, "label_ru" TEXT NOT NULL, "label_uz" TEXT NOT NULL, "suffix" TEXT NOT NULL DEFAULT '+', "order" INTEGER NOT NULL DEFAULT 0, "isVisible" BOOLEAN NOT NULL DEFAULT true, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "CompanyStat_pkey" PRIMARY KEY ("id"))`);
+    await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "CompanyStat_key_key" ON "CompanyStat"("key")`);
   } catch (e) {
     console.error('Table creation error:', e);
   }
