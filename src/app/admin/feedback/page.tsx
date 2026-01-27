@@ -3,6 +3,8 @@ import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
+export const dynamic = 'force-dynamic';
+
 interface FeedbackItem {
   id: string;
   authorName: string;

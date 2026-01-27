@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { companyStats } from '@/config/site';
 
+export const dynamic = 'force-dynamic';
+
 // GET - Get public company statistics
 export async function GET() {
   try {

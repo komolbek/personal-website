@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { hashPassword } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 // This endpoint creates the initial admin user
 // It should only work if no admin users exist yet
 export async function POST(request: NextRequest) {

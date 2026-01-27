@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { companyStats } from '@/config/site';
 import { AboutPageClient } from '@/components/AboutPageClient';
 
+export const dynamic = 'force-dynamic';
+
 interface StatFromDB {
   key: string;
   value: number;
