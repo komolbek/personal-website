@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { hashPassword } from '@/lib/auth';
-import { ensureAllTablesExist } from '@/lib/db-init';
 
 // This endpoint creates the initial admin user
 // It should only work if no admin users exist yet
 export async function POST(request: NextRequest) {
   try {
-    await ensureAllTablesExist();
-
     // Check if any admin user already exists
+    // (prisma middleware auto-creates tables on first query)
     const existingAdmin = await prisma.adminUser.findFirst();
 
     if (existingAdmin) {
@@ -65,7 +63,6 @@ export async function POST(request: NextRequest) {
 // GET to check if setup is needed
 export async function GET() {
   try {
-    await ensureAllTablesExist();
     const existingAdmin = await prisma.adminUser.findFirst();
 
     return NextResponse.json({

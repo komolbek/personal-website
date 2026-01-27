@@ -29,10 +29,14 @@ interface Product {
 }
 
 async function getProducts(): Promise<Product[]> {
-  return prisma.product.findMany({
-    orderBy: { order: 'asc' },
-    include: { _count: { select: { clientProjects: true } } },
-  });
+  try {
+    return await prisma.product.findMany({
+      orderBy: { order: 'asc' },
+      include: { _count: { select: { clientProjects: true } } },
+    });
+  } catch {
+    return [];
+  }
 }
 
 async function deleteProduct(formData: FormData) {

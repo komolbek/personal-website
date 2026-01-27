@@ -25,10 +25,14 @@ interface FeedbackItem {
 }
 
 async function getFeedback(): Promise<FeedbackItem[]> {
-  return prisma.feedback.findMany({
-    orderBy: { createdAt: 'desc' },
-    include: { partner: true },
-  });
+  try {
+    return await prisma.feedback.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: { partner: true },
+    });
+  } catch {
+    return [];
+  }
 }
 
 async function updateFeedbackStatus(formData: FormData) {

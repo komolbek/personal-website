@@ -16,9 +16,13 @@ interface CompanyStat {
 }
 
 async function getStats(): Promise<CompanyStat[]> {
-  return prisma.companyStat.findMany({
-    orderBy: { order: 'asc' },
-  });
+  try {
+    return await prisma.companyStat.findMany({
+      orderBy: { order: 'asc' },
+    });
+  } catch {
+    return [];
+  }
 }
 
 async function updateStat(formData: FormData) {

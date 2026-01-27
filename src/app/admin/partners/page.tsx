@@ -19,10 +19,14 @@ interface Partner {
 }
 
 async function getPartners(): Promise<Partner[]> {
-  return prisma.partner.findMany({
-    orderBy: { order: 'asc' },
-    include: { _count: { select: { testimonials: true } } },
-  });
+  try {
+    return await prisma.partner.findMany({
+      orderBy: { order: 'asc' },
+      include: { _count: { select: { testimonials: true } } },
+    });
+  } catch {
+    return [];
+  }
 }
 
 async function deletePartner(formData: FormData) {

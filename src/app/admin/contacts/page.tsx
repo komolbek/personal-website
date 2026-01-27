@@ -17,9 +17,13 @@ interface Contact {
 }
 
 async function getContacts(): Promise<Contact[]> {
-  return prisma.contactSubmission.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
+  try {
+    return await prisma.contactSubmission.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+  } catch {
+    return [];
+  }
 }
 
 async function markAsRead(formData: FormData) {

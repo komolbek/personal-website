@@ -24,10 +24,14 @@ interface ClientProject {
 }
 
 async function getProjects(): Promise<ClientProject[]> {
-  return prisma.clientProject.findMany({
-    orderBy: { order: 'asc' },
-    include: { product: true },
-  });
+  try {
+    return await prisma.clientProject.findMany({
+      orderBy: { order: 'asc' },
+      include: { product: true },
+    });
+  } catch {
+    return [];
+  }
 }
 
 async function deleteProject(formData: FormData) {
