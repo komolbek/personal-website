@@ -37,7 +37,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 RUN apk add --no-cache openssl
-RUN npm install -g prisma@5.22.0
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -61,4 +60,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["sh", "-c", "prisma db push --skip-generate && node server.js"]
+CMD ["node", "server.js"]
