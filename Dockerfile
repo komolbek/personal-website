@@ -40,6 +40,9 @@ ENV NODE_ENV=production
 
 RUN apk add --no-cache openssl
 
+# Install prisma CLI for db push at startup
+RUN npm install -g prisma@5.22.0
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -55,6 +58,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/node_modules/.pnpm/@prisma+client@*/node_modules/.prisma/client/*.node ./node_modules/.prisma/client/
 COPY --from=builder /app/prisma ./prisma
 
+# Copy startup script
+COPY --chown=nextjs:nodejs start.sh ./start.sh
+RUN chmod +x start.sh
+
 USER nextjs
 
 EXPOSE 3000
@@ -62,4 +69,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["./start.sh"]
