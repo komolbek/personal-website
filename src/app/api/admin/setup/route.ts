@@ -1,23 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { hashPassword } from '@/lib/auth';
-
-async function ensureTablesExist() {
-  try {
-    await prisma.$executeRawUnsafe(`CREATE TABLE IF NOT EXISTS "AdminUser" ("id" TEXT NOT NULL, "email" TEXT NOT NULL, "password" TEXT NOT NULL, "name" TEXT NOT NULL, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "AdminUser_pkey" PRIMARY KEY ("id"))`);
-    await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "AdminUser_email_key" ON "AdminUser"("email")`);
-    await prisma.$executeRawUnsafe(`CREATE TABLE IF NOT EXISTS "CompanyStat" ("id" TEXT NOT NULL, "key" TEXT NOT NULL, "value" INTEGER NOT NULL, "label_en" TEXT NOT NULL, "label_ru" TEXT NOT NULL, "label_uz" TEXT NOT NULL, "suffix" TEXT NOT NULL DEFAULT '+', "order" INTEGER NOT NULL DEFAULT 0, "isVisible" BOOLEAN NOT NULL DEFAULT true, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "CompanyStat_pkey" PRIMARY KEY ("id"))`);
-    await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "CompanyStat_key_key" ON "CompanyStat"("key")`);
-  } catch (e) {
-    console.error('Table creation error:', e);
-  }
-}
+import { ensureAllTablesExist } from '@/lib/db-init';
 
 // This endpoint creates the initial admin user
 // It should only work if no admin users exist yet
 export async function POST(request: NextRequest) {
   try {
-    await ensureTablesExist();
+    await ensureAllTablesExist();
 
     // Check if any admin user already exists
     const existingAdmin = await prisma.adminUser.findFirst();
@@ -75,7 +65,7 @@ export async function POST(request: NextRequest) {
 // GET to check if setup is needed
 export async function GET() {
   try {
-    await ensureTablesExist();
+    await ensureAllTablesExist();
     const existingAdmin = await prisma.adminUser.findFirst();
 
     return NextResponse.json({
