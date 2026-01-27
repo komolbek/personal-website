@@ -3,9 +3,8 @@ import localFont from 'next/font/local';
 import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 import { LocaleProvider } from '@/hooks/useLocale';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
 import { siteConfig } from '@/config/site';
+import { LayoutContent } from '@/components/layout/LayoutContent';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -82,9 +81,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100`}
       >
         <LocaleProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <LayoutContent>{children}</LayoutContent>
         </LocaleProvider>
         <Analytics />
       </body>

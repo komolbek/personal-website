@@ -23,8 +23,8 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Don't show admin layout on login page
-  if (pathname === '/admin/login') {
+  // Don't show admin layout on login and setup pages
+  if (pathname === '/admin/login' || pathname === '/admin/setup') {
     return <>{children}</>;
   }
 
