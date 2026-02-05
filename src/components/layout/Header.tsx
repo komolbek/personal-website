@@ -10,8 +10,7 @@ import { siteConfig } from '@/config/site';
 
 const navItems = [
   { key: 'home', href: '/' },
-  { key: 'solutions', href: '/solutions' },
-  { key: 'projects', href: '/projects' },
+  { key: 'portfolio', href: '/portfolio' },
   { key: 'about', href: '/about' },
   { key: 'contact', href: '/contact' },
 ] as const;
@@ -32,6 +31,11 @@ export function Header() {
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
+    if (href === '/portfolio') {
+      return pathname.startsWith('/portfolio') ||
+        pathname.startsWith('/solutions') ||
+        pathname.startsWith('/projects');
+    }
     return pathname.startsWith(href);
   };
 

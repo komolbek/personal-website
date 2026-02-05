@@ -59,10 +59,10 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/projects"
+                  href="/portfolio"
                   className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                 >
-                  {t.nav.projects}
+                  {t.nav.portfolio}
                 </Link>
               </li>
               <li>

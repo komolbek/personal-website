@@ -68,7 +68,7 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
       {/* Back Link */}
       <div className="max-w-6xl mx-auto px-4 mb-8">
         <Link
-          href="/solutions"
+          href="/portfolio"
           className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
         >
           <ArrowRightIcon className="w-4 h-4 mr-1.5 rotate-180" />

@@ -117,7 +117,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
       <div className="max-w-6xl mx-auto">
         {/* Back link */}
         <Link
-          href="/solutions"
+          href="/portfolio"
           className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 mb-8 transition-colors"
         >
           <ArrowRightIcon className="w-4 h-4 mr-1 rotate-180" />

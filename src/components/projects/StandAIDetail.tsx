@@ -46,7 +46,7 @@ export function StandAIDetail({ project }: { project: Project }) {
       <div className="max-w-6xl mx-auto px-4">
         {/* Back link */}
         <Link
-          href="/projects"
+          href="/portfolio"
           className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-cyan-400 mb-8 transition-colors group"
         >
           <span className="mr-2 transition-transform group-hover:-translate-x-1">&larr;</span>

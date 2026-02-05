@@ -3,6 +3,7 @@ export const en = {
     home: 'Home',
     solutions: 'Products',
     projects: 'Projects',
+    portfolio: 'Portfolio',
     partners: 'Partners',
     about: 'About',
     contact: 'Contact',
@@ -12,18 +13,15 @@ export const en = {
       badge: 'IT Solutions & Software Development',
       title: 'We Build Digital Solutions That Drive Business Growth',
       subtitle: 'From business automation to AI integration, we deliver tailored software solutions for your unique challenges.',
-      cta: 'View Our Products',
+      cta: 'View Our Work',
       contact: 'Get a Free Consultation',
     },
-    services: {
-      title: 'Our Products',
-      subtitle: 'In-house developed software solutions',
-      viewAll: 'View All Products',
-    },
-    projects: {
-      title: 'Featured Projects',
-      subtitle: 'Success stories that speak for themselves',
-      viewAll: 'View All Projects',
+    portfolio: {
+      title: 'Our Work',
+      subtitle: 'In-house products and client projects',
+      productsHeading: 'In-house Software Products',
+      projectsHeading: 'Client Projects',
+      viewAll: 'View Full Portfolio',
     },
     whyUs: {
       title: 'Why Choose Us',
@@ -66,7 +64,7 @@ export const en = {
   solutions: {
     title: 'Our Products',
     subtitle: 'In-house developed software products',
-    backToSolutions: 'Back to Products',
+    backToSolutions: 'Back to Portfolio',
     features: 'Key Features',
     benefits: 'Benefits',
     technologies: 'Technologies We Use',
@@ -88,7 +86,7 @@ export const en = {
   projects: {
     title: 'Our Projects',
     subtitle: 'Explore our portfolio of successful implementations',
-    backToProjects: 'Back to Projects',
+    backToProjects: 'Back to Portfolio',
     challenge: 'The Challenge',
     solution: 'Our Solution',
     results: 'Results',

@@ -35,10 +35,21 @@ const nextConfig = {
         destination: '/projects/memomind',
         permanent: true,
       },
-      // Redirect /apps listing to /projects
+      // Redirect /apps listing to /portfolio
       {
         source: '/apps',
-        destination: '/projects',
+        destination: '/portfolio',
+        permanent: true,
+      },
+      // Redirect old listing pages to /portfolio
+      {
+        source: '/solutions',
+        destination: '/portfolio',
+        permanent: true,
+      },
+      {
+        source: '/projects',
+        destination: '/portfolio',
         permanent: true,
       },
     ];

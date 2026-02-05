@@ -3,6 +3,7 @@ export const uz = {
     home: 'Bosh sahifa',
     solutions: 'Mahsulotlar',
     projects: 'Loyihalar',
+    portfolio: 'Portfolio',
     partners: 'Hamkorlar',
     about: 'Biz haqimizda',
     contact: 'Aloqa',
@@ -12,18 +13,15 @@ export const uz = {
       badge: 'IT Yechimlar va Dasturiy Ta\'minot',
       title: 'Biznes o\'sishini ta\'minlaydigan raqamli yechimlar yaratamiz',
       subtitle: 'Biznes avtomatlashtirishdan AI integratsiyasigacha — sizning noyob muammolaringiz uchun maxsus dasturiy yechimlar taqdim etamiz.',
-      cta: 'Mahsulotlarimiz',
+      cta: 'Bizning ishlarimiz',
       contact: 'Bepul maslahat',
     },
-    services: {
-      title: 'Bizning mahsulotlar',
-      subtitle: 'O\'z ishlab chiqarilgan dasturiy yechimlar',
-      viewAll: 'Barcha mahsulotlar',
-    },
-    projects: {
-      title: 'Tanlangan loyihalar',
-      subtitle: 'O\'zlari haqida gapiruvchi muvaffaqiyat tarixi',
-      viewAll: 'Barcha loyihalar',
+    portfolio: {
+      title: 'Bizning ishlarimiz',
+      subtitle: 'O\'z mahsulotlarimiz va mijozlar loyihalari',
+      productsHeading: 'O\'z ishlab chiqarilgan dasturiy mahsulotlar',
+      projectsHeading: 'Mijozlar loyihalari',
+      viewAll: 'To\'liq portfolio',
     },
     whyUs: {
       title: 'Nega biz',
@@ -66,7 +64,7 @@ export const uz = {
   solutions: {
     title: 'Bizning mahsulotlar',
     subtitle: 'O\'z ishlab chiqarilgan dasturiy mahsulotlar',
-    backToSolutions: 'Mahsulotlarga qaytish',
+    backToSolutions: 'Portfolioga qaytish',
     features: 'Asosiy imkoniyatlar',
     benefits: 'Afzalliklar',
     technologies: 'Foydalaniladigan texnologiyalar',
@@ -88,7 +86,7 @@ export const uz = {
   projects: {
     title: 'Bizning loyihalar',
     subtitle: 'Muvaffaqiyatli amalga oshirilgan loyihalar portfoliomiz',
-    backToProjects: 'Loyihalarga qaytish',
+    backToProjects: 'Portfolioga qaytish',
     challenge: 'Vazifa',
     solution: 'Bizning yechim',
     results: 'Natijalar',

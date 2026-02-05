@@ -167,7 +167,7 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
       <div className="max-w-6xl mx-auto">
         {/* Back link */}
         <Link
-          href="/solutions"
+          href="/portfolio"
           className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 mb-8 transition-colors group"
         >
           <span className="mr-2 transition-transform group-hover:-translate-x-1">&larr;</span>
@@ -198,14 +198,23 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
             </p>
 
             {/* Quick CTA buttons in hero */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3">
               <a
-                href="https://booking.ordo.uz/hijomauzb"
+                href="https://ordo.uz"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/25"
               >
-                Try Booking Demo
+                ordo.uz
+                <ExternalLinkIcon className="w-4 h-4" />
+              </a>
+              <a
+                href="https://booking.ordo.uz/hijomauzb"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-emerald-600 dark:border-emerald-400 text-emerald-600 dark:text-emerald-400 font-semibold rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-all duration-300"
+              >
+                Booking Demo
                 <ExternalLinkIcon className="w-4 h-4" />
               </a>
               <a

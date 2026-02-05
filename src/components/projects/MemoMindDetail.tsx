@@ -43,7 +43,7 @@ export function MemoMindDetail({ project }: { project: Project }) {
         <div className="relative max-w-6xl mx-auto px-4">
           {/* Back link */}
           <Link
-            href="/projects"
+            href="/portfolio"
             className="inline-flex items-center text-sm text-violet-300/70 hover:text-violet-200 mb-10 transition-colors group"
           >
             <span className="mr-2 transition-transform group-hover:-translate-x-1">&larr;</span>
