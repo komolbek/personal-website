@@ -9,29 +9,28 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { CheckCircleIcon, ArrowRightIcon, ExternalLinkIcon } from '@/components/ui/Icons';
 
-type PlatformTab = 'web' | 'mobile' | 'admin';
+type PlatformTab = 'mobile' | 'admin';
 
 const tabLabels: Record<PlatformTab, Record<string, string>> = {
-  web: { en: 'Web Platform', ru: 'Веб-платформа', uz: 'Veb platforma' },
   mobile: { en: 'Mobile App', ru: 'Мобильное приложение', uz: 'Mobil ilova' },
   admin: { en: 'Admin Panel', ru: 'Админ-панель', uz: 'Admin panel' },
 };
 
 const tabScreenshots: Record<PlatformTab, string[]> = {
-  web: [
+  mobile: [
     '/products/talimx/screenshot-1.png',
     '/products/talimx/screenshot-2.png',
     '/products/talimx/screenshot-3.png',
-  ],
-  mobile: [
     '/products/talimx/screenshot-4.png',
-    '/products/talimx/screenshot-5.png',
-    '/products/talimx/screenshot-6.png',
   ],
   admin: [
+    '/products/talimx/screenshot-5.png',
+    '/products/talimx/screenshot-6.png',
     '/products/talimx/screenshot-7.png',
-    '/products/talimx/screenshot-1.png',
-    '/products/talimx/screenshot-2.png',
+    '/products/talimx/screenshot-8.png',
+    '/products/talimx/screenshot-9.png',
+    '/products/talimx/screenshot-10.png',
+    '/products/talimx/screenshot-11.png',
   ],
 };
 
@@ -81,7 +80,7 @@ const techStackLayers = [
 
 export function TalimXDetail({ solution }: { solution: Solution }) {
   const { locale, t } = useLocale();
-  const [activeTab, setActiveTab] = useState<PlatformTab>('web');
+  const [activeTab, setActiveTab] = useState<PlatformTab>('mobile');
   const [expandedFeature, setExpandedFeature] = useState<number | null>(0);
 
   const features = solution.features[locale];
@@ -178,18 +177,24 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
           </div>
 
           {/* Tab content - screenshot grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className={`grid gap-4 ${
+            activeTab === 'mobile'
+              ? 'grid-cols-2 md:grid-cols-4 max-w-3xl mx-auto'
+              : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+          }`}>
             {tabScreenshots[activeTab].map((src, idx) => (
               <div
                 key={`${activeTab}-${idx}`}
-                className="relative aspect-video rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 group"
+                className={`relative rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 group ${
+                  activeTab === 'mobile' ? 'aspect-[9/19.5]' : 'aspect-video'
+                }`}
               >
                 <Image
                   src={src}
                   alt={`${solution.title[locale]} ${tabLabels[activeTab][locale]} screenshot ${idx + 1}`}
                   fill
                   quality={90}
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes={activeTab === 'mobile' ? '(max-width: 768px) 50vw, 25vw' : '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'}
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

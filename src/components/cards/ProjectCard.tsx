@@ -3,7 +3,40 @@
 import Link from 'next/link';
 import { Project, Locale } from '@/types';
 import { Badge } from '@/components/ui/Badge';
-import { ArrowRightIcon } from '@/components/ui/Icons';
+import { ArrowRightIcon, AIIcon } from '@/components/ui/Icons';
+
+function BrainIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9.5 2a3.5 3.5 0 0 0-3.44 4.15A3.5 3.5 0 0 0 4 9.5a3.5 3.5 0 0 0 1.02 2.47A3.5 3.5 0 0 0 4 14.5a3.5 3.5 0 0 0 2.06 3.18A3.5 3.5 0 0 0 9.5 22h1V2h-1z" />
+      <path d="M14.5 2a3.5 3.5 0 0 1 3.44 4.15A3.5 3.5 0 0 1 20 9.5a3.5 3.5 0 0 1-1.02 2.47A3.5 3.5 0 0 1 20 14.5a3.5 3.5 0 0 1-2.06 3.18A3.5 3.5 0 0 1 14.5 22h-1V2h1z" />
+    </svg>
+  );
+}
+
+function CalendarEventIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+      <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
+    </svg>
+  );
+}
+
+function PaletteIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-1 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-5.52-4.48-9.99-10-9.99z" />
+      <circle cx="7.5" cy="11.5" r="1.5" fill="currentColor" />
+      <circle cx="10.5" cy="7.5" r="1.5" fill="currentColor" />
+      <circle cx="14.5" cy="7.5" r="1.5" fill="currentColor" />
+      <circle cx="17.5" cy="11.5" r="1.5" fill="currentColor" />
+    </svg>
+  );
+}
 
 interface ProjectCardProps {
   project: Project;
@@ -36,15 +69,15 @@ const slugGradients: Record<string, string> = {
   standai: 'from-cyan-500 via-teal-500 to-emerald-600',
 };
 
-const slugIcons: Record<string, string> = {
-  memomind: '🧠',
-  '4event': '🎪',
-  standai: '🎨',
+const slugIconComponents: Record<string, React.FC<{ className?: string }>> = {
+  memomind: BrainIcon,
+  '4event': CalendarEventIcon,
+  standai: PaletteIcon,
 };
 
 export function ProjectCard({ project, locale }: ProjectCardProps) {
   const gradient = slugGradients[project.slug] || 'from-indigo-500 via-purple-500 to-pink-500';
-  const icon = slugIcons[project.slug] || '💡';
+  const IconComponent = slugIconComponents[project.slug] || AIIcon;
 
   return (
     <Link href={`/projects/${project.slug}`}>
@@ -59,7 +92,7 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
           </div>
           {/* Project icon and name */}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-            <span className="text-4xl mb-2">{icon}</span>
+            <IconComponent className="w-10 h-10 mb-2" />
             <span className="text-lg font-bold tracking-wide opacity-90">
               {project.slug === 'memomind' ? 'MemoMind AI' : project.slug === '4event' ? '4Event' : 'StandAI'}
             </span>

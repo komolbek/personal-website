@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useLocale } from '@/hooks/useLocale';
 import { siteConfig } from '@/config/site';
-import { solutions } from '@/config/solutions';
 import {
   PhoneIcon,
   MapPinIcon,
@@ -71,6 +70,20 @@ export default function ContactPage() {
       [field]: prev[field] === value ? '' : value,
     }));
   };
+
+  const serviceLabels: Record<string, Record<string, string>> = {
+    webdev: { en: 'Web Development', ru: 'Веб-разработка', uz: 'Veb-ishlab chiqish' },
+    mobiledev: { en: 'Mobile Development', ru: 'Мобильная разработка', uz: 'Mobil ishlab chiqish' },
+    crm: { en: 'CRM / ERP Systems', ru: 'CRM / ERP системы', uz: 'CRM / ERP tizimlar' },
+    uiux: { en: 'UI/UX Design', ru: 'UI/UX дизайн', uz: 'UI/UX dizayn' },
+    consulting: { en: 'IT Consulting', ru: 'IT-консалтинг', uz: 'IT maslahat' },
+    other: { en: 'Other', ru: 'Другое', uz: 'Boshqa' },
+  };
+
+  const serviceOptions = Object.entries(serviceLabels).map(([value, labels]) => ({
+    value,
+    label: labels[locale] || labels.en,
+  }));
 
   const budgetRanges = [
     { value: 'small', label: t.contact.form.budgetRanges.small },
@@ -239,18 +252,18 @@ export default function ContactPage() {
                     {t.contact.form.service}
                   </label>
                   <div className="flex flex-wrap gap-2">
-                    {solutions.map((solution) => (
+                    {serviceOptions.map((option) => (
                       <button
-                        key={solution.slug}
+                        key={option.value}
                         type="button"
-                        onClick={() => handleChipSelect('service', solution.slug)}
+                        onClick={() => handleChipSelect('service', option.value)}
                         className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 ${
-                          formData.service === solution.slug
+                          formData.service === option.value
                             ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white border-transparent shadow-md shadow-indigo-500/25'
                             : 'bg-white/50 dark:bg-gray-900/50 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10'
                         }`}
                       >
-                        {solution.title[locale]}
+                        {option.label}
                       </button>
                     ))}
                   </div>

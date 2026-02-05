@@ -6,11 +6,12 @@ import { useState } from 'react';
 import { useLocale } from '@/hooks/useLocale';
 import { Project } from '@/types';
 import { Button } from '@/components/ui/Button';
-import { ExternalLinkIcon } from '@/components/ui/Icons';
+import { ExternalLinkIcon, ArrowRightIcon } from '@/components/ui/Icons';
 
 export function FourEventDetail({ project }: { project: Project }) {
   const { locale, t } = useLocale();
   const [expandedPanel, setExpandedPanel] = useState<number | null>(0);
+  const [activeScreenshot, setActiveScreenshot] = useState(0);
 
   const screenshots = project.images || [];
 
@@ -19,21 +20,18 @@ export function FourEventDetail({ project }: { project: Project }) {
       number: 1,
       title: t.projects.challenge,
       content: project.challenge[locale],
-      accent: 'border-orange-500',
       bg: 'bg-orange-500',
     },
     {
       number: 2,
       title: t.projects.solution,
       content: project.solution[locale],
-      accent: 'border-amber-500',
       bg: 'bg-amber-500',
     },
     {
       number: 3,
       title: t.projects.results,
       content: project.results?.[locale] || '',
-      accent: 'border-yellow-500',
       bg: 'bg-yellow-500',
     },
   ].filter((p) => p.content);
@@ -47,92 +45,104 @@ export function FourEventDetail({ project }: { project: Project }) {
         <div className="absolute top-1/2 right-1/3 w-[400px] h-[400px] bg-yellow-400/8 rounded-full blur-3xl" />
       </div>
 
-      {/* ============================================ */}
-      {/* HERO: Full-width image banner with overlay   */}
-      {/* ============================================ */}
-      <section className="relative overflow-hidden mb-20">
-        {/* Background image */}
-        <div className="relative h-[400px] md:h-[500px]">
-          {screenshots[0] && (
-            <Image
-              src={screenshots[0]}
-              alt={project.title[locale]}
-              fill
-              quality={95}
-              sizes="100vw"
-              className="object-cover"
-              priority
-            />
-          )}
-          {/* Overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-900/30 to-transparent" />
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Back link */}
+        <Link
+          href="/projects"
+          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 mb-8 transition-colors group"
+        >
+          <ArrowRightIcon className="w-4 h-4 mr-1.5 rotate-180 transition-transform group-hover:-translate-x-1" />
+          {t.projects.backToProjects}
+        </Link>
 
-          {/* Content overlay */}
-          <div className="absolute inset-0 flex flex-col justify-end">
-            <div className="max-w-6xl mx-auto px-4 pb-12 w-full">
-              {/* Back link */}
-              <Link
-                href="/projects"
-                className="inline-flex items-center text-sm text-orange-200/80 hover:text-white mb-6 transition-colors group"
-              >
-                <span className="mr-2 transition-transform group-hover:-translate-x-1">&larr;</span>
-                {t.projects.backToProjects}
-              </Link>
-
-              <div className="inline-flex items-center gap-2 bg-orange-500/20 backdrop-blur-sm border border-orange-400/30 rounded-full px-4 py-1.5 mb-4">
-                <span className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
-                <span className="text-sm text-orange-200 font-medium">
+        {/* ============================================ */}
+        {/* HERO: Gradient banner (no screenshot)        */}
+        {/* ============================================ */}
+        <section className="relative overflow-hidden rounded-3xl mb-20">
+          <div className="bg-gradient-to-r from-orange-600 via-amber-500 to-yellow-500 py-16 md:py-24">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSA2MCAwIEwgMCAwIDAgNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30" />
+            <div className="relative max-w-4xl mx-auto px-4 text-center">
+              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
+                <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                <span className="text-sm text-orange-100 font-medium">
                   {locale === 'ru' ? 'Событийная платформа' : locale === 'uz' ? 'Tadbir platformasi' : 'Event Platform'}
                 </span>
               </div>
-
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-4 leading-tight">
+              <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight">
                 {project.title[locale]}
               </h1>
-
-              <p className="text-lg md:text-xl text-gray-200 max-w-2xl leading-relaxed">
+              <p className="text-lg md:text-xl text-orange-100 max-w-2xl mx-auto leading-relaxed mb-10">
                 {project.description[locale]}
               </p>
+              {project.links?.demo && (
+                <a
+                  href={project.links.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-white text-orange-700 font-semibold rounded-full px-8 py-4 text-lg hover:bg-orange-50 transition-colors shadow-lg shadow-black/20"
+                >
+                  <ExternalLinkIcon className="w-5 h-5" />
+                  {locale === 'ru' ? 'Открыть демо' : locale === 'uz' ? 'Demoni ochish' : 'View Demo'}
+                </a>
+              )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <div className="max-w-6xl mx-auto px-4">
         {/* ============================================ */}
-        {/* SCREENSHOTS: Masonry / staggered grid        */}
+        {/* SCREENSHOTS: Clean gallery with thumbnails   */}
         {/* ============================================ */}
-        {screenshots.length > 1 && (
+        {screenshots.length > 0 && (
           <section className="mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-4">
               {locale === 'ru' ? 'Скриншоты' : locale === 'uz' ? 'Skrinshotlar' : 'Screenshots'}
             </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-center mb-10 max-w-xl mx-auto">
+              {locale === 'ru'
+                ? 'Ознакомьтесь с интерфейсом платформы'
+                : locale === 'uz'
+                  ? 'Platforma interfeysi bilan tanishing'
+                  : 'Explore the platform interface'}
+            </p>
 
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
-              {screenshots.slice(1).map((src, index) => {
-                // Stagger heights for masonry effect
-                const heights = ['h-64', 'h-80', 'h-72', 'h-96', 'h-64', 'h-80'];
-                const heightClass = heights[index % heights.length];
+            {/* Active screenshot preview */}
+            <div className="mb-6 rounded-2xl overflow-hidden shadow-xl border border-orange-200/30 dark:border-orange-700/30 max-w-4xl mx-auto">
+              <Image
+                src={screenshots[activeScreenshot] || screenshots[0]}
+                alt={`${project.title[locale]} screenshot ${activeScreenshot + 1}`}
+                width={1400}
+                height={880}
+                quality={95}
+                sizes="(max-width: 1024px) 100vw, 896px"
+                className="w-full h-auto object-cover"
+              />
+            </div>
 
-                return (
-                  <div
+            {/* Thumbnail row */}
+            {screenshots.length > 1 && (
+              <div className="flex gap-3 justify-center">
+                {screenshots.map((src, index) => (
+                  <button
                     key={index}
-                    className={`relative ${heightClass} rounded-2xl overflow-hidden break-inside-avoid border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300 group`}
+                    onClick={() => setActiveScreenshot(index)}
+                    className={`flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all duration-300 ${
+                      activeScreenshot === index
+                        ? 'border-orange-500 shadow-lg shadow-orange-500/25 ring-2 ring-orange-500/30'
+                        : 'border-gray-200 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-600'
+                    }`}
                   >
                     <Image
                       src={src}
-                      alt={`${project.title[locale]} screenshot ${index + 2}`}
-                      fill
-                      quality={85}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      alt={`Screenshot ${index + 1}`}
+                      width={300}
+                      height={180}
+                      quality={80}
+                      className="w-44 h-26 object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-                );
-              })}
-            </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </section>
         )}
 
@@ -192,7 +202,7 @@ export function FourEventDetail({ project }: { project: Project }) {
                       isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
-                    <div className={`px-6 pb-6 pl-[5.75rem] border-t border-gray-100 dark:border-gray-700/50 pt-4`}>
+                    <div className="px-6 pb-6 pl-[5.75rem] border-t border-gray-100 dark:border-gray-700/50 pt-4">
                       <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
                         {panel.content}
                       </p>
@@ -212,21 +222,15 @@ export function FourEventDetail({ project }: { project: Project }) {
             {t.projects.techStack}
           </h2>
 
-          <div className="relative">
-            {/* Fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white dark:from-gray-950 to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white dark:from-gray-950 to-transparent z-10 pointer-events-none" />
-
-            <div className="flex gap-4 overflow-x-auto pb-4 px-6 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-orange-300 dark:scrollbar-thumb-orange-600">
-              {project.techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="flex-shrink-0 inline-flex items-center px-6 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 text-orange-700 dark:text-orange-300 border border-orange-200/60 dark:border-orange-700/40 shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
+          <div className="flex flex-wrap justify-center gap-3">
+            {project.techStack.map((tech) => (
+              <span
+                key={tech}
+                className="inline-flex items-center px-6 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 text-orange-700 dark:text-orange-300 border border-orange-200/60 dark:border-orange-700/40 shadow-sm"
+              >
+                {tech}
+              </span>
+            ))}
           </div>
         </section>
 
