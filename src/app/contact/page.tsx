@@ -6,14 +6,12 @@ import { siteConfig } from '@/config/site';
 import {
   PhoneIcon,
   MapPinIcon,
-  MailIcon,
 } from '@/components/ui/Icons';
 
 export default function ContactPage() {
   const { locale, t } = useLocale();
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
     company: '',
     phone: '',
     service: '',
@@ -37,7 +35,6 @@ export default function ContactPage() {
         setStatus('success');
         setFormData({
           name: '',
-          email: '',
           company: '',
           phone: '',
           service: '',
@@ -164,7 +161,7 @@ export default function ContactPage() {
               className="p-8 rounded-3xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
             >
               <div className="space-y-6">
-                {/* Name & Email Row */}
+                {/* Name & Phone Row */}
                 <div className="grid sm:grid-cols-2 gap-6">
                   {/* Name */}
                   <div>
@@ -185,65 +182,44 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  {/* Email */}
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
-                      {t.contact.form.email} *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                    />
-                  </div>
-                </div>
-
-                {/* Company & Phone Row */}
-                <div className="grid sm:grid-cols-2 gap-6">
-                  {/* Company */}
-                  <div>
-                    <label
-                      htmlFor="company"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
-                      {t.contact.form.company}
-                    </label>
-                    <input
-                      type="text"
-                      id="company"
-                      name="company"
-                      placeholder={t.contact.form.companyPlaceholder}
-                      value={formData.company}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                    />
-                  </div>
-
                   {/* Phone */}
                   <div>
                     <label
                       htmlFor="phone"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                     >
-                      {t.contact.form.phone}
+                      {t.contact.form.phone} *
                     </label>
                     <input
                       type="tel"
                       id="phone"
                       name="phone"
+                      required
                       placeholder={t.contact.form.phonePlaceholder}
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                     />
                   </div>
+                </div>
+
+                {/* Company */}
+                <div>
+                  <label
+                    htmlFor="company"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
+                    {t.contact.form.company}
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    placeholder={t.contact.form.companyPlaceholder}
+                    value={formData.company}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                  />
                 </div>
 
                 {/* Service */}
@@ -336,7 +312,7 @@ export default function ContactPage() {
                   disabled={status === 'loading'}
                   className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-indigo-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 disabled:from-indigo-400 disabled:to-pink-400 text-white font-medium rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30"
                 >
-                  <MailIcon className="w-5 h-5" />
+                  <PhoneIcon className="w-5 h-5" />
                   {status === 'loading' ? t.contact.form.sending : t.contact.form.submit}
                 </button>
               </div>
