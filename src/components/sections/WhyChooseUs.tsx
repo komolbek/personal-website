@@ -1,21 +1,12 @@
 'use client';
 
 import { useLocale } from '@/hooks/useLocale';
-import { companyStats } from '@/config/site';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { StatsCounter } from '@/components/ui/StatsCounter';
 import { UsersIcon, CodeIcon, ZapIcon, ShieldIcon } from '@/components/ui/Icons';
 
 
 export function WhyChooseUs() {
   const { t } = useLocale();
-
-  const stats = [
-    { value: companyStats.projects, label: t.home.whyUs.stats.projects, suffix: '+' },
-    { value: companyStats.clients, label: t.home.whyUs.stats.clients, suffix: '+' },
-    { value: companyStats.years, label: t.home.whyUs.stats.years, suffix: '+' },
-    { value: companyStats.satisfaction, label: t.home.whyUs.stats.satisfaction, suffix: '%' },
-  ];
 
   const features = [
     { key: 'expertise', icon: UsersIcon },
@@ -32,13 +23,8 @@ export function WhyChooseUs() {
           subtitle={t.home.whyUs.subtitle}
         />
 
-        {/* Stats */}
-        <div className="mt-12 mb-16">
-          <StatsCounter stats={stats} />
-        </div>
-
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
           {features.map((feature) => {
             const IconComponent = feature.icon;
             const featureData = t.home.whyUs.features[feature.key];

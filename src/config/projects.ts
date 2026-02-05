@@ -2,95 +2,11 @@ import { Project } from '@/types';
 
 export const projects: Project[] = [
   {
-    slug: 'oqyol',
-    title: {
-      en: "OqYo'l - Taxi Booking App",
-      ru: "OqYo'l - Приложение для заказа такси",
-      uz: "OqYo'l - Taksi buyurtma ilovasi",
-    },
-    category: 'mobile',
-    description: {
-      en: 'A modern taxi booking application designed to make urban transportation seamless and efficient. With features like real-time driver tracking, multiple payment options, and fare estimation, getting around the city has never been easier.',
-      ru: 'Современное приложение для заказа такси, созданное для удобного и эффективного передвижения по городу. С функциями отслеживания водителя в реальном времени, различными способами оплаты и предварительным расчётом стоимости.',
-      uz: "Shahar transportini qulay va samarali qilish uchun yaratilgan zamonaviy taksi buyurtma berish ilovasi. Real vaqtda haydovchini kuzatish, turli to'lov usullari va narxni oldindan hisoblash kabi funksiyalar bilan.",
-    },
-    challenge: {
-      en: 'The client needed a reliable, user-friendly taxi booking app that could handle real-time GPS tracking, multiple payment methods, and seamless driver-passenger matching while providing a smooth experience across both iOS and Android platforms.',
-      ru: 'Клиенту требовалось надёжное, удобное приложение для заказа такси с отслеживанием GPS в реальном времени, различными способами оплаты и эффективным соединением водителей с пассажирами на платформах iOS и Android.',
-      uz: "Mijozga real vaqtda GPS kuzatuvi, turli to'lov usullari va haydovchi-yo'lovchi mosligini ta'minlaydigan ishonchli, foydalanuvchilarga qulay taksi buyurtma ilovasi kerak edi.",
-    },
-    solution: {
-      en: 'We developed a cross-platform mobile application using React Native with real-time GPS tracking powered by Google Maps API. The app features an intuitive booking flow, live driver tracking, multiple payment integrations, and a robust backend to handle concurrent requests efficiently.',
-      ru: 'Мы разработали кроссплатформенное мобильное приложение на React Native с отслеживанием GPS в реальном времени на базе Google Maps API. Приложение имеет интуитивный процесс бронирования, отслеживание водителя в реальном времени, интеграции с платёжными системами и надёжный бэкенд.',
-      uz: "Biz Google Maps API orqali real vaqtda GPS kuzatuvi bilan React Native yordamida krossplatforma mobil ilovasini ishlab chiqdik. Ilova intuitiv buyurtma jarayoni, haydovchini jonli kuzatish va to'lov integratsiyalariga ega.",
-    },
-    results: {
-      en: '10,000+ downloads within the first 6 months, 4.5-star rating on both app stores, and 30% increase in daily bookings compared to the previous solution.',
-      ru: 'Более 10 000 скачиваний за первые 6 месяцев, рейтинг 4.5 звезды в обоих магазинах приложений и увеличение ежедневных заказов на 30% по сравнению с предыдущим решением.',
-      uz: "Birinchi 6 oy ichida 10,000+ yuklab olishlar, ikkala ilovalar do'konida 4.5 yulduzli reyting va oldingi yechimga nisbatan kunlik buyurtmalarning 30% o'sishi.",
-    },
-    techStack: ['React Native', 'TypeScript', 'Node.js', 'MongoDB', 'Google Maps API', 'Socket.io', 'Redis'],
-    images: [
-      '/projects/oqyol/screenshot-1.png',
-      '/projects/oqyol/screenshot-2.png',
-      '/projects/oqyol/screenshot-3.png',
-    ],
-    thumbnail: '/projects/oqyol/thumbnail.png',
-    links: {
-      appStore: 'https://apps.apple.com/app/oqyol',
-      playStore: 'https://play.google.com/store/apps/details?id=com.oqyol',
-    },
-    featured: true,
-    completedDate: '2024',
-    relatedSolutions: ['mobile-apps'],
-  },
-  {
-    slug: 'money-control',
-    title: {
-      en: 'Money Control - Personal Finance Tracker',
-      ru: 'Money Control - Персональный финансовый трекер',
-      uz: 'Money Control - Shaxsiy moliya trekeri',
-    },
-    category: 'mobile',
-    description: {
-      en: 'A simple yet powerful app designed to help users track personal debts and IOUs. With an intuitive interface and smart reminders, users never forget who owes them or who they owe.',
-      ru: 'Простое, но мощное приложение, разработанное для отслеживания личных долгов. С интуитивным интерфейсом и умными напоминаниями пользователи никогда не забудут, кто им должен или кому должны они.',
-      uz: "Shaxsiy qarzlarni kuzatishga yordam beradigan oddiy, lekin kuchli ilova. Intuitiv interfeys va aqlli eslatmalar bilan foydalanuvchilar hech qachon kim ularga qarz yoki kimga qarzdorligini unutmaydi.",
-    },
-    challenge: {
-      en: 'Many people struggle to keep track of informal loans between friends and family. The challenge was to create an app that makes debt tracking simple, non-intrusive, and secure while maintaining privacy with local-only data storage.',
-      ru: 'Многие люди с трудом отслеживают неформальные займы между друзьями и семьёй. Задача состояла в создании приложения, которое делает отслеживание долгов простым, ненавязчивым и безопасным, сохраняя конфиденциальность с локальным хранением данных.',
-      uz: "Ko'p odamlar do'stlar va oila a'zolari o'rtasidagi norasmiy qarzlarni kuzatishda qiynaladi. Vazifa qarzlarni kuzatishni oddiy, bezovta qilmaydigan va xavfsiz qiladigan ilovani yaratish edi.",
-    },
-    solution: {
-      en: 'We built a clean, minimalist mobile app that focuses on the core functionality of tracking who owes what. The app features local data storage for privacy, smart categorization, and an intuitive interface that makes adding and settling debts quick and easy.',
-      ru: 'Мы создали чистое, минималистичное мобильное приложение, сосредоточенное на основной функциональности отслеживания долгов. Приложение имеет локальное хранение данных для конфиденциальности, умную категоризацию и интуитивный интерфейс.',
-      uz: "Biz kim qarz ekanligini kuzatishning asosiy funksiyasiga e'tibor qaratgan toza, minimalist mobil ilovasini yaratdik. Ilova maxfiylik uchun mahalliy ma'lumotlarni saqlash va intuitiv interfeysga ega.",
-    },
-    results: {
-      en: 'Highly rated app with positive user reviews praising its simplicity and privacy-focused approach. Users report significantly better tracking of personal finances and fewer forgotten debts.',
-      ru: 'Высоко оценённое приложение с положительными отзывами пользователей, хвалящих его простоту и подход, ориентированный на конфиденциальность.',
-      uz: "Foydalanuvchilar tomonidan yuqori baholangan ilova, soddaligi va maxfiylikka yo'naltirilgan yondashuvi uchun ijobiy sharhlar olgan.",
-    },
-    techStack: ['React Native', 'TypeScript', 'AsyncStorage', 'Expo', 'React Navigation'],
-    images: [
-      '/projects/money-control/screenshot-1.png',
-      '/projects/money-control/screenshot-2.png',
-    ],
-    thumbnail: '/projects/money-control/thumbnail.png',
-    links: {
-      appStore: 'https://apps.apple.com/app/money-control',
-    },
-    featured: true,
-    completedDate: '2024',
-    relatedSolutions: ['mobile-apps'],
-  },
-  {
     slug: 'memomind',
     title: {
-      en: 'MemoMind - AI Voice Notes',
-      ru: 'MemoMind - Голосовые заметки с ИИ',
-      uz: 'MemoMind - AI ovozli eslatmalar',
+      en: 'MemoMind AI - Smart Voice Notes',
+      ru: 'MemoMind AI - Умные голосовые заметки',
+      uz: 'MemoMind AI - Aqlli ovozli eslatmalar',
     },
     category: 'ai',
     description: {
@@ -117,14 +33,104 @@ export const projects: Project[] = [
     images: [
       '/projects/memomind/screenshot-1.png',
       '/projects/memomind/screenshot-2.png',
+      '/projects/memomind/screenshot-3.png',
+      '/projects/memomind/screenshot-4.png',
+      '/projects/memomind/screenshot-5.png',
+      '/projects/memomind/screenshot-6.png',
+      '/projects/memomind/screenshot-7.png',
     ],
-    thumbnail: '/projects/memomind/thumbnail.png',
+    thumbnail: '/projects/memomind/screenshot-1.png',
     links: {
       appStore: 'https://apps.apple.com/app/memomind',
     },
     featured: true,
     completedDate: '2024',
-    relatedSolutions: ['mobile-apps', 'ai-integration'],
+    relatedSolutions: [],
+  },
+  {
+    slug: '4event',
+    title: {
+      en: '4Event - Event Equipment Rental',
+      ru: '4Event - Аренда оборудования для мероприятий',
+      uz: '4Event - Tadbirlar uchun jihozlar ijarasi',
+    },
+    category: 'ecommerce',
+    description: {
+      en: 'An event equipment rental platform based in Tashkent. Customers can browse, select, and rent equipment for events — including furnishings, decor, lighting, and audio systems — with delivery within the city.',
+      ru: 'Платформа аренды оборудования для мероприятий в Ташкенте. Клиенты могут просматривать, выбирать и арендовать оборудование для мероприятий — включая мебель, декор, освещение и аудиосистемы — с доставкой по городу.',
+      uz: "Toshkentda tadbirlar uchun jihozlar ijarasi platformasi. Mijozlar mebel, dekor, yoritish va audio tizimlarni — shahar bo'ylab yetkazib berish bilan ko'rib chiqish, tanlash va ijaraga olishlari mumkin.",
+    },
+    challenge: {
+      en: 'Event organizers in Tashkent needed a reliable digital platform to browse and rent equipment with transparent pricing, delivery options, and a streamlined ordering process instead of relying on phone calls and manual coordination.',
+      ru: 'Организаторам мероприятий в Ташкенте нужна была надёжная цифровая платформа для просмотра и аренды оборудования с прозрачными ценами, вариантами доставки и упрощённым процессом заказа вместо телефонных звонков и ручной координации.',
+      uz: "Toshkentdagi tadbir tashkilotchilariga telefon qo'ng'iroqlari va qo'lda muvofiqlashtirishga tayanish o'rniga, shaffof narxlar, yetkazib berish variantlari va soddalashtirilgan buyurtma jarayoni bilan jihozlarni ko'rib chiqish va ijaraga olish uchun ishonchli raqamli platforma kerak edi.",
+    },
+    solution: {
+      en: 'We built a full-featured e-commerce platform with a visual catalog of rental equipment, category-based filtering, shopping cart, user accounts, and multiple payment options. The platform features express delivery within Tashkent and clear rental terms with a comprehensive FAQ section.',
+      ru: 'Мы создали полнофункциональную платформу электронной коммерции с визуальным каталогом арендного оборудования, фильтрацией по категориям, корзиной покупок, аккаунтами пользователей и различными способами оплаты. Платформа предлагает экспресс-доставку по Ташкенту и чёткие условия аренды.',
+      uz: "Biz vizual ijaraga olish jihozlari katalogi, kategoriya bo'yicha filtrlash, savatcha, foydalanuvchi akkauntlari va turli to'lov usullari bilan to'liq funksionalli elektron tijorat platformasini yaratdik.",
+    },
+    results: {
+      en: 'The platform streamlined the rental process for event organizers, reducing order time and improving customer experience with a user-friendly interface and reliable delivery tracking.',
+      ru: 'Платформа оптимизировала процесс аренды для организаторов мероприятий, сократив время заказа и улучшив клиентский опыт с помощью удобного интерфейса и отслеживания доставки.',
+      uz: "Platforma tadbir tashkilotchilari uchun ijara jarayonini optimallashtirdi, buyurtma vaqtini qisqartirdi va qulay interfeys va yetkazib berish kuzatuvi bilan mijozlar tajribasini yaxshiladi.",
+    },
+    techStack: ['Next.js', 'React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Prisma', 'Tailwind CSS'],
+    images: [
+      '/projects/4event/screenshot-1.png',
+      '/projects/4event/screenshot-2.png',
+      '/projects/4event/screenshot-3.png',
+    ],
+    thumbnail: '/projects/4event/screenshot-1.png',
+    links: {
+      demo: 'https://raadarenda-production.up.railway.app/orders',
+    },
+    featured: true,
+    completedDate: '2024',
+    relatedSolutions: [],
+  },
+  {
+    slug: 'standai',
+    title: {
+      en: 'StandAI - AI Exhibition Booth Designer',
+      ru: 'StandAI - ИИ дизайнер выставочных стендов',
+      uz: "StandAI - AI ko'rgazma stendlari dizayneri",
+    },
+    category: 'ai',
+    description: {
+      en: 'An AI-powered platform that designs exhibition booth stands. Users describe their requirements through an AI assistant, and the system generates multiple unique design visualizations within minutes, replacing the traditional slow and expensive booth design process.',
+      ru: 'Платформа на базе ИИ для проектирования выставочных стендов. Пользователи описывают свои требования через ИИ-ассистента, и система генерирует несколько уникальных визуализаций дизайна за считанные минуты, заменяя традиционный медленный и дорогой процесс проектирования.',
+      uz: "Ko'rgazma stendlarini loyihalash uchun AI-quvvatli platforma. Foydalanuvchilar talablarini AI-yordamchi orqali tavsiflab beradilar va tizim bir necha daqiqada bir nechta noyob dizayn vizualizatsiyalarini yaratadi.",
+    },
+    challenge: {
+      en: 'Companies preparing for exhibitions face a slow and expensive design process for creating booth stands. They need fast turnaround, multiple design options, and affordable solutions — all while maintaining professional quality.',
+      ru: 'Компании, готовящиеся к выставкам, сталкиваются с медленным и дорогим процессом проектирования стендов. Им нужна быстрая работа, несколько вариантов дизайна и доступные решения — при сохранении профессионального качества.',
+      uz: "Ko'rgazmalarga tayyorlanayotgan kompaniyalar stendlar yaratish uchun sekin va qimmat dizayn jarayoniga duch keladi. Ularga tez ish, bir nechta dizayn variantlari va hamyonbop yechimlar kerak.",
+    },
+    solution: {
+      en: 'We developed an AI-powered platform with a three-step workflow: an AI assistant gathers information about the company, exhibition, preferred style, and budget; then the AI generates multiple unique booth design options; finally users select a design and receive a quote within 24 hours. The platform dramatically reduces design time from weeks to minutes.',
+      ru: 'Мы разработали платформу на базе ИИ с трёхэтапным рабочим процессом: ИИ-ассистент собирает информацию о компании, выставке, предпочтительном стиле и бюджете; затем ИИ генерирует несколько уникальных вариантов дизайна стенда; наконец, пользователи выбирают дизайн и получают коммерческое предложение в течение 24 часов.',
+      uz: "Biz uch bosqichli ish jarayoni bilan AI-quvvatli platforma ishlab chiqdik: AI-yordamchi kompaniya, ko'rgazma, afzal ko'rilgan uslub va byudjet haqida ma'lumot to'playdi; keyin AI bir nechta noyob stend dizayni variantlarini yaratadi; nihoyat foydalanuvchilar dizaynni tanlaydi va 24 soat ichida narx taklifini oladi.",
+    },
+    results: {
+      en: 'The platform reduced exhibition booth design time from weeks to minutes and provides multiple design options at a fraction of the traditional cost, making professional booth design accessible to businesses of all sizes.',
+      ru: 'Платформа сократила время проектирования выставочных стендов с недель до минут и предоставляет несколько вариантов дизайна за долю традиционной стоимости, делая профессиональный дизайн стендов доступным для бизнеса любого размера.',
+      uz: "Platforma ko'rgazma stendlari dizayni vaqtini haftalardan daqiqalargacha qisqartirdi va an'anaviy narxning bir qismida bir nechta dizayn variantlarini taqdim etadi.",
+    },
+    techStack: ['Next.js', 'React', 'TypeScript', 'OpenAI', 'Node.js', 'Python', 'Tailwind CSS'],
+    images: [
+      '/projects/standai/screenshot-1.png',
+      '/projects/standai/screenshot-2.png',
+      '/projects/standai/screenshot-3.png',
+      '/projects/standai/screenshot-4.png',
+    ],
+    thumbnail: '/projects/standai/screenshot-1.png',
+    links: {
+      demo: 'https://expostandai-production.up.railway.app',
+    },
+    featured: true,
+    completedDate: '2025',
+    relatedSolutions: [],
   },
 ];
 
@@ -144,12 +150,3 @@ export function getFeaturedProjects(): Project[] {
 export function getAllProjectSlugs(): string[] {
   return projects.map((p) => p.slug);
 }
-
-export const projectCategories: { value: string; label: Record<'en' | 'ru' | 'uz', string> }[] = [
-  { value: 'all', label: { en: 'All', ru: 'Все', uz: 'Barchasi' } },
-  { value: 'mobile', label: { en: 'Mobile Apps', ru: 'Мобильные приложения', uz: 'Mobil ilovalar' } },
-  { value: 'website', label: { en: 'Websites', ru: 'Веб-сайты', uz: 'Veb-saytlar' } },
-  { value: 'crm', label: { en: 'CRM Systems', ru: 'CRM системы', uz: 'CRM tizimlar' } },
-  { value: 'ai', label: { en: 'AI Solutions', ru: 'ИИ решения', uz: 'AI yechimlar' } },
-  { value: 'ecommerce', label: { en: 'E-commerce', ru: 'Электронная коммерция', uz: 'Elektron tijorat' } },
-];

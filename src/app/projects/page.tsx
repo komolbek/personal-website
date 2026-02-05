@@ -1,16 +1,12 @@
 'use client';
 
-import { useState } from 'react';
 import { useLocale } from '@/hooks/useLocale';
-import { getProjectsByCategory } from '@/config/projects';
+import { projects } from '@/config/projects';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { ProjectFilter } from '@/components/forms/ProjectFilter';
 import { ProjectCard } from '@/components/cards/ProjectCard';
 
 export default function ProjectsPage() {
   const { locale, t } = useLocale();
-  const [activeCategory, setActiveCategory] = useState('all');
-  const filteredProjects = getProjectsByCategory(activeCategory);
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
@@ -26,16 +22,8 @@ export default function ProjectsPage() {
           subtitle={t.projects.subtitle}
         />
 
-        <div className="mt-8">
-          <ProjectFilter
-            active={activeCategory}
-            onChange={setActiveCategory}
-            locale={locale}
-          />
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {filteredProjects.map((project) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+          {projects.map((project) => (
             <ProjectCard
               key={project.slug}
               project={project}
@@ -43,14 +31,6 @@ export default function ProjectsPage() {
             />
           ))}
         </div>
-
-        {filteredProjects.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 dark:text-gray-400">
-              No projects found in this category.
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -2,24 +2,13 @@
 
 import { useState } from 'react';
 import { useLocale } from '@/hooks/useLocale';
-import { socialLinks, siteConfig } from '@/config/site';
+import { siteConfig } from '@/config/site';
 import { solutions } from '@/config/solutions';
 import {
-  GithubIcon,
-  LinkedInIcon,
-  InstagramIcon,
-  TelegramIcon,
-  MailIcon,
   PhoneIcon,
   MapPinIcon,
+  MailIcon,
 } from '@/components/ui/Icons';
-
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  github: GithubIcon,
-  linkedin: LinkedInIcon,
-  instagram: InstagramIcon,
-  telegram: TelegramIcon,
-};
 
 export default function ContactPage() {
   const { locale, t } = useLocale();
@@ -68,11 +57,18 @@ export default function ContactPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleChipSelect = (field: 'service' | 'budget', value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: prev[field] === value ? '' : value,
     }));
   };
 
@@ -109,20 +105,6 @@ export default function ContactPage() {
             <div className="p-6 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
               <h3 className="text-lg font-semibold mb-4">{t.contact.info.title}</h3>
               <div className="space-y-4">
-                {/* Email */}
-                <a
-                  href={`mailto:${siteConfig.email}`}
-                  className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                >
-                  <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
-                    <MailIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                  </div>
-                  <div>
-                    <div className="text-sm text-gray-500 dark:text-gray-500">{t.contact.info.email}</div>
-                    <span>{siteConfig.email}</span>
-                  </div>
-                </a>
-
                 {/* Phone */}
                 {siteConfig.phone && (
                   <a
@@ -151,28 +133,6 @@ export default function ContactPage() {
                     </div>
                   </div>
                 )}
-              </div>
-            </div>
-
-            {/* Social Links */}
-            <div className="p-6 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
-              <h3 className="text-lg font-semibold mb-4">{t.contact.social}</h3>
-              <div className="flex flex-wrap gap-3">
-                {socialLinks.map((link) => {
-                  const Icon = iconMap[link.icon];
-                  return Icon ? (
-                    <a
-                      key={link.platform}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500/10 to-pink-500/10 hover:from-indigo-500/20 hover:to-pink-500/20 flex items-center justify-center transition-all hover:scale-110"
-                      aria-label={link.platform}
-                    >
-                      <Icon className="w-5 h-5" />
-                    </a>
-                  ) : null;
-                })}
               </div>
             </div>
 
@@ -273,54 +233,49 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                {/* Service & Budget Row */}
-                <div className="grid sm:grid-cols-2 gap-6">
-                  {/* Service */}
-                  <div>
-                    <label
-                      htmlFor="service"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
-                      {t.contact.form.service}
-                    </label>
-                    <select
-                      id="service"
-                      name="service"
-                      value={formData.service}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                    >
-                      <option value="">{t.contact.form.selectService}</option>
-                      {solutions.map((solution) => (
-                        <option key={solution.slug} value={solution.slug}>
-                          {solution.title[locale]}
-                        </option>
-                      ))}
-                    </select>
+                {/* Service */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    {t.contact.form.service}
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {solutions.map((solution) => (
+                      <button
+                        key={solution.slug}
+                        type="button"
+                        onClick={() => handleChipSelect('service', solution.slug)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 ${
+                          formData.service === solution.slug
+                            ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white border-transparent shadow-md shadow-indigo-500/25'
+                            : 'bg-white/50 dark:bg-gray-900/50 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10'
+                        }`}
+                      >
+                        {solution.title[locale]}
+                      </button>
+                    ))}
                   </div>
+                </div>
 
-                  {/* Budget */}
-                  <div>
-                    <label
-                      htmlFor="budget"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
-                      {t.contact.form.budget}
-                    </label>
-                    <select
-                      id="budget"
-                      name="budget"
-                      value={formData.budget}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                    >
-                      <option value="">{t.contact.form.selectBudget}</option>
-                      {budgetRanges.map((range) => (
-                        <option key={range.value} value={range.value}>
-                          {range.label}
-                        </option>
-                      ))}
-                    </select>
+                {/* Budget */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    {t.contact.form.budget}
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {budgetRanges.map((range) => (
+                      <button
+                        key={range.value}
+                        type="button"
+                        onClick={() => handleChipSelect('budget', range.value)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 ${
+                          formData.budget === range.value
+                            ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white border-transparent shadow-md shadow-indigo-500/25'
+                            : 'bg-white/50 dark:bg-gray-900/50 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10'
+                        }`}
+                      >
+                        {range.label}
+                      </button>
+                    ))}
                   </div>
                 </div>
 

@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useLocale } from '@/hooks/useLocale';
-import { StatCounter } from '@/components/ui/StatsCounter';
 import {
   ZapIcon,
   ShieldIcon,
@@ -11,19 +10,6 @@ import {
   ArrowRightIcon,
 } from '@/components/ui/Icons';
 
-interface StatData {
-  key: string;
-  value: number;
-  suffix: string;
-  label_en: string;
-  label_ru: string;
-  label_uz: string;
-}
-
-interface AboutPageClientProps {
-  stats: StatData[];
-}
-
 const valueIcons = {
   innovation: ZapIcon,
   quality: ShieldIcon,
@@ -31,8 +17,8 @@ const valueIcons = {
   partnership: TargetIcon,
 };
 
-export function AboutPageClient({ stats }: AboutPageClientProps) {
-  const { locale, t } = useLocale();
+export function AboutPageClient() {
+  const { t } = useLocale();
 
   const values = [
     { key: 'innovation', icon: valueIcons.innovation },
@@ -40,17 +26,6 @@ export function AboutPageClient({ stats }: AboutPageClientProps) {
     { key: 'transparency', icon: valueIcons.transparency },
     { key: 'partnership', icon: valueIcons.partnership },
   ] as const;
-
-  const getStatLabel = (stat: StatData) => {
-    switch (locale) {
-      case 'ru':
-        return stat.label_ru;
-      case 'uz':
-        return stat.label_uz;
-      default:
-        return stat.label_en;
-    }
-  };
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
@@ -81,27 +56,6 @@ export function AboutPageClient({ stats }: AboutPageClientProps) {
               {t.about.mission.text}
             </p>
           </div>
-
-          {/* Stats - Dynamic from database */}
-          {stats.length > 0 && (
-            <div className={`grid gap-6 ${stats.length <= 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
-              {stats.map((stat) => (
-                <div
-                  key={stat.key}
-                  className="text-center p-6 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 card-hover"
-                >
-                  <StatCounter
-                    end={stat.value}
-                    suffix={stat.suffix}
-                    className="text-3xl font-bold gradient-text mb-1"
-                  />
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    {getStatLabel(stat)}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
 
           {/* Story Section */}
           <div>

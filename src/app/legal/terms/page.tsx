@@ -123,10 +123,10 @@ export default function TermsPage() {
               Contact Us
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              If you have any questions about these Terms of Service, please contact us at:{' '}
-              <a href={`mailto:${siteConfig.email}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">
-                {siteConfig.email}
-              </a>
+              If you have any questions about these Terms of Service, please{' '}
+              <a href="/contact" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                contact us
+              </a>.
             </p>
           </section>
         </div>

@@ -1,6 +1,6 @@
 export type Locale = 'en' | 'ru' | 'uz';
 
-export type ProjectCategory = 'mobile' | 'website' | 'crm' | 'ai' | 'ecommerce';
+export type ProjectCategory = 'mobile' | 'website' | 'crm' | 'ai' | 'ecommerce' | 'event' | 'saas';
 
 // Legacy App interface - kept for backward compatibility
 export interface App {
@@ -19,7 +19,7 @@ export interface App {
   color?: string;
 }
 
-// Solution/Service interface
+// Solution/Service interface (now used for in-house products)
 export interface Solution {
   slug: string;
   title: Record<Locale, string>;
@@ -31,6 +31,14 @@ export interface Solution {
   technologies: string[];
   relatedProjects: string[];
   order: number;
+  images?: string[];
+  links?: {
+    website?: string;
+    admin?: string;
+    booking?: string;
+    mobileApp?: string;
+  };
+  pricing?: Record<Locale, string>;
 }
 
 // Project/Portfolio interface
@@ -51,6 +59,7 @@ export interface Project {
     appStore?: string;
     playStore?: string;
     website?: string;
+    demo?: string;
   };
   featured: boolean;
   completedDate?: string;

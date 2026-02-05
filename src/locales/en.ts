@@ -1,7 +1,7 @@
 export const en = {
   nav: {
     home: 'Home',
-    solutions: 'Solutions',
+    solutions: 'Products',
     projects: 'Projects',
     partners: 'Partners',
     about: 'About',
@@ -12,13 +12,13 @@ export const en = {
       badge: 'IT Solutions & Software Development',
       title: 'We Build Digital Solutions That Drive Business Growth',
       subtitle: 'From business automation to AI integration, we deliver tailored software solutions for your unique challenges.',
-      cta: 'View Our Solutions',
+      cta: 'View Our Products',
       contact: 'Get a Free Consultation',
     },
     services: {
-      title: 'Our Solutions',
-      subtitle: 'Comprehensive IT services tailored to your needs',
-      viewAll: 'View All Solutions',
+      title: 'Our Products',
+      subtitle: 'In-house developed software solutions',
+      viewAll: 'View All Products',
     },
     projects: {
       title: 'Featured Projects',
@@ -64,9 +64,9 @@ export const en = {
     },
   },
   solutions: {
-    title: 'Our Solutions',
-    subtitle: 'Comprehensive IT services for modern businesses',
-    backToSolutions: 'Back to Solutions',
+    title: 'Our Products',
+    subtitle: 'In-house developed software products',
+    backToSolutions: 'Back to Products',
     features: 'Key Features',
     benefits: 'Benefits',
     technologies: 'Technologies We Use',
@@ -221,12 +221,12 @@ export const en = {
     rights: 'All rights reserved.',
     madeWith: 'Made with',
     company: 'Company',
-    services: 'Services',
+    services: 'Products',
     resources: 'Resources',
     legal: 'Legal',
     privacy: 'Privacy Policy',
     terms: 'Terms of Service',
-    description: 'Professional IT solutions including business automation, custom CRM, mobile apps, and AI integration.',
+    description: 'In-house developed software products: Yuridix, Ordo, TalimX and custom project development.',
   },
   language: {
     en: 'English',
@@ -251,7 +251,7 @@ export const en = {
     name: 'Necto Automations',
     role: 'IT Solutions & Software Development',
     description: 'We build digital solutions that transform businesses.',
-    cta: 'View Our Solutions',
+    cta: 'View Our Products',
     contact: 'Get in Touch',
   },
 };

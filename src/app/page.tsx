@@ -1,7 +1,7 @@
 import { Hero } from '@/components/sections/Hero';
 import { ServicesPreview } from '@/components/sections/ServicesPreview';
 import { WhyChooseUs } from '@/components/sections/WhyChooseUs';
-import { PartnersSection } from '@/components/sections/PartnersSection';
+import { ProjectsShowcase } from '@/components/sections/ProjectsShowcase';
 import { CTASection } from '@/components/sections/CTASection';
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
       <Hero />
       <ServicesPreview />
       <WhyChooseUs />
-      <PartnersSection />
+      <ProjectsShowcase />
       <CTASection />
     </>
   );

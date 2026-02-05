@@ -2,16 +2,9 @@
 
 import Link from 'next/link';
 import { useLocale } from '@/hooks/useLocale';
-import { siteConfig, socialLinks } from '@/config/site';
+import { siteConfig } from '@/config/site';
 import { solutions } from '@/config/solutions';
-import { GithubIcon, LinkedInIcon, InstagramIcon, TelegramIcon, HeartIcon } from '@/components/ui/Icons';
-
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  github: GithubIcon,
-  linkedin: LinkedInIcon,
-  instagram: InstagramIcon,
-  telegram: TelegramIcon,
-};
+import { HeartIcon } from '@/components/ui/Icons';
 
 export function Footer() {
   const { locale, t } = useLocale();
@@ -29,33 +22,15 @@ export function Footer() {
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 leading-relaxed">
               {t.footer.description}
             </p>
-            {/* Social Links */}
-            <div className="flex items-center gap-2 mt-4">
-              {socialLinks.map((link) => {
-                const Icon = iconMap[link.icon];
-                return Icon ? (
-                  <a
-                    key={link.platform}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-full bg-indigo-500/10 hover:bg-indigo-500/20 flex items-center justify-center transition-all hover:scale-110"
-                    aria-label={link.platform}
-                  >
-                    <Icon className="w-4 h-4" />
-                  </a>
-                ) : null;
-              })}
-            </div>
           </div>
 
-          {/* Solutions Links */}
+          {/* Products Links */}
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
               {t.footer.services}
             </h3>
             <ul className="space-y-2">
-              {solutions.slice(0, 4).map((solution) => (
+              {solutions.map((solution) => (
                 <li key={solution.slug}>
                   <Link
                     href={`/solutions/${solution.slug}`}
@@ -65,14 +40,6 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  href="/solutions"
-                  className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
-                >
-                  {t.common.viewAll} →
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -96,14 +63,6 @@ export function Footer() {
                   className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                 >
                   {t.nav.projects}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/partners"
-                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                >
-                  {t.nav.partners}
                 </Link>
               </li>
               <li>
