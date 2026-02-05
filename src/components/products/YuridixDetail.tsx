@@ -1,14 +1,33 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
+import { useState } from 'react';
 import { useLocale } from '@/hooks/useLocale';
 import { Solution } from '@/types';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { CheckCircleIcon, ArrowRightIcon, ExternalLinkIcon } from '@/components/ui/Icons';
 
+const defaultScreenshots = [
+  '/products/yuridix/screenshot-1.png',
+  '/products/yuridix/screenshot-2.png',
+  '/products/yuridix/screenshot-3.png',
+  '/products/yuridix/screenshot-4.png',
+  '/products/yuridix/screenshot-5.png',
+  '/products/yuridix/screenshot-6.png',
+  '/products/yuridix/screenshot-7.png',
+  '/products/yuridix/screenshot-8.png',
+  '/products/yuridix/screenshot-9.png',
+];
+
 export function YuridixDetail({ solution }: { solution: Solution }) {
   const { locale, t } = useLocale();
+  const [activeScreenshot, setActiveScreenshot] = useState(0);
+
+  const screenshots = solution.images && solution.images.length > 0
+    ? solution.images
+    : defaultScreenshots;
 
   const backText =
     (t.solutions as Record<string, unknown>).backToProducts as string | undefined ??
@@ -105,6 +124,57 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
             <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed text-center">
               {solution.fullDescription[locale]}
             </p>
+          </div>
+        </section>
+
+        {/* Platform Screenshots */}
+        <section className="mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-4">
+            {locale === 'ru' ? 'Скриншоты платформы' : locale === 'uz' ? 'Platforma skrinshoti' : 'Platform Screenshots'}
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 text-center mb-10 max-w-xl mx-auto">
+            {locale === 'ru'
+              ? 'Ознакомьтесь с интерфейсом и возможностями системы'
+              : locale === 'uz'
+                ? 'Tizim interfeysi va imkoniyatlari bilan tanishing'
+                : 'Explore the interface and capabilities of the system'}
+          </p>
+
+          {/* Active screenshot preview */}
+          <div className="mb-6 rounded-2xl overflow-hidden shadow-2xl border border-indigo-200/30 dark:border-indigo-700/30 max-w-4xl mx-auto">
+            <Image
+              src={screenshots[activeScreenshot] || screenshots[0]}
+              alt={`${solution.title[locale]} screenshot ${activeScreenshot + 1}`}
+              width={1400}
+              height={800}
+              quality={95}
+              sizes="(max-width: 1024px) 100vw, 896px"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+
+          {/* Thumbnail row */}
+          <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-indigo-300 dark:scrollbar-thumb-indigo-600 max-w-4xl mx-auto">
+            {screenshots.map((src, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveScreenshot(index)}
+                className={`flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-105 ${
+                  activeScreenshot === index
+                    ? 'border-indigo-500 shadow-lg shadow-indigo-500/25 ring-2 ring-indigo-500/30'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600'
+                }`}
+              >
+                <Image
+                  src={src}
+                  alt={`Screenshot ${index + 1}`}
+                  width={300}
+                  height={180}
+                  quality={80}
+                  className="w-44 h-26 object-cover"
+                />
+              </button>
+            ))}
           </div>
         </section>
 

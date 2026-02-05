@@ -74,6 +74,17 @@ export const solutions: Solution[] = [
     technologies: ['Next.js', 'React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Prisma'],
     relatedProjects: [],
     order: 1,
+    images: [
+      '/products/yuridix/screenshot-1.png',
+      '/products/yuridix/screenshot-2.png',
+      '/products/yuridix/screenshot-3.png',
+      '/products/yuridix/screenshot-4.png',
+      '/products/yuridix/screenshot-5.png',
+      '/products/yuridix/screenshot-6.png',
+      '/products/yuridix/screenshot-7.png',
+      '/products/yuridix/screenshot-8.png',
+      '/products/yuridix/screenshot-9.png',
+    ],
     links: {
       website: 'https://yuridix.uz',
       admin: 'https://admin.yuridix.uz/login',
