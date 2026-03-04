@@ -4,7 +4,7 @@ export const siteConfig = {
   name: 'Necto Automations',
   title: 'Necto Automations - IT Solutions & Software Development',
   description: 'Professional IT solutions including business automation, custom CRM, mobile apps, e-commerce, and AI integration. Transform your business with modern technology.',
-  url: 'https://nectoautomations.com',
+  url: 'https://necto.uz',
   phone: '+998 77 070 72 70',
   address: {
     en: 'Tashkent, Uzbekistan',

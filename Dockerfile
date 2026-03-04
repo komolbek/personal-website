@@ -41,7 +41,7 @@ ENV NODE_ENV=production
 RUN apk add --no-cache openssl
 
 # Install prisma CLI for db push at startup
-RUN npm install -g prisma@5.22.0
+RUN npm install -g prisma@5
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs

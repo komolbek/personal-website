@@ -127,7 +127,7 @@ export default function MemoMindTermsPage() {
                 Intellectual Property
               </h2>
               <p className="text-gray-600 dark:text-gray-400">
-                The App, including its design, features, and content, is owned by Komolbek Ibragimov and is protected
+                The App, including its design, features, and content, is owned by Necto Automations and is protected
                 by copyright and other intellectual property laws. You are granted a limited, non-exclusive,
                 non-transferable license to use the App for personal, non-commercial purposes.
               </p>
