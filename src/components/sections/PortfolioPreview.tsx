@@ -3,16 +3,22 @@
 import { useLocale } from '@/hooks/useLocale';
 import { getSortedSolutions } from '@/config/solutions';
 import { getFeaturedProjects } from '@/config/projects';
+import { Solution, Project } from '@/types';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ServiceCard } from '@/components/cards/ServiceCard';
 import { ProjectCard } from '@/components/cards/ProjectCard';
 import { Button } from '@/components/ui/Button';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/ui/AnimatedSection';
 
-export function PortfolioPreview() {
+interface PortfolioPreviewProps {
+  solutions?: Solution[];
+  projects?: Project[];
+}
+
+export function PortfolioPreview({ solutions: dbSolutions, projects: dbProjects }: PortfolioPreviewProps) {
   const { locale, t } = useLocale();
-  const solutions = getSortedSolutions();
-  const featuredProjects = getFeaturedProjects().slice(0, 3);
+  const solutions = dbSolutions && dbSolutions.length > 0 ? dbSolutions : getSortedSolutions();
+  const featuredProjects = dbProjects && dbProjects.length > 0 ? dbProjects : getFeaturedProjects().slice(0, 3);
   const portfolio = t.home.portfolio;
 
   return (

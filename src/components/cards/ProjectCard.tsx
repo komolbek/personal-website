@@ -75,9 +75,40 @@ const slugIconComponents: Record<string, React.FC<{ className?: string }>> = {
   standai: PaletteIcon,
 };
 
+// Gradient pool for dynamic projects not in the hardcoded map
+const dynamicGradients = [
+  'from-indigo-500 via-purple-500 to-pink-500',
+  'from-rose-500 via-pink-500 to-fuchsia-500',
+  'from-blue-500 via-sky-500 to-cyan-500',
+  'from-emerald-500 via-green-500 to-teal-500',
+  'from-amber-500 via-orange-500 to-red-500',
+];
+
+function getGradientForSlug(slug: string): string {
+  if (slugGradients[slug]) return slugGradients[slug];
+  // Hash the slug to pick a consistent gradient
+  let hash = 0;
+  for (let i = 0; i < slug.length; i++) {
+    hash = ((hash << 5) - hash) + slug.charCodeAt(i);
+    hash |= 0;
+  }
+  return dynamicGradients[Math.abs(hash) % dynamicGradients.length];
+}
+
+// Category icon mapping for dynamic projects
+const categoryIconComponents: Record<string, React.FC<{ className?: string }>> = {
+  ai: BrainIcon,
+  event: CalendarEventIcon,
+  ecommerce: CalendarEventIcon,
+  mobile: AIIcon,
+  website: PaletteIcon,
+  crm: AIIcon,
+  saas: PaletteIcon,
+};
+
 export function ProjectCard({ project, locale }: ProjectCardProps) {
-  const gradient = slugGradients[project.slug] || 'from-indigo-500 via-purple-500 to-pink-500';
-  const IconComponent = slugIconComponents[project.slug] || AIIcon;
+  const gradient = getGradientForSlug(project.slug);
+  const IconComponent = slugIconComponents[project.slug] || categoryIconComponents[project.category] || AIIcon;
 
   return (
     <Link href={`/projects/${project.slug}`}>
@@ -94,7 +125,7 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
             <IconComponent className="w-10 h-10 mb-2" />
             <span className="text-lg font-bold tracking-wide opacity-90">
-              {project.slug === 'memomind' ? 'MemoMind AI' : project.slug === '4event' ? '4Event' : 'StandAI'}
+              {project.title[locale]}
             </span>
           </div>
           {project.featured && (

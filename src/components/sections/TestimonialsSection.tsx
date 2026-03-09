@@ -10,9 +10,11 @@ interface Testimonial {
   author: string;
   role: { en: string; ru: string; uz: string };
   company: string;
+  avatar?: string;
+  rating?: number;
 }
 
-const testimonials: Testimonial[] = [
+const defaultTestimonials: Testimonial[] = [
   {
     quote: {
       en: 'Necto Automations transformed our legal practice with Yuridix. Case management that used to take hours now takes minutes. Their team truly understands the needs of Uzbek businesses.',
@@ -57,8 +59,14 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-export function TestimonialsSection() {
+interface TestimonialsSectionProps {
+  dbTestimonials?: Testimonial[];
+}
+
+export function TestimonialsSection({ dbTestimonials }: TestimonialsSectionProps) {
   const { locale, t } = useLocale();
+
+  const testimonials = dbTestimonials && dbTestimonials.length > 0 ? dbTestimonials : defaultTestimonials;
 
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-transparent via-indigo-500/5 to-transparent">

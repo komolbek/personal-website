@@ -4,6 +4,7 @@ import { Solution } from '@/types';
 import { YuridixDetail } from '@/components/products/YuridixDetail';
 import { OrdoDetail } from '@/components/products/OrdoDetail';
 import { TalimXDetail } from '@/components/products/TalimXDetail';
+import { GenericProductDetail } from '@/components/products/GenericProductDetail';
 
 interface SolutionDetailProps {
   solution: Solution;
@@ -18,6 +19,6 @@ export function SolutionDetail({ solution }: SolutionDetailProps) {
     case 'talimx':
       return <TalimXDetail solution={solution} />;
     default:
-      return <YuridixDetail solution={solution} />;
+      return <GenericProductDetail solution={solution} />;
   }
 }

@@ -2,12 +2,23 @@
 
 import { useLocale } from '@/hooks/useLocale';
 import { companyStats } from '@/config/site';
+import { Locale } from '@/types';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { UsersIcon, CodeIcon, ZapIcon, ShieldIcon } from '@/components/ui/Icons';
 import { FadeIn, StaggerContainer, StaggerItem, CountUp } from '@/components/ui/AnimatedSection';
 
-export function WhyChooseUs() {
-  const { t } = useLocale();
+interface TransformedStat {
+  value: number;
+  suffix: string;
+  label: Record<Locale, string>;
+}
+
+interface WhyChooseUsProps {
+  dbStats?: TransformedStat[];
+}
+
+export function WhyChooseUs({ dbStats }: WhyChooseUsProps) {
+  const { locale, t } = useLocale();
 
   const features = [
     { key: 'expertise', icon: UsersIcon },
@@ -16,7 +27,15 @@ export function WhyChooseUs() {
     { key: 'support', icon: ShieldIcon },
   ] as const;
 
-  const stats = companyStats;
+  // Use DB stats if available, otherwise fall back to hardcoded
+  const statsItems = dbStats && dbStats.length > 0
+    ? dbStats.map(s => ({ value: s.value, suffix: s.suffix, label: s.label[locale] }))
+    : [
+        { value: companyStats.projects, suffix: '+', label: t.home.whyUs.stats.projects },
+        { value: companyStats.clients, suffix: '+', label: t.home.whyUs.stats.clients },
+        { value: companyStats.years, suffix: '+', label: t.home.whyUs.stats.years },
+        { value: companyStats.satisfaction, suffix: '%', label: t.home.whyUs.stats.satisfaction },
+      ];
 
   return (
     <section className="py-20 px-4">
@@ -31,12 +50,7 @@ export function WhyChooseUs() {
         {/* Stats Row */}
         <FadeIn delay={0.2}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 mb-12">
-            {[
-              { value: stats.projects, suffix: '+', label: t.home.whyUs.stats.projects },
-              { value: stats.clients, suffix: '+', label: t.home.whyUs.stats.clients },
-              { value: stats.years, suffix: '+', label: t.home.whyUs.stats.years },
-              { value: stats.satisfaction, suffix: '%', label: t.home.whyUs.stats.satisfaction },
-            ].map((stat, i) => (
+            {statsItems.map((stat, i) => (
               <div key={i} className="text-center p-4">
                 <div className="text-3xl md:text-4xl font-bold gradient-text">
                   <CountUp end={stat.value} suffix={stat.suffix} />

@@ -3,14 +3,7 @@
 import { useLocale } from '@/hooks/useLocale';
 import { FadeIn } from '@/components/ui/AnimatedSection';
 
-// Placeholder client names - replace with actual logos when available
-const clients = [
-  'Yuridix',
-  'Ordo',
-  'TalimX',
-  'MemoMind',
-  '4Event',
-  'StandAI',
+const defaultClients = [
   'Yuridix',
   'Ordo',
   'TalimX',
@@ -19,8 +12,15 @@ const clients = [
   'StandAI',
 ];
 
-export function ClientLogos() {
+interface ClientLogosProps {
+  partnerNames?: string[];
+}
+
+export function ClientLogos({ partnerNames }: ClientLogosProps) {
   const { t } = useLocale();
+
+  const names = partnerNames && partnerNames.length > 0 ? partnerNames : defaultClients;
+  const clients = [...names, ...names];
 
   return (
     <section className="py-12 overflow-hidden">
@@ -38,8 +38,7 @@ export function ClientLogos() {
 
         <div className="overflow-hidden">
           <div className="marquee-track">
-            {/* Double the items for seamless loop */}
-            {[...clients, ...clients].map((client, i) => (
+            {clients.map((client, i) => (
               <div
                 key={i}
                 className="flex-shrink-0 mx-8 flex items-center justify-center"

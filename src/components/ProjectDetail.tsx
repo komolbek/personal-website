@@ -4,6 +4,7 @@ import { Project } from '@/types';
 import { MemoMindDetail } from '@/components/projects/MemoMindDetail';
 import { FourEventDetail } from '@/components/projects/FourEventDetail';
 import { StandAIDetail } from '@/components/projects/StandAIDetail';
+import { GenericProjectDetail } from '@/components/projects/GenericProjectDetail';
 
 interface ProjectDetailProps {
   project: Project;
@@ -18,6 +19,6 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
     case 'standai':
       return <StandAIDetail project={project} />;
     default:
-      return <MemoMindDetail project={project} />;
+      return <GenericProjectDetail project={project} />;
   }
 }
