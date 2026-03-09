@@ -162,6 +162,7 @@ model ContactSubmission {
   service   String?
   budget    String?
   message   String   @db.Text
+  source    String   @default("web") // "web" or "telegram"
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 }

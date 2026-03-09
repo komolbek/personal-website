@@ -1,4 +1,7 @@
 import { Bot, InlineKeyboard, Context } from 'grammy';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 // Session state for each user
 interface UserSession {
@@ -152,7 +155,7 @@ export function createBot(token: string): Bot {
       await ctx.reply(thankYouMsg, { reply_markup: keyboard });
 
       // Notify admin
-      await notifyAdmin(bot, session);
+      await saveAndNotify(bot, session);
     }
   });
 
@@ -270,7 +273,7 @@ export function createBot(token: string): Bot {
           });
 
           // Notify admin
-          await notifyAdmin(bot, session);
+          await saveAndNotify(bot, session);
           break;
         }
 
@@ -292,7 +295,24 @@ export function createBot(token: string): Bot {
   return bot;
 }
 
-async function notifyAdmin(bot: Bot, session: UserSession) {
+async function saveAndNotify(bot: Bot, session: UserSession) {
+  // Save to database
+  try {
+    await prisma.contactSubmission.create({
+      data: {
+        name: session.name || '',
+        phone: session.phone || '',
+        service: session.service,
+        budget: session.budget,
+        message: session.description || '',
+        source: 'telegram',
+      },
+    });
+  } catch (error) {
+    console.error('Failed to save inquiry to database:', error);
+  }
+
+  // Notify admin via Telegram
   const adminChatId = process.env.TELEGRAM_ADMIN_CHAT_ID;
   if (!adminChatId) return;
 
