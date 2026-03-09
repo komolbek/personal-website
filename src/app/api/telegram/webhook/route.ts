@@ -3,18 +3,23 @@ import { getBot } from '@/lib/telegram-bot';
 
 export async function POST(req: NextRequest) {
   try {
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    if (!token) {
+      console.error('TELEGRAM_BOT_TOKEN is not set');
+      return NextResponse.json({ ok: false, error: 'Bot token not configured' });
+    }
+
     const body = await req.json();
     const bot = getBot();
     await bot.handleUpdate(body);
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error('Telegram webhook error:', error);
-    return NextResponse.json({ ok: true }); // Always return 200 to Telegram
+    return NextResponse.json({ ok: false, error: String(error) });
   }
 }
 
 export async function GET() {
-  // Endpoint to set up the webhook
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const webhookUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
