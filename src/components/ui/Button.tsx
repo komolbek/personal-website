@@ -17,11 +17,11 @@ const variantClasses = {
   primary:
     'bg-gradient-to-r from-indigo-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white shadow-lg shadow-indigo-500/25',
   secondary:
-    'bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white',
+    'bg-gray-100 hover:bg-gray-200 text-gray-900',
   outline:
-    'border-2 border-indigo-600 dark:border-indigo-400 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20',
+    'border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50',
   ghost:
-    'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800',
+    'text-gray-700 hover:bg-gray-100',
 };
 
 const sizeClasses = {

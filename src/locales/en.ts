@@ -7,6 +7,7 @@ export const en = {
     portfolio: 'Portfolio',
     partners: 'Partners',
     about: 'About',
+    blog: 'Blog',
     contact: 'Contact',
   },
   home: {
@@ -23,34 +24,6 @@ export const en = {
       productsHeading: 'In-house Software Products',
       projectsHeading: 'Client Projects',
       viewAll: 'View Full Portfolio',
-    },
-    whyUs: {
-      title: 'Why Choose Us',
-      subtitle: 'What sets us apart from the competition',
-      stats: {
-        projects: 'Projects Completed',
-        clients: 'Happy Clients',
-        years: 'Years Experience',
-        satisfaction: 'Client Satisfaction',
-      },
-      features: {
-        expertise: {
-          title: 'Local Expertise',
-          desc: 'Deep understanding of the Uzbek market and business processes',
-        },
-        technology: {
-          title: 'Modern Stack',
-          desc: 'React, Next.js, Node.js, AI/ML — we use what works best for your project',
-        },
-        agile: {
-          title: 'End-to-End Delivery',
-          desc: 'From concept to deployment and ongoing support — one team, full ownership',
-        },
-        support: {
-          title: 'Product Mindset',
-          desc: 'We build products, not just projects. Creators of Yuridix, Ordo & TalimX',
-        },
-      },
     },
     partners: {
       title: 'Trusted By',
@@ -156,57 +129,6 @@ export const en = {
     becomePartnerDesc: 'Join our network of successful businesses',
     contactUs: 'Contact Us',
   },
-  about: {
-    title: 'About Us',
-    subtitle: 'Your trusted technology partner in Uzbekistan',
-    mission: {
-      title: 'Our Mission',
-      text: 'To help Uzbek businesses compete in the digital age by building reliable, custom software — from legal management systems to education platforms and everything in between.',
-    },
-    story: {
-      title: 'Our Story',
-      text: 'Necto Automations was founded in Tashkent with a clear goal: build software that actually solves real business problems. We started with Yuridix — a legal practice management system born from seeing law firms struggle with paper-based workflows. That product mindset drives everything we do. Today we maintain three in-house products (Yuridix, Ordo, TalimX) and deliver custom projects for businesses across Uzbekistan.',
-    },
-    approach: {
-      title: 'Our Approach',
-      items: [
-        { title: 'Understand', desc: 'We start by deeply understanding your business, not just your requirements' },
-        { title: 'Prototype', desc: 'Rapid prototyping to validate ideas before full development' },
-        { title: 'Build', desc: 'Clean, maintainable code with modern technologies' },
-        { title: 'Support', desc: 'Long-term partnership with dedicated post-launch support' },
-      ],
-    },
-    team: {
-      title: 'Our Team',
-      subtitle: 'A team of developers, designers, and consultants passionate about building great software',
-    },
-    values: {
-      title: 'What We Stand For',
-      innovation: {
-        title: 'Local Expertise',
-        desc: 'We understand the Uzbek market, its regulations, and business culture',
-      },
-      quality: {
-        title: 'Product Mindset',
-        desc: 'We build products we use ourselves — that\'s our quality guarantee',
-      },
-      transparency: {
-        title: 'Full Transparency',
-        desc: 'Clear pricing, honest timelines, and open communication throughout',
-      },
-      partnership: {
-        title: 'Long-term Partnership',
-        desc: 'We don\'t disappear after launch — we grow with our clients',
-      },
-    },
-    stats: {
-      years: 'Years in Business',
-      projects: 'Projects Completed',
-      clients: 'Happy Clients',
-      technologies: 'Technologies Mastered',
-    },
-    cta: 'Ready to work together?',
-  },
   contact: {
     title: 'Contact Us',
     subtitle: "Let's discuss your project and see how we can help",
@@ -248,9 +170,20 @@ export const en = {
   blog: {
     title: 'Insights & Resources',
     subtitle: 'Articles about business automation, technology trends, and digital transformation in Uzbekistan',
-    comingSoon: 'Coming Soon',
-    comingSoonDesc: 'We\'re preparing useful articles about business automation and technology. Follow us on Telegram to get notified when we publish.',
+    readMore: 'Read More',
+    noPostsYet: 'No posts yet',
+    noPostsYetDesc: 'We\'re preparing useful articles about business automation and technology. Follow us on Telegram to get notified.',
     followTelegram: 'Follow on Telegram',
+    publishedOn: 'Published on',
+    backToBlog: 'Back to Blog',
+    byAuthor: 'By',
+    allPosts: 'All Posts',
+    categories: {
+      news: 'News',
+      tutorial: 'Tutorial',
+      'case-study': 'Case Study',
+      update: 'Update',
+    },
   },
   legal: {
     privacy: {
@@ -276,7 +209,8 @@ export const en = {
   },
   footer: {
     rights: 'All rights reserved.',
-    madeWith: 'Made with',
+    createdBy: 'Created by Necto Automations',
+    aboutBlurb: 'We build custom software that solves real business problems — from legal management systems to education platforms. Creators of Yuridix, Ordo & TalimX.',
     company: 'Company',
     services: 'Products',
     resources: 'Resources',

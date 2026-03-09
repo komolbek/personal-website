@@ -61,8 +61,8 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
-    locale: 'en_US',
-    alternateLocale: ['ru_RU', 'uz_UZ'],
+    locale: 'ru_RU',
+    alternateLocale: ['en_US', 'uz_UZ'],
     type: 'website',
   },
   twitter: {
@@ -93,9 +93,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ru" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
       >
         <JsonLd />
         <LocaleProvider>

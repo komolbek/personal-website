@@ -38,16 +38,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Also seed initial stats
-    await prisma.companyStat.createMany({
-      data: [
-        { key: 'years', value: 5, label_en: 'Years in Business', label_ru: 'Лет в бизнесе', label_uz: 'Yil biznesda', suffix: '+', order: 1 },
-        { key: 'projects', value: 50, label_en: 'Projects Completed', label_ru: 'Выполненных проектов', label_uz: 'Bajarilgan loyihalar', suffix: '+', order: 2 },
-        { key: 'clients', value: 30, label_en: 'Happy Clients', label_ru: 'Довольных клиентов', label_uz: 'Mamnun mijozlar', suffix: '+', order: 3 },
-      ],
-      skipDuplicates: true,
-    });
-
     return NextResponse.json({
       success: true,
       message: 'Admin user created successfully',

@@ -41,7 +41,7 @@ export function PartnersContent({ partners, partnersWithTestimonials }: Partners
         {/* Testimonials Section */}
         {partnersWithTestimonials.length > 0 && (
           <div className="mt-20">
-            <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
               <span className="gradient-text">{t.partners.testimonials}</span>
             </h2>
             <div className="grid md:grid-cols-2 gap-6">

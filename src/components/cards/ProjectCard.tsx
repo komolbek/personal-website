@@ -112,7 +112,7 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
 
   return (
     <Link href={`/projects/${project.slug}`}>
-      <div className="group h-full bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-indigo-500/10">
+      <div className="group h-full bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-200/50 overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-indigo-500/10">
         {/* Visual header */}
         <div className={`relative h-40 bg-gradient-to-br ${gradient} overflow-hidden`}>
           {/* Decorative pattern */}
@@ -148,11 +148,11 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
             )}
           </div>
 
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
             {project.title[locale]}
           </h3>
 
-          <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+          <p className="text-gray-600 mb-4 line-clamp-2">
             {project.description[locale]}
           </p>
 
@@ -160,7 +160,7 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
             {project.techStack.slice(0, 4).map((tech) => (
               <span
                 key={tech}
-                className="text-xs text-gray-500 dark:text-gray-500"
+                className="text-xs text-gray-500"
               >
                 {tech}
                 {project.techStack.indexOf(tech) < Math.min(3, project.techStack.length - 1) && ' · '}
@@ -168,7 +168,7 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
             ))}
           </div>
 
-          <div className="flex items-center text-indigo-600 dark:text-indigo-400 font-medium">
+          <div className="flex items-center text-indigo-600 font-medium">
             <span>View Case Study</span>
             <ArrowRightIcon className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
           </div>

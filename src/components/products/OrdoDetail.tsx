@@ -168,7 +168,7 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
         {/* Back link */}
         <Link
           href="/portfolio"
-          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 mb-8 transition-colors group"
+          className="inline-flex items-center text-sm text-gray-600 hover:text-emerald-600 mb-8 transition-colors group"
         >
           <span className="mr-2 transition-transform group-hover:-translate-x-1">&larr;</span>
           {t.solutions.backToSolutions}
@@ -180,20 +180,20 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
         <section className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-20">
           {/* Left: Title + Description */}
           <div className="order-2 lg:order-1">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 dark:bg-emerald-900/30 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 mb-6">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
+              <span className="text-sm font-medium text-emerald-700">
                 Online Booking Platform
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               <span className="bg-gradient-to-r from-emerald-600 via-emerald-500 to-indigo-600 bg-clip-text text-transparent">
                 {solution.title[locale]}
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
+            <p className="text-lg md:text-xl text-gray-600 leading-relaxed mb-8">
               {solution.fullDescription[locale]}
             </p>
 
@@ -212,7 +212,7 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
                 href="https://booking.ordo.uz/hijomauzb"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-emerald-600 dark:border-emerald-400 text-emerald-600 dark:text-emerald-400 font-semibold rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-emerald-600 text-emerald-600 font-semibold rounded-full hover:bg-emerald-50 transition-all duration-300"
               >
                 Booking Demo
                 <ExternalLinkIcon className="w-4 h-4" />
@@ -221,7 +221,7 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
                 href="https://admin.ordo.uz"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-emerald-600 dark:border-emerald-400 text-emerald-600 dark:text-emerald-400 font-semibold rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-emerald-600 text-emerald-600 font-semibold rounded-full hover:bg-emerald-50 transition-all duration-300"
               >
                 Admin Panel
                 <ExternalLinkIcon className="w-4 h-4" />
@@ -231,15 +231,15 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
 
           {/* Right: Hero Screenshot */}
           <div className="order-1 lg:order-2 relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-emerald-500/20 border border-gray-200/50 dark:border-gray-700/50">
-              <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2.5 flex items-center gap-2 border-b border-gray-200 dark:border-gray-700">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-emerald-500/20 border border-gray-200/50">
+              <div className="bg-gray-100 px-4 py-2.5 flex items-center gap-2 border-b border-gray-200">
                 <div className="flex gap-1.5">
                   <span className="w-3 h-3 rounded-full bg-red-400" />
                   <span className="w-3 h-3 rounded-full bg-yellow-400" />
                   <span className="w-3 h-3 rounded-full bg-green-400" />
                 </div>
                 <div className="flex-1 text-center">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-700 rounded px-3 py-0.5">
+                  <span className="text-xs text-gray-500 bg-gray-200 rounded px-3 py-0.5">
                     booking.ordo.uz
                   </span>
                 </div>
@@ -266,16 +266,16 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
         {/* ============================================ */}
         <section className="mb-20">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">
               {locale === 'en' ? 'Platform Screenshots' : locale === 'ru' ? 'Скриншоты платформы' : 'Platforma skrinshoti'}
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600">
               {locale === 'en' ? 'Explore the interface and user experience' : locale === 'ru' ? 'Ознакомьтесь с интерфейсом и пользовательским опытом' : 'Interfeys va foydalanuvchi tajribasini ko\'ring'}
             </p>
           </div>
 
           {/* Active screenshot preview */}
-          <div className="mb-6 rounded-2xl overflow-hidden shadow-xl border border-gray-200/50 dark:border-gray-700/50 max-w-4xl mx-auto">
+          <div className="mb-6 rounded-2xl overflow-hidden shadow-xl border border-gray-200/50 max-w-4xl mx-auto">
             <Image
               src={screenshots[activeScreenshot] || screenshots[0]}
               alt={`${solution.title[locale]} screenshot ${activeScreenshot + 1}`}
@@ -288,7 +288,7 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
           </div>
 
           {/* Scrollable thumbnail row */}
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300">
             {screenshots.map((src, index) => (
               <button
                 key={index}
@@ -296,7 +296,7 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
                 className={`flex-shrink-0 rounded-xl overflow-hidden shadow-md border-2 transition-all duration-300 hover:scale-105 ${
                   activeScreenshot === index
                     ? 'border-emerald-500 shadow-emerald-500/25 ring-2 ring-emerald-500/30'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-emerald-300 dark:hover:border-emerald-600'
+                    : 'border-gray-200 hover:border-emerald-300'
                 }`}
               >
                 <Image
@@ -317,10 +317,10 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
         {/* ============================================ */}
         <section className="mb-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
               {locale === 'en' ? 'Booking Flow' : locale === 'ru' ? 'Процесс бронирования' : 'Bron qilish jarayoni'}
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
+            <p className="text-gray-600 max-w-xl mx-auto">
               {locale === 'en'
                 ? 'A seamless 5-step process from service selection to confirmed booking'
                 : locale === 'ru'
@@ -343,11 +343,11 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
 
                   {/* Step content */}
                   <div className="flex-1 pb-8 pt-2">
-                    <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl p-5 border border-gray-200/50 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-all duration-300 group-hover:border-emerald-300 dark:group-hover:border-emerald-700">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1.5">
+                    <div className="bg-white/70 backdrop-blur-sm rounded-xl p-5 border border-gray-200/50 shadow-sm hover:shadow-md transition-all duration-300 group-hover:border-emerald-300">
+                      <h3 className="text-lg font-bold text-gray-900 mb-1.5">
                         {step.title[locale]}
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                      <p className="text-gray-600 text-sm leading-relaxed">
                         {step.description[locale]}
                       </p>
                     </div>
@@ -370,7 +370,7 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
         {/* ============================================ */}
         <section className="mb-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
               {t.solutions.features}
             </h2>
           </div>
@@ -385,17 +385,17 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
                   className={`flex items-center gap-6 ${isEven ? 'flex-row' : 'flex-row-reverse'}`}
                 >
                   {/* Icon side */}
-                  <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-indigo-500/20 dark:from-emerald-500/30 dark:to-indigo-500/30 flex items-center justify-center border border-emerald-200/50 dark:border-emerald-700/50">
-                    <CheckCircleIcon className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
+                  <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-indigo-500/20 flex items-center justify-center border border-emerald-200/50">
+                    <CheckCircleIcon className="w-7 h-7 text-emerald-600" />
                   </div>
 
                   {/* Text side */}
                   <div
-                    className={`flex-1 p-5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-shadow duration-300 ${
+                    className={`flex-1 p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-sm hover:shadow-md transition-shadow duration-300 ${
                       isEven ? 'text-left' : 'text-right'
                     }`}
                   >
-                    <span className="text-gray-800 dark:text-gray-200 font-medium">
+                    <span className="text-gray-800 font-medium">
                       {feature}
                     </span>
                   </div>
@@ -410,21 +410,21 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
         {/* ============================================ */}
         <section className="mb-20">
           <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
               {t.solutions.benefits}
             </h2>
           </div>
 
-          <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 -mx-4 px-4">
+          <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 -mx-4 px-4">
             {solution.benefits[locale].map((benefit, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 w-72 p-6 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
+                className="flex-shrink-0 w-72 p-6 bg-white/70 backdrop-blur-sm rounded-2xl border border-gray-200/50 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
               >
                 <div className="mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {(() => { const BenefitIcon = benefitIcons[index % benefitIcons.length]; return <BenefitIcon className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />; })()}
+                  {(() => { const BenefitIcon = benefitIcons[index % benefitIcons.length]; return <BenefitIcon className="w-8 h-8 text-emerald-600" />; })()}
                 </div>
-                <p className="text-gray-800 dark:text-gray-200 font-medium leading-relaxed">
+                <p className="text-gray-800 font-medium leading-relaxed">
                   {benefit}
                 </p>
               </div>
@@ -437,7 +437,7 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
         {/* ============================================ */}
         <section className="mb-20">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">
               {t.solutions.technologies}
             </h2>
           </div>
@@ -460,13 +460,13 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
         {/* CTA BUTTONS: Try Demo + Admin Panel */}
         {/* ============================================ */}
         <section className="mb-20">
-          <div className="bg-gradient-to-br from-emerald-50 to-indigo-50 dark:from-emerald-900/20 dark:to-indigo-900/20 rounded-2xl p-8 md:p-12 border border-emerald-200/50 dark:border-emerald-700/30">
+          <div className="bg-gradient-to-br from-emerald-50 to-indigo-50 rounded-2xl p-8 md:p-12 border border-emerald-200/50">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
                   {locale === 'en' ? 'Experience Ordo Today' : locale === 'ru' ? 'Попробуйте Ordo сегодня' : 'Ordo\'ni bugun sinab ko\'ring'}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed">
                   {locale === 'en'
                     ? 'See the booking platform in action with our live demo, or explore the admin panel to manage services and appointments.'
                     : locale === 'ru'
@@ -489,7 +489,7 @@ export function OrdoDetail({ solution }: { solution: Solution }) {
                   href="https://admin.ordo.uz"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 border-2 border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold rounded-full hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-indigo-500 text-indigo-600 font-semibold rounded-full hover:bg-indigo-50 transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   Admin Panel
                   <ExternalLinkIcon className="w-5 h-5" />

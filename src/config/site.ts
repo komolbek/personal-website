@@ -1,4 +1,4 @@
-import { App, SocialLink, CompanyStats } from '@/types';
+import { App, SocialLink } from '@/types';
 
 export const siteConfig = {
   name: 'Necto Automations',
@@ -13,20 +13,13 @@ export const siteConfig = {
     ru: 'Ташкент, Узбекистан',
     uz: "Toshkent, O'zbekiston",
   },
-  defaultLocale: 'en' as const,
+  defaultLocale: 'ru' as const,
   locales: ['en', 'ru', 'uz'] as const,
-};
-
-export const companyStats: CompanyStats = {
-  projects: 50,
-  clients: 30,
-  years: 5,
-  satisfaction: 98,
 };
 
 export const socialLinks: SocialLink[] = [
   { platform: 'telegram', url: 'https://t.me/necto_customers_bot' },
-  { platform: 'instagram', url: 'https://instagram.com/necto.uz' },
+  { platform: 'instagram', url: 'https://www.instagram.com/necto__uz/' },
 ];
 
 // Apps/Projects are now managed through the admin panel as Client Projects

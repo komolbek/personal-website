@@ -35,7 +35,7 @@ export function PortfolioContent({ solutions, projects }: PortfolioContentProps)
           <div className="flex items-center gap-3 mb-8">
             <div className="w-1.5 h-10 rounded-full bg-gradient-to-b from-indigo-500 to-purple-500" />
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 text-xs font-semibold uppercase tracking-wider mb-1">
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 2L2 7l10 5 10-5-10-5z" />
                   <path d="M2 17l10 5 10-5" />
@@ -43,7 +43,7 @@ export function PortfolioContent({ solutions, projects }: PortfolioContentProps)
                 </svg>
                 In-house
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                 {portfolio.productsHeading}
               </h2>
             </div>
@@ -62,7 +62,7 @@ export function PortfolioContent({ solutions, projects }: PortfolioContentProps)
 
         {/* Divider */}
         <div className="flex items-center gap-4 mb-20">
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent" />
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
         </div>
 
         {/* CLIENT PROJECTS */}
@@ -70,7 +70,7 @@ export function PortfolioContent({ solutions, projects }: PortfolioContentProps)
           <div className="flex items-center gap-3 mb-8">
             <div className="w-1.5 h-10 rounded-full bg-gradient-to-b from-pink-500 to-amber-500" />
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 text-pink-600 dark:text-pink-400 text-xs font-semibold uppercase tracking-wider mb-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 text-pink-600 text-xs font-semibold uppercase tracking-wider mb-1">
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                   <circle cx="9" cy="7" r="4" />
@@ -79,7 +79,7 @@ export function PortfolioContent({ solutions, projects }: PortfolioContentProps)
                 </svg>
                 Client Work
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                 {portfolio.projectsHeading}
               </h2>
             </div>

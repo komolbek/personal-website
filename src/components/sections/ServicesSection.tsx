@@ -36,7 +36,7 @@ export function ServicesSection() {
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
             {services.title}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             {services.subtitle}
           </p>
         </FadeIn>
@@ -48,19 +48,19 @@ export function ServicesSection() {
             const service = services.items[key];
             return (
               <StaggerItem key={key}>
-                <div className="group p-6 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 card-hover h-full flex flex-col">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-pink-500/20 flex items-center justify-center mb-4 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
+                <div className="group p-6 rounded-2xl bg-white/50 backdrop-blur-sm border border-gray-200/50 card-hover h-full flex flex-col">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-pink-500/20 flex items-center justify-center mb-4 text-indigo-600 group-hover:scale-110 transition-transform">
                     <Icon className="w-7 h-7" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
+                  <p className="text-gray-600 text-sm mb-4 flex-1">
                     {service.desc}
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {service.tech.map((tech: string) => (
                       <span
                         key={tech}
-                        className="px-2.5 py-1 text-xs rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400"
+                        className="px-2.5 py-1 text-xs rounded-full bg-indigo-500/10 text-indigo-600"
                       >
                         {tech}
                       </span>
@@ -68,7 +68,7 @@ export function ServicesSection() {
                   </div>
                   <Link
                     href="/contact"
-                    className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:gap-2 transition-all"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:gap-2 transition-all"
                   >
                     {t.common.getStarted}
                     <ArrowRightIcon className="w-4 h-4" />
@@ -96,7 +96,7 @@ export function ServicesSection() {
                 <h3 className="text-lg font-semibold mb-2">
                   {t.solutions.process[step]}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-600">
                   {t.solutions.process[`${step}Desc` as keyof typeof t.solutions.process]}
                 </p>
               </FadeIn>

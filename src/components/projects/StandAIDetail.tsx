@@ -37,7 +37,7 @@ export function StandAIDetail({ project }: { project: Project }) {
     <div className="min-h-screen pt-24 pb-16">
       {/* Background decorations - cyan/teal futuristic theme */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-br from-cyan-500/10 via-teal-400/5 to-slate-500/10 dark:from-cyan-500/5 dark:via-teal-400/3 dark:to-slate-500/5" />
+        <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-br from-cyan-500/10 via-teal-400/5 to-slate-500/10" />
         <div className="absolute top-32 right-20 w-80 h-80 bg-cyan-400/15 rounded-full blur-3xl" />
         <div className="absolute top-60 left-10 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-40 right-10 w-64 h-64 bg-cyan-300/8 rounded-full blur-3xl" />
@@ -47,7 +47,7 @@ export function StandAIDetail({ project }: { project: Project }) {
         {/* Back link */}
         <Link
           href="/portfolio"
-          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-cyan-400 mb-8 transition-colors group"
+          className="inline-flex items-center text-sm text-gray-600 hover:text-cyan-600 mb-8 transition-colors group"
         >
           <span className="mr-2 transition-transform group-hover:-translate-x-1">&larr;</span>
           {t.projects.backToProjects}
@@ -67,7 +67,7 @@ export function StandAIDetail({ project }: { project: Project }) {
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-6">
                 <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-                <span className="text-sm text-cyan-600 dark:text-cyan-400 font-medium">
+                <span className="text-sm text-cyan-600 font-medium">
                   {locale === 'ru' ? 'ИИ-решение' : locale === 'uz' ? 'AI yechim' : 'AI-Powered'}
                 </span>
               </div>
@@ -78,7 +78,7 @@ export function StandAIDetail({ project }: { project: Project }) {
                 </span>
               </h1>
 
-              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-lg">
+              <p className="text-lg md:text-xl text-gray-600 leading-relaxed mb-8 max-w-lg">
                 {project.description[locale]}
               </p>
 
@@ -131,10 +131,10 @@ export function StandAIDetail({ project }: { project: Project }) {
         {/* HOW IT WORKS: 3-step horizontal flow         */}
         {/* ============================================ */}
         <section className="mb-24">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
             {locale === 'ru' ? 'Как это работает' : locale === 'uz' ? 'Qanday ishlaydi' : 'How It Works'}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-center mb-14 max-w-xl mx-auto">
+          <p className="text-gray-600 text-center mb-14 max-w-xl mx-auto">
             {locale === 'ru'
               ? 'Три простых шага до вашего идеального стенда'
               : locale === 'uz'
@@ -160,10 +160,10 @@ export function StandAIDetail({ project }: { project: Project }) {
             {steps.map((step, index) => (
               <div
                 key={index}
-                className="relative bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-8 border border-gray-200/60 dark:border-gray-700/60 hover:border-cyan-300 dark:hover:border-cyan-600 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 text-center group"
+                className="relative bg-white/70 backdrop-blur-sm rounded-2xl p-8 border border-gray-200/60 hover:border-cyan-300 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 text-center group"
               >
                 {/* Large step number */}
-                <div className="text-7xl font-black text-cyan-500/15 dark:text-cyan-400/10 absolute top-4 right-6 select-none pointer-events-none">
+                <div className="text-7xl font-black text-cyan-500/15 absolute top-4 right-6 select-none pointer-events-none">
                   {index + 1}
                 </div>
 
@@ -172,10 +172,10 @@ export function StandAIDetail({ project }: { project: Project }) {
                   <span className="text-2xl font-bold text-white">{index + 1}</span>
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 relative z-10">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 relative z-10">
                   {step.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed relative z-10">
+                <p className="text-gray-600 leading-relaxed relative z-10">
                   {step.description}
                 </p>
 
@@ -198,7 +198,7 @@ export function StandAIDetail({ project }: { project: Project }) {
         {/* ============================================ */}
         {screenshots.length > 1 && (
           <section className="mb-24">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">
               {locale === 'ru' ? 'Скриншоты' : locale === 'uz' ? 'Skrinshotlar' : 'Screenshots'}
             </h2>
 
@@ -206,7 +206,7 @@ export function StandAIDetail({ project }: { project: Project }) {
               {screenshots.slice(0, 4).map((src, index) => (
                 <div
                   key={index}
-                  className="relative aspect-video rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 shadow-lg cursor-pointer group"
+                  className="relative aspect-video rounded-2xl overflow-hidden border border-gray-200/50 shadow-lg cursor-pointer group"
                   onMouseEnter={() => setHoveredImage(index)}
                   onMouseLeave={() => setHoveredImage(null)}
                 >
@@ -240,7 +240,7 @@ export function StandAIDetail({ project }: { project: Project }) {
         {/* CHALLENGE / SOLUTION / RESULTS: Timeline      */}
         {/* ============================================ */}
         <section className="mb-24">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-14">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-14">
             {locale === 'ru' ? 'Процесс разработки' : locale === 'uz' ? 'Ishlab chiqish jarayoni' : 'Development Journey'}
           </h2>
 
@@ -259,11 +259,11 @@ export function StandAIDetail({ project }: { project: Project }) {
                 </div>
                 {/* Content */}
                 <div className="flex-1 pb-2">
-                  <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
+                  <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-200/50 shadow-sm">
                     <span className="text-xs font-semibold text-red-500 uppercase tracking-wider mb-2 block">
                       {t.projects.challenge}
                     </span>
-                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <p className="text-gray-700 leading-relaxed">
                       {project.challenge[locale]}
                     </p>
                   </div>
@@ -278,11 +278,11 @@ export function StandAIDetail({ project }: { project: Project }) {
                   </div>
                 </div>
                 <div className="flex-1 pb-2">
-                  <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
+                  <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-200/50 shadow-sm">
                     <span className="text-xs font-semibold text-cyan-500 uppercase tracking-wider mb-2 block">
                       {t.projects.solution}
                     </span>
-                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <p className="text-gray-700 leading-relaxed">
                       {project.solution[locale]}
                     </p>
                   </div>
@@ -298,11 +298,11 @@ export function StandAIDetail({ project }: { project: Project }) {
                     </div>
                   </div>
                   <div className="flex-1">
-                    <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
+                    <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-200/50 shadow-sm">
                       <span className="text-xs font-semibold text-emerald-500 uppercase tracking-wider mb-2 block">
                         {t.projects.results}
                       </span>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                      <p className="text-gray-700 leading-relaxed">
                         {project.results[locale]}
                       </p>
                     </div>
@@ -317,18 +317,18 @@ export function StandAIDetail({ project }: { project: Project }) {
         {/* TECH STACK: Colored cards in flex wrap        */}
         {/* ============================================ */}
         <section className="mb-24">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-10">
             {t.projects.techStack}
           </h2>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             {project.techStack.map((tech, index) => {
               const cardColors = [
-                'from-cyan-500/10 to-cyan-600/5 border-cyan-300/30 dark:border-cyan-600/30 text-cyan-700 dark:text-cyan-300',
-                'from-teal-500/10 to-teal-600/5 border-teal-300/30 dark:border-teal-600/30 text-teal-700 dark:text-teal-300',
-                'from-emerald-500/10 to-emerald-600/5 border-emerald-300/30 dark:border-emerald-600/30 text-emerald-700 dark:text-emerald-300',
-                'from-sky-500/10 to-sky-600/5 border-sky-300/30 dark:border-sky-600/30 text-sky-700 dark:text-sky-300',
-                'from-indigo-500/10 to-indigo-600/5 border-indigo-300/30 dark:border-indigo-600/30 text-indigo-700 dark:text-indigo-300',
+                'from-cyan-500/10 to-cyan-600/5 border-cyan-300/30 text-cyan-700',
+                'from-teal-500/10 to-teal-600/5 border-teal-300/30 text-teal-700',
+                'from-emerald-500/10 to-emerald-600/5 border-emerald-300/30 text-emerald-700',
+                'from-sky-500/10 to-sky-600/5 border-sky-300/30 text-sky-700',
+                'from-indigo-500/10 to-indigo-600/5 border-indigo-300/30 text-indigo-700',
               ];
               const colorClass = cardColors[index % cardColors.length];
 

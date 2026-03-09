@@ -20,21 +20,6 @@ model AdminUser {
   updatedAt DateTime @updatedAt
 }
 
-// Company statistics (Years, Projects, Clients, etc.)
-model CompanyStat {
-  id        String   @id @default(cuid())
-  key       String   @unique // e.g., "years", "projects", "clients", "satisfaction"
-  value     Int
-  label_en  String
-  label_ru  String
-  label_uz  String
-  suffix    String   @default("+") // e.g., "+", "%"
-  order     Int      @default(0)
-  isVisible Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // Products/Solutions - services the company offers
 model Product {
   id               String   @id @default(cuid())
@@ -175,4 +160,28 @@ model SiteSetting {
   type      String   @default("string") // string, boolean, number, json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// Blog posts
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title_en    String
+  title_ru    String
+  title_uz    String
+  excerpt_en  String   @default("")
+  excerpt_ru  String   @default("")
+  excerpt_uz  String   @default("")
+  content_en  String   @db.Text
+  content_ru  String   @db.Text
+  content_uz  String   @db.Text
+  thumbnail   String   @default("")
+  category    String   @default("news")
+  author      String   @default("")
+  featured    Boolean  @default(false)
+  isVisible   Boolean  @default(true)
+  order       Int      @default(0)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

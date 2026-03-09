@@ -103,19 +103,7 @@ interface DbFeedback {
   featured: boolean;
 }
 
-interface DbCompanyStat {
-  id: string;
-  key: string;
-  value: number;
-  label_en: string;
-  label_ru: string;
-  label_uz: string;
-  suffix: string;
-  order: number;
-  isVisible: boolean;
-}
-
-export type { DbProduct, DbClientProject, DbPartner, DbFeedback, DbCompanyStat };
+export type { DbProduct, DbClientProject, DbPartner, DbFeedback };
 
 export function dbProductToSolution(product: DbProduct): Solution {
   return {
@@ -186,20 +174,6 @@ export function dbPartnerToPartner(partner: DbPartner): Partner {
         }
       : undefined,
     featured: partner.featured,
-  };
-}
-
-export interface TransformedStat {
-  value: number;
-  suffix: string;
-  label: Record<Locale, string>;
-}
-
-export function dbStatToTransformedStat(stat: DbCompanyStat): TransformedStat {
-  return {
-    value: stat.value,
-    suffix: stat.suffix,
-    label: localeRecord(stat.label_en, stat.label_ru, stat.label_uz),
   };
 }
 

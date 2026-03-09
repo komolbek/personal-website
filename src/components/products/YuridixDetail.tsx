@@ -69,7 +69,7 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
       <div className="max-w-6xl mx-auto px-4 mb-8">
         <Link
           href="/portfolio"
-          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+          className="inline-flex items-center text-sm text-gray-600 hover:text-indigo-600 transition-colors"
         >
           <ArrowRightIcon className="w-4 h-4 mr-1.5 rotate-180" />
           {backText}
@@ -121,7 +121,7 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
         {/* Full Description */}
         <section className="mb-20">
           <div className="max-w-3xl mx-auto">
-            <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed text-center">
+            <p className="text-lg text-gray-700 leading-relaxed text-center">
               {solution.fullDescription[locale]}
             </p>
           </div>
@@ -129,10 +129,10 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
 
         {/* Platform Screenshots */}
         <section className="mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
             {locale === 'ru' ? 'Скриншоты платформы' : locale === 'uz' ? 'Platforma skrinshoti' : 'Platform Screenshots'}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-center mb-10 max-w-xl mx-auto">
+          <p className="text-gray-600 text-center mb-10 max-w-xl mx-auto">
             {locale === 'ru'
               ? 'Ознакомьтесь с интерфейсом и возможностями системы'
               : locale === 'uz'
@@ -141,7 +141,7 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
           </p>
 
           {/* Active screenshot preview */}
-          <div className="mb-6 rounded-2xl overflow-hidden shadow-2xl border border-indigo-200/30 dark:border-indigo-700/30 max-w-4xl mx-auto">
+          <div className="mb-6 rounded-2xl overflow-hidden shadow-2xl border border-indigo-200/30 max-w-4xl mx-auto">
             <Image
               src={screenshots[activeScreenshot] || screenshots[0]}
               alt={`${solution.title[locale]} screenshot ${activeScreenshot + 1}`}
@@ -154,7 +154,7 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
           </div>
 
           {/* Thumbnail row */}
-          <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-indigo-300 dark:scrollbar-thumb-indigo-600 max-w-4xl mx-auto">
+          <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-indigo-300 max-w-4xl mx-auto">
             {screenshots.map((src, index) => (
               <button
                 key={index}
@@ -162,7 +162,7 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
                 className={`flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-105 ${
                   activeScreenshot === index
                     ? 'border-indigo-500 shadow-lg shadow-indigo-500/25 ring-2 ring-indigo-500/30'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600'
+                    : 'border-gray-200 hover:border-indigo-300'
                 }`}
               >
                 <Image
@@ -180,10 +180,10 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
 
         {/* How It Works: 4-step horizontal timeline */}
         <section className="mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
             {locale === 'ru' ? 'Как это работает' : locale === 'uz' ? 'Qanday ishlaydi' : 'How It Works'}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-center mb-12 max-w-xl mx-auto">
+          <p className="text-gray-600 text-center mb-12 max-w-xl mx-auto">
             {locale === 'ru'
               ? 'Четыре простых шага для управления вашей юридической практикой'
               : locale === 'uz'
@@ -207,8 +207,8 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
                       <ArrowRightIcon className="w-5 h-5 text-indigo-400 rotate-90" />
                     </div>
                   )}
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{step.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 max-w-[200px]">{step.description}</p>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{step.title}</h3>
+                  <p className="text-sm text-gray-600 max-w-[200px]">{step.description}</p>
                 </div>
               ))}
             </div>
@@ -217,19 +217,19 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
 
         {/* Features: 2-column grid of cards */}
         <section className="mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">
             {t.solutions.features}
           </h2>
           <div className="grid md:grid-cols-2 gap-5">
             {solution.features[locale].map((feature, index) => (
               <div
                 key={index}
-                className="group flex items-start gap-4 p-5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-200/60 dark:border-gray-700/60 hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/5"
+                className="group flex items-start gap-4 p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200/60 hover:border-indigo-300 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/5"
               >
-                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800/50 transition-colors">
-                  <CheckCircleIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center group-hover:bg-indigo-200 transition-colors">
+                  <CheckCircleIcon className="w-5 h-5 text-indigo-600" />
                 </div>
-                <span className="text-gray-700 dark:text-gray-300 leading-relaxed pt-2">{feature}</span>
+                <span className="text-gray-700 leading-relaxed pt-2">{feature}</span>
               </div>
             ))}
           </div>
@@ -237,7 +237,7 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
 
         {/* Benefits: Large numbered cards in 2x2 grid */}
         <section className="mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">
             {t.solutions.benefits}
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
@@ -271,7 +271,7 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
 
         {/* Tech Stack: Horizontal badge strip */}
         <section className="mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-8">
             {t.solutions.technologies}
           </h2>
           <div className="flex flex-wrap items-center justify-center gap-3">
@@ -286,22 +286,22 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
         {/* Pricing Section */}
         {solution.pricing?.[locale] && (
           <section className="mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-8">
               {locale === 'ru' ? 'Стоимость' : locale === 'uz' ? 'Narxlar' : 'Pricing'}
             </h2>
             <div className="max-w-lg mx-auto">
-              <div className="relative overflow-hidden rounded-2xl bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border border-gray-200/60 dark:border-gray-700/60 shadow-xl p-8 text-center">
+              <div className="relative overflow-hidden rounded-2xl bg-white/70 backdrop-blur-sm border border-gray-200/60 shadow-xl p-8 text-center">
                 {/* Decorative top border */}
                 <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600" />
 
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/40 dark:to-purple-900/40 flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-8 h-8 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="12" y1="1" x2="12" y2="23" />
                     <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                   </svg>
                 </div>
 
-                <p className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                <p className="text-xl font-semibold text-gray-900 mb-4">
                   {solution.pricing[locale]}
                 </p>
 
@@ -309,7 +309,7 @@ export function YuridixDetail({ solution }: { solution: Solution }) {
                   href="https://yuridix.uz"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-medium hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
+                  className="inline-flex items-center gap-2 text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
                 >
                   {locale === 'ru' ? 'Начать бесплатный период' : locale === 'uz' ? 'Bepul sinov boshlash' : 'Start free trial'}
                   <ArrowRightIcon className="w-4 h-4" />

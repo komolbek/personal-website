@@ -79,10 +79,10 @@ export function StatsCounter({ stats, className = '' }: StatsCounterProps) {
     <div className={`grid grid-cols-2 md:grid-cols-4 gap-8 ${className}`}>
       {stats.map((stat, index) => (
         <div key={index} className="text-center">
-          <div className="text-4xl md:text-5xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
+          <div className="text-4xl md:text-5xl font-bold text-indigo-600 mb-2">
             <AnimatedNumber value={stat.value} suffix={stat.suffix} />
           </div>
-          <div className="text-gray-600 dark:text-gray-400 font-medium">
+          <div className="text-gray-600 font-medium">
             {stat.label}
           </div>
         </div>

@@ -22,7 +22,7 @@ export default function AppsPage() {
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
             {t.apps.title}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             {t.apps.subtitle}
           </p>
         </div>
@@ -36,7 +36,7 @@ export default function AppsPage() {
                 href={`/apps/${app.id}`}
                 className="group block"
               >
-                <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-3xl overflow-hidden card-hover border border-gray-200/50 dark:border-gray-700/50">
+                <div className="bg-white/50 backdrop-blur-sm rounded-3xl overflow-hidden card-hover border border-gray-200/50">
                   {/* App Header with gradient background */}
                   <div
                     className="h-32 relative flex items-center justify-center"
@@ -47,7 +47,7 @@ export default function AppsPage() {
                     }}
                   >
                     {/* App Icon */}
-                    <div className="w-20 h-20 rounded-2xl bg-white dark:bg-gray-800 shadow-xl flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-20 h-20 rounded-2xl bg-white shadow-xl flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-300">
                       {app.icon ? (
                         <Image
                           src={app.icon}
@@ -77,20 +77,20 @@ export default function AppsPage() {
                   {/* App Info */}
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-xl font-semibold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      <h3 className="text-xl font-semibold group-hover:text-indigo-600 transition-colors">
                         {app.name}
                       </h3>
-                      <span className="text-xs px-2 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                      <span className="text-xs px-2 py-1 rounded-full bg-indigo-500/10 text-indigo-600">
                         {app.category}
                       </span>
                     </div>
 
-                    <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-4">
+                    <p className="text-gray-600 text-sm line-clamp-3 mb-4">
                       {app.description[locale]}
                     </p>
 
                     {/* View button */}
-                    <div className="flex items-center text-indigo-600 dark:text-indigo-400 text-sm font-medium">
+                    <div className="flex items-center text-indigo-600 text-sm font-medium">
                       <span>View Details</span>
                       <svg
                         className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
@@ -118,7 +118,7 @@ export default function AppsPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
               </svg>
             </div>
-            <p className="text-gray-500 dark:text-gray-400 text-xl">
+            <p className="text-gray-500 text-xl">
               {t.apps.noApps}
             </p>
           </div>

@@ -5,25 +5,13 @@ import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
-interface CompanyStat {
-  id: string;
-  key: string;
-  value: number;
-  suffix: string | null;
-  label_en: string;
-  label_ru: string | null;
-  label_uz: string | null;
-  isVisible: boolean;
-  order: number;
-}
-
 interface DashboardData {
   productsCount: number;
   projectsCount: number;
   partnersCount: number;
+  blogPostsCount: number;
   pendingFeedback: number;
   unreadContacts: number;
-  stats: CompanyStat[];
 }
 
 async function getStats(): Promise<DashboardData> {
@@ -32,34 +20,34 @@ async function getStats(): Promise<DashboardData> {
       productsCount,
       projectsCount,
       partnersCount,
+      blogPostsCount,
       pendingFeedback,
       unreadContacts,
-      stats,
     ] = await Promise.all([
       prisma.product.count(),
       prisma.clientProject.count(),
       prisma.partner.count(),
+      prisma.blogPost.count(),
       prisma.feedback.count({ where: { status: 'PENDING' } }),
       prisma.contactSubmission.count({ where: { isRead: false } }),
-      prisma.companyStat.findMany({ orderBy: { order: 'asc' } }),
     ]);
 
     return {
       productsCount,
       projectsCount,
       partnersCount,
+      blogPostsCount,
       pendingFeedback,
       unreadContacts,
-      stats,
     };
   } catch {
     return {
       productsCount: 0,
       projectsCount: 0,
       partnersCount: 0,
+      blogPostsCount: 0,
       pendingFeedback: 0,
       unreadContacts: 0,
-      stats: [],
     };
   }
 }
@@ -77,6 +65,7 @@ export default async function AdminDashboard() {
     { label: 'Products/Solutions', value: data.productsCount, href: '/admin/products', icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a4 4 0 0 0-8 0v2"/></svg>, color: 'indigo' },
     { label: 'Client Projects', value: data.projectsCount, href: '/admin/projects', icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>, color: 'green' },
     { label: 'Partners', value: data.partnersCount, href: '/admin/partners', icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>, color: 'blue' },
+    { label: 'Blog Posts', value: data.blogPostsCount, href: '/admin/blog', icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>, color: 'purple' },
     { label: 'Pending Feedback', value: data.pendingFeedback, href: '/admin/feedback', icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, color: 'amber', highlight: data.pendingFeedback > 0 },
     { label: 'Unread Contacts', value: data.unreadContacts, href: '/admin/contacts', icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>, color: 'pink', highlight: data.unreadContacts > 0 },
   ];
@@ -93,7 +82,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Quick Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
         {cards.map((card) => (
           <Link
             key={card.label}
@@ -118,51 +107,6 @@ export default async function AdminDashboard() {
             </div>
           </Link>
         ))}
-      </div>
-
-      {/* Company Stats */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Company Statistics (Public)
-          </h2>
-          <Link
-            href="/admin/stats"
-            className="text-indigo-600 dark:text-indigo-400 text-sm hover:underline"
-          >
-            Edit Stats →
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data.stats.map((stat) => (
-            <div
-              key={stat.id}
-              className={`p-4 rounded-lg ${
-                stat.isVisible
-                  ? 'bg-gray-50 dark:bg-gray-700'
-                  : 'bg-gray-100 dark:bg-gray-700/50 opacity-50'
-              }`}
-            >
-              <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                {stat.value}{stat.suffix}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                {stat.label_en}
-              </div>
-              {!stat.isVisible && (
-                <div className="text-xs text-gray-400 mt-1">(Hidden)</div>
-              )}
-            </div>
-          ))}
-          {data.stats.length === 0 && (
-            <p className="col-span-full text-gray-500 dark:text-gray-400">
-              No statistics configured yet.{' '}
-              <Link href="/admin/stats" className="text-indigo-600 dark:text-indigo-400 hover:underline">
-                Add some stats
-              </Link>
-            </p>
-          )}
-        </div>
       </div>
 
       {/* Quick Actions */}

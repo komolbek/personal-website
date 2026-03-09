@@ -5,23 +5,6 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding database...');
 
-  // Seed Company Stats
-  const stats = [
-    { key: 'years', value: 5, label_en: 'Years of Experience', label_ru: 'Лет опыта', label_uz: 'Yillik tajriba', suffix: '+', order: 1 },
-    { key: 'projects', value: 50, label_en: 'Projects Completed', label_ru: 'Завершённых проектов', label_uz: 'Tugallangan loyihalar', suffix: '+', order: 2 },
-    { key: 'clients', value: 30, label_en: 'Happy Clients', label_ru: 'Довольных клиентов', label_uz: 'Mamnun mijozlar', suffix: '+', order: 3 },
-    { key: 'satisfaction', value: 98, label_en: 'Client Satisfaction', label_ru: 'Удовлетворённость клиентов', label_uz: 'Mijozlar mamnuniyati', suffix: '%', order: 4 },
-  ];
-
-  for (const stat of stats) {
-    await prisma.companyStat.upsert({
-      where: { key: stat.key },
-      update: stat,
-      create: stat,
-    });
-  }
-  console.log('  Stats seeded');
-
   // Seed Products (Solutions)
   const products = [
     {

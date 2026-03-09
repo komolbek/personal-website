@@ -3,15 +3,6 @@
 import { useLocale } from '@/hooks/useLocale';
 import { FadeIn } from '@/components/ui/AnimatedSection';
 
-const defaultClients = [
-  'Yuridix',
-  'Ordo',
-  'TalimX',
-  'MemoMind',
-  '4Event',
-  'StandAI',
-];
-
 interface ClientLogosProps {
   partnerNames?: string[];
 }
@@ -19,13 +10,15 @@ interface ClientLogosProps {
 export function ClientLogos({ partnerNames }: ClientLogosProps) {
   const { t } = useLocale();
 
-  const names = partnerNames && partnerNames.length > 0 ? partnerNames : defaultClients;
+  if (!partnerNames || partnerNames.length === 0) return null;
+
+  const names = partnerNames;
   const clients = [...names, ...names];
 
   return (
     <section className="py-12 overflow-hidden">
       <FadeIn className="text-center mb-8">
-        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">
           {t.home.partners.title}
         </p>
       </FadeIn>
@@ -43,8 +36,8 @@ export function ClientLogos({ partnerNames }: ClientLogosProps) {
                 key={i}
                 className="flex-shrink-0 mx-8 flex items-center justify-center"
               >
-                <div className="px-6 py-3 rounded-xl bg-white/50 dark:bg-gray-800/50 border border-gray-200/30 dark:border-gray-700/30">
-                  <span className="text-lg font-semibold text-gray-400 dark:text-gray-500 whitespace-nowrap">
+                <div className="px-6 py-3 rounded-xl bg-white/50 border border-gray-200/30">
+                  <span className="text-lg font-semibold text-gray-400 whitespace-nowrap">
                     {client}
                   </span>
                 </div>

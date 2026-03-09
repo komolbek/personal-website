@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLocale } from '@/hooks/useLocale';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 import { MenuIcon, CloseIcon } from '@/components/ui/Icons';
@@ -12,7 +13,7 @@ const navItems = [
   { key: 'home', href: '/' },
   { key: 'services', href: '/services' },
   { key: 'portfolio', href: '/portfolio' },
-  { key: 'about', href: '/about' },
+  { key: 'blog', href: '/blog' },
   { key: 'contact', href: '/contact' },
 ] as const;
 
@@ -66,8 +67,8 @@ export function Header() {
                 href={item.href}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   isActive(item.href)
-                    ? 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-500/5'
+                    ? 'bg-indigo-500/10 text-indigo-600'
+                    : 'text-gray-600 hover:text-indigo-600 hover:bg-indigo-500/5'
                 }`}
               >
                 {t.nav[item.key]}
@@ -77,6 +78,14 @@ export function Header() {
 
           {/* Right side */}
           <div className="flex items-center gap-4">
+            {/* Desktop CTA */}
+            <Link
+              href="/contact"
+              className="hidden lg:inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-indigo-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white text-sm font-medium rounded-full transition-all duration-300 shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/30"
+            >
+              {t.common.contactUs}
+            </Link>
+
             <LanguageSwitcher />
 
             {/* Mobile menu button */}
@@ -95,24 +104,34 @@ export function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="lg:hidden py-4 border-t border-indigo-500/10">
-            {navItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                onClick={() => setIsMenuOpen(false)}
-                className={`block py-3 px-4 rounded-lg transition-colors ${
-                  isActive(item.href)
-                    ? 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400'
-                    : 'text-gray-600 dark:text-gray-300 hover:bg-indigo-500/5'
-                }`}
-              >
-                {t.nav[item.key]}
-              </Link>
-            ))}
-          </nav>
-        )}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.nav
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
+              className="lg:hidden overflow-hidden border-t border-indigo-500/10"
+            >
+              <div className="py-4">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.key}
+                    href={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`block py-3 px-4 rounded-lg transition-colors ${
+                      isActive(item.href)
+                        ? 'bg-indigo-500/10 text-indigo-600'
+                        : 'text-gray-600 hover:bg-indigo-500/5'
+                    }`}
+                  >
+                    {t.nav[item.key]}
+                  </Link>
+                ))}
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );

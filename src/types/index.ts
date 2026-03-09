@@ -82,14 +82,6 @@ export interface Partner {
   featured: boolean;
 }
 
-// Company statistics
-export interface CompanyStats {
-  projects: number;
-  clients: number;
-  years: number;
-  satisfaction: number;
-}
-
 export interface SocialLink {
   platform: string;
   url: string;

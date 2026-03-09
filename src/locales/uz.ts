@@ -7,6 +7,7 @@ export const uz = {
     portfolio: 'Portfolio',
     partners: 'Hamkorlar',
     about: 'Biz haqimizda',
+    blog: 'Blog',
     contact: 'Aloqa',
   },
   home: {
@@ -23,34 +24,6 @@ export const uz = {
       productsHeading: 'O\'z dasturiy mahsulotlarimiz',
       projectsHeading: 'Mijozlar loyihalari',
       viewAll: 'To\'liq portfolio',
-    },
-    whyUs: {
-      title: 'Nega biz',
-      subtitle: 'Bizni raqobatchilardan ajratib turadigan narsa',
-      stats: {
-        projects: 'Bajarilgan loyihalar',
-        clients: 'Mamnun mijozlar',
-        years: 'Yillik tajriba',
-        satisfaction: 'Mamnuniyat',
-      },
-      features: {
-        expertise: {
-          title: 'Mahalliy ekspertiza',
-          desc: 'O\'zbek bozori va biznes jarayonlarini chuqur tushunish',
-        },
-        technology: {
-          title: 'Zamonaviy stek',
-          desc: 'React, Next.js, Node.js, AI/ML — loyihangiz uchun eng yaxshisini ishlatamiz',
-        },
-        agile: {
-          title: 'To\'liq tsikl yetkazish',
-          desc: 'Kontseptsiyadan ishga tushirishgacha va qo\'llab-quvvatlash — bitta jamoa, to\'liq javobgarlik',
-        },
-        support: {
-          title: 'Mahsulot tafakkuri',
-          desc: 'Biz mahsulotlar yaratamiz, shunchaki loyihalar emas. Yuridix, Ordo va TalimX yaratuvchilari',
-        },
-      },
     },
     partners: {
       title: 'Bizga ishonishadi',
@@ -156,57 +129,6 @@ export const uz = {
     becomePartnerDesc: 'Muvaffaqiyatli bizneslar tarmog\'imizga qo\'shiling',
     contactUs: 'Bog\'lanish',
   },
-  about: {
-    title: 'Biz haqimizda',
-    subtitle: 'O\'zbekistondagi ishonchli texnologik hamkoringiz',
-    mission: {
-      title: 'Bizning missiya',
-      text: 'O\'zbek bizneslariga raqamli davrda raqobat qilishga yordam berish — yuridik amaliyotni boshqarish tizimlaridan ta\'lim platformalarigacha ishonchli, maxsus dasturiy ta\'minot yaratish.',
-    },
-    story: {
-      title: 'Bizning tarix',
-      text: 'Necto Automations Toshkentda aniq maqsad bilan tashkil etilgan: haqiqiy biznes muammolarini hal qiladigan dasturiy ta\'minot yaratish. Biz Yuridix bilan boshladik — yuridik firmalarning qog\'ozli ish oqimlari bilan kurashini ko\'rib tug\'ilgan yuridik amaliyotni boshqarish tizimi. Bu mahsulot tafakkuri biz qilayotgan hamma narsani harakatga keltiradi. Bugun biz uchta o\'z mahsulotimizni (Yuridix, Ordo, TalimX) qo\'llab-quvvatlaymiz va butun O\'zbekiston bo\'ylab bizneslar uchun maxsus loyihalarni amalga oshiramiz.',
-    },
-    approach: {
-      title: 'Bizning yondashuv',
-      items: [
-        { title: 'Tushunish', desc: 'Biz faqat talablarni emas, biznesingizni chuqur tushunishdan boshlaymiz' },
-        { title: 'Prototip', desc: 'To\'liq ishlab chiqishdan oldin g\'oyalarni tekshirish uchun tezkor prototiplash' },
-        { title: 'Qurish', desc: 'Zamonaviy texnologiyalar bilan toza, qo\'llab-quvvatlanadigan kod' },
-        { title: 'Qo\'llab-quvvatlash', desc: 'Ishga tushirilgandan keyin maxsus qo\'llab-quvvatlash bilan uzoq muddatli hamkorlik' },
-      ],
-    },
-    team: {
-      title: 'Bizning jamoa',
-      subtitle: 'Ajoyib dasturiy ta\'minot yaratishga ishtiyoqli dasturchilar, dizaynerlar va maslahatchilar jamoasi',
-    },
-    values: {
-      title: 'Biz nimaga ishonamiz',
-      innovation: {
-        title: 'Mahalliy ekspertiza',
-        desc: 'Biz O\'zbek bozorini, uning tartiblarini va biznes madaniyatini tushunamiz',
-      },
-      quality: {
-        title: 'Mahsulot tafakkuri',
-        desc: 'Biz o\'zimiz foydalanadigan mahsulotlar yaratamiz — bu bizning sifat kafolatimiz',
-      },
-      transparency: {
-        title: 'To\'liq shaffoflik',
-        desc: 'Aniq narxlar, halol muddatlar va ochiq muloqot',
-      },
-      partnership: {
-        title: 'Uzoq muddatli hamkorlik',
-        desc: 'Biz ishga tushirilgandan keyin yo\'qolmaymiz — mijozlarimiz bilan birga o\'samiz',
-      },
-    },
-    stats: {
-      years: 'Yillik tajriba',
-      projects: 'Bajarilgan loyihalar',
-      clients: 'Mamnun mijozlar',
-      technologies: 'O\'zlashtirilgan texnologiyalar',
-    },
-    cta: 'Birga ishlashga tayyormisiz?',
-  },
   contact: {
     title: 'Biz bilan bog\'laning',
     subtitle: 'Loyihangizni muhokama qilaylik va qanday yordam bera olishimizni ko\'raylik',
@@ -248,9 +170,20 @@ export const uz = {
   blog: {
     title: 'Maqolalar va resurslar',
     subtitle: 'O\'zbekistonda biznes avtomatlashtirish, texnologik trendlar va raqamli transformatsiya haqida maqolalar',
-    comingSoon: 'Tez orada',
-    comingSoonDesc: 'Biz biznes avtomatlashtirish va texnologiyalar haqida foydali maqolalar tayyorlamoqdamiz. Telegramimizga obuna bo\'ling.',
+    readMore: 'Davomi',
+    noPostsYet: 'Hali maqolalar yo\'q',
+    noPostsYetDesc: 'Biz biznes avtomatlashtirish va texnologiyalar haqida foydali maqolalar tayyorlamoqdamiz. Telegramimizga obuna bo\'ling.',
     followTelegram: 'Telegramga obuna bo\'lish',
+    publishedOn: 'Nashr etilgan',
+    backToBlog: 'Blogga qaytish',
+    byAuthor: 'Muallif:',
+    allPosts: 'Barcha maqolalar',
+    categories: {
+      news: 'Yangiliklar',
+      tutorial: 'Qo\'llanma',
+      'case-study': 'Keys',
+      update: 'Yangilanish',
+    },
   },
   legal: {
     privacy: {
@@ -276,7 +209,8 @@ export const uz = {
   },
   footer: {
     rights: 'Barcha huquqlar himoyalangan.',
-    madeWith: 'Yaratilgan',
+    createdBy: 'Necto Automations tomonidan yaratilgan',
+    aboutBlurb: 'Biz haqiqiy biznes muammolarini hal qiladigan maxsus dasturiy ta\'minot yaratamiz — yuridik boshqaruv tizimlaridan ta\'lim platformalarigacha. Yuridix, Ordo va TalimX yaratuvchilari.',
     company: 'Kompaniya',
     services: 'Mahsulotlar',
     resources: 'Resurslar',

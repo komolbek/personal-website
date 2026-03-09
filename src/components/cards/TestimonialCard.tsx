@@ -13,10 +13,10 @@ export function TestimonialCard({ partner, locale }: TestimonialCardProps) {
   if (!partner.testimonial) return null;
 
   return (
-    <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-700/50 p-6 md:p-8">
+    <div className="bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-200/50 p-6 md:p-8">
       <QuoteIcon className="w-10 h-10 text-indigo-500/30 mb-4" />
 
-      <blockquote className="text-gray-700 dark:text-gray-300 text-lg mb-6 leading-relaxed">
+      <blockquote className="text-gray-700 text-lg mb-6 leading-relaxed">
         &ldquo;{partner.testimonial.quote[locale]}&rdquo;
       </blockquote>
 
@@ -36,10 +36,10 @@ export function TestimonialCard({ partner, locale }: TestimonialCardProps) {
         )}
 
         <div>
-          <div className="font-semibold text-gray-900 dark:text-white">
+          <div className="font-semibold text-gray-900">
             {partner.testimonial.author}
           </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-sm text-gray-500">
             {partner.testimonial.position[locale]}
           </div>
         </div>

@@ -54,10 +54,10 @@ const sectionLabels = {
 };
 
 const benefitGradients = [
-  'from-amber-50 to-amber-100/50 dark:from-amber-900/20 dark:to-amber-800/10 border-l-amber-400',
-  'from-emerald-50 to-emerald-100/50 dark:from-emerald-900/20 dark:to-emerald-800/10 border-l-emerald-400',
-  'from-blue-50 to-blue-100/50 dark:from-blue-900/20 dark:to-blue-800/10 border-l-blue-400',
-  'from-purple-50 to-purple-100/50 dark:from-purple-900/20 dark:to-purple-800/10 border-l-purple-400',
+  'from-amber-50 to-amber-100/50 border-l-amber-400',
+  'from-emerald-50 to-emerald-100/50 border-l-emerald-400',
+  'from-blue-50 to-blue-100/50 border-l-blue-400',
+  'from-purple-50 to-purple-100/50 border-l-purple-400',
 ];
 
 const featureBorderColors = [
@@ -108,7 +108,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
     <div className="min-h-screen pt-24 pb-16 px-4">
       {/* Background - warm amber/orange + indigo gradient */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-br from-amber-500/15 via-orange-400/10 to-indigo-500/15 dark:from-amber-500/8 dark:via-orange-400/5 dark:to-indigo-500/8" />
+        <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-br from-amber-500/15 via-orange-400/10 to-indigo-500/15" />
         <div className="absolute top-40 right-20 w-80 h-80 bg-amber-400/20 rounded-full blur-3xl" />
         <div className="absolute top-60 left-10 w-64 h-64 bg-indigo-500/15 rounded-full blur-3xl" />
         <div className="absolute bottom-40 right-40 w-72 h-72 bg-orange-400/10 rounded-full blur-3xl" />
@@ -118,7 +118,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
         {/* Back link */}
         <Link
           href="/portfolio"
-          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 mb-8 transition-colors"
+          className="inline-flex items-center text-sm text-gray-600 hover:text-amber-600 mb-8 transition-colors"
         >
           <ArrowRightIcon className="w-4 h-4 mr-1 rotate-180" />
           {t.solutions.backToSolutions}
@@ -131,7 +131,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
               {solution.title[locale]}
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed mb-10">
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-10">
             {solution.shortDescription[locale]}
           </p>
 
@@ -140,10 +140,10 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
             {statCards[locale]?.map((stat, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-2 px-6 py-3 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl border border-amber-200/50 dark:border-amber-700/30 shadow-sm"
+                className="flex items-center gap-2 px-6 py-3 bg-white/70 backdrop-blur-sm rounded-2xl border border-amber-200/50 shadow-sm"
               >
                 <span className="w-2 h-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-500" />
-                <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                <span className="text-sm font-semibold text-gray-800">
                   {stat}
                 </span>
               </div>
@@ -153,13 +153,13 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
 
         {/* ─── PLATFORM OVERVIEW (Tabbed) ─── */}
         <section className="mb-20">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             {sectionLabels.platformOverview[locale]}
           </h2>
 
           {/* Tab buttons */}
           <div className="flex justify-center mb-8">
-            <div className="inline-flex bg-gray-100 dark:bg-gray-800 rounded-2xl p-1.5 gap-1">
+            <div className="inline-flex bg-gray-100 rounded-2xl p-1.5 gap-1">
               {(Object.keys(tabLabels) as PlatformTab[]).map((tab) => (
                 <button
                   key={tab}
@@ -167,7 +167,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
                   className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                     activeTab === tab
                       ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/25'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   {tabLabels[tab][locale]}
@@ -185,7 +185,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
             {tabScreenshots[activeTab].map((src, idx) => (
               <div
                 key={`${activeTab}-${idx}`}
-                className={`relative rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 group ${
+                className={`relative rounded-2xl overflow-hidden border border-gray-200/50 bg-white/50 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 group ${
                   activeTab === 'mobile' ? 'aspect-[9/19.5]' : 'aspect-video'
                 }`}
               >
@@ -205,7 +205,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
 
         {/* ─── FEATURES (Accordion in two columns) ─── */}
         <section className="mb-20">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             {t.solutions.features}
           </h2>
 
@@ -223,7 +223,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
                     }
                     className={`w-full text-left p-4 rounded-xl border-l-4 ${
                       featureBorderColors[globalIdx % featureBorderColors.length]
-                    } bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-md ${
+                    } bg-white/60 backdrop-blur-sm border border-gray-200/50 transition-all duration-300 hover:shadow-md ${
                       isExpanded ? 'shadow-md' : ''
                     }`}
                   >
@@ -232,7 +232,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
                         <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold">
                           {globalIdx + 1}
                         </span>
-                        <span className="font-medium text-gray-900 dark:text-white text-sm">
+                        <span className="font-medium text-gray-900 text-sm">
                           {feature}
                         </span>
                       </div>
@@ -251,7 +251,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
                       </svg>
                     </div>
                     {isExpanded && (
-                      <div className="mt-3 ml-11 text-sm text-gray-600 dark:text-gray-400">
+                      <div className="mt-3 ml-11 text-sm text-gray-600">
                         <CheckCircleIcon className="w-4 h-4 inline mr-1 text-green-500" />
                         {solution.fullDescription[locale].slice(0, 120)}...
                       </div>
@@ -274,7 +274,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
                     }
                     className={`w-full text-left p-4 rounded-xl border-l-4 ${
                       featureBorderColors[globalIdx % featureBorderColors.length]
-                    } bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-md ${
+                    } bg-white/60 backdrop-blur-sm border border-gray-200/50 transition-all duration-300 hover:shadow-md ${
                       isExpanded ? 'shadow-md' : ''
                     }`}
                   >
@@ -283,7 +283,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
                         <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold">
                           {globalIdx + 1}
                         </span>
-                        <span className="font-medium text-gray-900 dark:text-white text-sm">
+                        <span className="font-medium text-gray-900 text-sm">
                           {feature}
                         </span>
                       </div>
@@ -302,7 +302,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
                       </svg>
                     </div>
                     {isExpanded && (
-                      <div className="mt-3 ml-11 text-sm text-gray-600 dark:text-gray-400">
+                      <div className="mt-3 ml-11 text-sm text-gray-600">
                         <CheckCircleIcon className="w-4 h-4 inline mr-1 text-green-500" />
                         {solution.fullDescription[locale].slice(0, 120)}...
                       </div>
@@ -316,7 +316,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
 
         {/* ─── BENEFITS (Horizontal stacked cards) ─── */}
         <section className="mb-20">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             {t.solutions.benefits}
           </h2>
 
@@ -328,10 +328,10 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
                   benefitGradients[idx % benefitGradients.length]
                 } border-l-4 transition-all duration-300 hover:translate-x-1`}
               >
-                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/80 dark:bg-gray-900/50 flex items-center justify-center shadow-sm">
-                  <ArrowRightIcon className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/80 flex items-center justify-center shadow-sm">
+                  <ArrowRightIcon className="w-5 h-5 text-amber-600" />
                 </div>
-                <span className="text-lg font-semibold text-gray-900 dark:text-white">
+                <span className="text-lg font-semibold text-gray-900">
                   {benefit}
                 </span>
               </div>
@@ -341,7 +341,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
 
         {/* ─── TECH STACK (Visual stack diagram) ─── */}
         <section className="mb-20">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             {t.solutions.technologies}
           </h2>
 
@@ -356,10 +356,10 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
                 >
                   {/* Layer background */}
                   <div
-                    className={`absolute inset-0 bg-gradient-to-r ${layer.color} opacity-10 dark:opacity-20`}
+                    className={`absolute inset-0 bg-gradient-to-r ${layer.color} opacity-10`}
                   />
                   <div className="relative flex items-center justify-between px-6 py-4">
-                    <span className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-24">
+                    <span className="text-sm font-bold text-gray-500 uppercase tracking-wider w-24">
                       {layer.label}
                     </span>
                     <div className="flex flex-wrap gap-2 justify-end">
@@ -372,7 +372,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
                   </div>
                   {/* Connector line (not on last) */}
                   {layerIdx < techStackLayers.length - 1 && (
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-3 bg-gray-300 dark:bg-gray-600" />
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-3 bg-gray-300" />
                   )}
                 </div>
               );
@@ -388,12 +388,12 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
               <div className="absolute -inset-[2px] bg-gradient-to-r from-amber-400 via-orange-500 to-indigo-500 rounded-3xl opacity-75 blur-sm" />
               <div className="absolute -inset-[2px] bg-gradient-to-r from-amber-400 via-orange-500 to-indigo-500 rounded-3xl" />
 
-              <div className="relative bg-white dark:bg-gray-900 rounded-3xl p-8 md:p-10 text-center">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <div className="relative bg-white rounded-3xl p-8 md:p-10 text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
                   {sectionLabels.pricing[locale]}
                 </h3>
                 <div className="w-12 h-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full mx-auto mb-6" />
-                <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+                <p className="text-lg text-gray-700 mb-8 leading-relaxed">
                   {solution.pricing[locale]}
                 </p>
                 <Button
@@ -427,7 +427,7 @@ export function TalimXDetail({ solution }: { solution: Solution }) {
               href="https://admin.talimx.uz/login"
               variant="outline"
               size="lg"
-              className="border-amber-500 dark:border-amber-400 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+              className="border-amber-500 text-amber-600 hover:bg-amber-50"
             >
               {sectionLabels.adminPanel[locale]}
               <ExternalLinkIcon className="w-5 h-5 ml-2" />

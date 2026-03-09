@@ -1,9 +1,11 @@
 'use client';
 
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLocale } from '@/hooks/useLocale';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/ui/AnimatedSection';
 import { QuoteIcon } from '@/components/ui/Icons';
-import { SectionHeading } from '@/components/ui/SectionHeading';
+import { ReviewForm } from '@/components/forms/ReviewForm';
 
 interface Testimonial {
   quote: { en: string; ru: string; uz: string };
@@ -14,93 +16,140 @@ interface Testimonial {
   rating?: number;
 }
 
-const defaultTestimonials: Testimonial[] = [
-  {
-    quote: {
-      en: 'Necto Automations transformed our legal practice with Yuridix. Case management that used to take hours now takes minutes. Their team truly understands the needs of Uzbek businesses.',
-      ru: 'Necto Automations преобразили нашу юридическую практику с помощью Yuridix. Управление делами, на которое раньше уходили часы, теперь занимает минуты. Их команда действительно понимает потребности узбекского бизнеса.',
-      uz: 'Necto Automations Yuridix yordamida bizning yuridik amaliyotimizni o\'zgartirdi. Ilgari soatlab vaqt oladigan ishlarni boshqarish endi daqiqalar ichida amalga oshiriladi.',
-    },
-    author: 'Aziz Karimov',
-    role: {
-      en: 'Managing Partner',
-      ru: 'Управляющий партнёр',
-      uz: 'Boshqaruvchi sherik',
-    },
-    company: 'Karimov & Associates',
-  },
-  {
-    quote: {
-      en: 'The booking system they built for us handles thousands of reservations seamlessly. Professional team, clean code, and excellent post-launch support.',
-      ru: 'Система бронирования, которую они для нас создали, безупречно обрабатывает тысячи бронирований. Профессиональная команда, чистый код и отличная поддержка после запуска.',
-      uz: 'Ular biz uchun yaratgan bron qilish tizimi minglab bronlarni muammosiz boshqaradi. Professional jamoa, toza kod va ishga tushirilgandan keyin ajoyib qo\'llab-quvvatlash.',
-    },
-    author: 'Malika Rustamova',
-    role: {
-      en: 'Operations Director',
-      ru: 'Директор по операциям',
-      uz: 'Operatsiyalar direktori',
-    },
-    company: 'TravelUz',
-  },
-  {
-    quote: {
-      en: 'From concept to deployment, Necto delivered our AI-powered app ahead of schedule. They don\'t just write code — they solve business problems.',
-      ru: 'От концепции до развёртывания Necto реализовали наше AI-приложение раньше срока. Они не просто пишут код — они решают бизнес-задачи.',
-      uz: 'Kontseptsiyadan joylashtirishgacha, Necto bizning AI ilovamizni muddatdan oldin yetkazib berdi. Ular shunchaki kod yozmaydi — biznes muammolarini hal qiladi.',
-    },
-    author: 'Sardor Tashmatov',
-    role: {
-      en: 'CTO',
-      ru: 'Технический директор',
-      uz: 'Texnik direktor',
-    },
-    company: 'InnoTech Solutions',
-  },
-];
-
 interface TestimonialsSectionProps {
   dbTestimonials?: Testimonial[];
 }
 
 export function TestimonialsSection({ dbTestimonials }: TestimonialsSectionProps) {
   const { locale, t } = useLocale();
+  const [showReviewForm, setShowReviewForm] = useState(false);
 
-  const testimonials = dbTestimonials && dbTestimonials.length > 0 ? dbTestimonials : defaultTestimonials;
+  const reviewButtonLabel = locale === 'ru'
+    ? 'Оставить отзыв'
+    : locale === 'uz'
+      ? 'Fikr qoldirish'
+      : 'Leave a Review';
+
+  // Show section even without testimonials (for the review form button)
+  const testimonials = dbTestimonials || [];
+  const isFew = testimonials.length <= 2;
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-transparent via-indigo-500/5 to-transparent">
+    <section className="py-24 lg:py-32 px-4 bg-gradient-to-b from-transparent via-indigo-500/5 to-transparent">
       <div className="max-w-6xl mx-auto">
         <FadeIn>
-          <SectionHeading
-            title={t.home.testimonials?.title || 'What Our Clients Say'}
-            subtitle={t.home.testimonials?.subtitle || 'Real results from real partnerships'}
-          />
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text mb-4">
+              {t.home.testimonials?.title || 'What Our Clients Say'}
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              {t.home.testimonials?.subtitle || 'Real results from real partnerships'}
+            </p>
+          </div>
         </FadeIn>
 
-        <StaggerContainer className="grid md:grid-cols-3 gap-6 mt-12">
-          {testimonials.map((testimonial, i) => (
-            <StaggerItem key={i}>
-              <div className="p-6 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 h-full flex flex-col card-hover">
-                <QuoteIcon className="w-8 h-8 text-indigo-500/30 mb-4" />
-                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6 flex-1">
-                  &ldquo;{testimonial.quote[locale]}&rdquo;
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm">
-                    {testimonial.author.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-sm">{testimonial.author}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {testimonial.role[locale]}, {testimonial.company}
+        {testimonials.length > 0 && (
+          <StaggerContainer className={`grid gap-6 mt-12 ${
+            isFew ? 'md:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-3'
+          }`}>
+            {testimonials.map((testimonial, i) => (
+              <StaggerItem key={i}>
+                <div className="p-8 rounded-3xl bg-white/60 backdrop-blur-sm border border-gray-200/50 h-full flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10">
+                  <QuoteIcon className="w-10 h-10 text-indigo-500/20 mb-6" />
+
+                  {testimonial.rating && (
+                    <div className="flex gap-1 mb-4">
+                      {Array.from({ length: 5 }).map((_, si) => (
+                        <svg
+                          key={si}
+                          className={`w-4 h-4 ${si < testimonial.rating! ? 'text-amber-400' : 'text-gray-200'}`}
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                  )}
+
+                  <p className="text-gray-700 text-base leading-relaxed mb-8 flex-1">
+                    &ldquo;{testimonial.quote[locale]}&rdquo;
+                  </p>
+
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center text-white font-bold">
+                      {testimonial.author.charAt(0)}
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-900">{testimonial.author}</div>
+                      <div className="text-sm text-gray-500">
+                        {testimonial.role[locale]}, {testimonial.company}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        )}
+
+        {/* Leave a Review button */}
+        <FadeIn delay={0.3}>
+          <div className="text-center mt-12">
+            <button
+              onClick={() => setShowReviewForm(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-indigo-500/30 text-indigo-600 hover:bg-indigo-50 font-medium rounded-full transition-all duration-300"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              {reviewButtonLabel}
+            </button>
+          </div>
+        </FadeIn>
+
+        {/* Review Form Modal */}
+        <AnimatePresence>
+          {showReviewForm && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center px-4"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setShowReviewForm(false);
+              }}
+            >
+              {/* Backdrop */}
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+
+              {/* Modal content */}
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl max-h-[90vh] overflow-y-auto"
+              >
+                {/* Close button */}
+                <button
+                  onClick={() => setShowReviewForm(false)}
+                  className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+
+                <h3 className="text-xl font-bold text-gray-900 mb-6">{reviewButtonLabel}</h3>
+
+                <ReviewForm onSuccess={() => {
+                  setTimeout(() => setShowReviewForm(false), 3000);
+                }} />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

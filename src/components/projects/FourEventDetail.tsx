@@ -49,7 +49,7 @@ export function FourEventDetail({ project }: { project: Project }) {
         {/* Back link */}
         <Link
           href="/portfolio"
-          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 mb-8 transition-colors group"
+          className="inline-flex items-center text-sm text-gray-600 hover:text-orange-600 mb-8 transition-colors group"
         >
           <ArrowRightIcon className="w-4 h-4 mr-1.5 rotate-180 transition-transform group-hover:-translate-x-1" />
           {t.projects.backToProjects}
@@ -94,10 +94,10 @@ export function FourEventDetail({ project }: { project: Project }) {
         {/* ============================================ */}
         {screenshots.length > 0 && (
           <section className="mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
               {locale === 'ru' ? 'Скриншоты' : locale === 'uz' ? 'Skrinshotlar' : 'Screenshots'}
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-center mb-10 max-w-xl mx-auto">
+            <p className="text-gray-600 text-center mb-10 max-w-xl mx-auto">
               {locale === 'ru'
                 ? 'Ознакомьтесь с интерфейсом платформы'
                 : locale === 'uz'
@@ -106,7 +106,7 @@ export function FourEventDetail({ project }: { project: Project }) {
             </p>
 
             {/* Active screenshot preview */}
-            <div className="mb-6 rounded-2xl overflow-hidden shadow-xl border border-orange-200/30 dark:border-orange-700/30 max-w-4xl mx-auto">
+            <div className="mb-6 rounded-2xl overflow-hidden shadow-xl border border-orange-200/30 max-w-4xl mx-auto">
               <Image
                 src={screenshots[activeScreenshot] || screenshots[0]}
                 alt={`${project.title[locale]} screenshot ${activeScreenshot + 1}`}
@@ -128,7 +128,7 @@ export function FourEventDetail({ project }: { project: Project }) {
                     className={`flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all duration-300 ${
                       activeScreenshot === index
                         ? 'border-orange-500 shadow-lg shadow-orange-500/25 ring-2 ring-orange-500/30'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-600'
+                        : 'border-gray-200 hover:border-orange-300'
                     }`}
                   >
                     <Image
@@ -158,7 +158,7 @@ export function FourEventDetail({ project }: { project: Project }) {
               return (
                 <div
                   key={index}
-                  className={`rounded-2xl border border-gray-200/60 dark:border-gray-700/60 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm overflow-hidden transition-all duration-300 ${
+                  className={`rounded-2xl border border-gray-200/60 bg-white/70 backdrop-blur-sm overflow-hidden transition-all duration-300 ${
                     isExpanded ? 'shadow-lg' : 'shadow-sm hover:shadow-md'
                   }`}
                 >
@@ -176,7 +176,7 @@ export function FourEventDetail({ project }: { project: Project }) {
                     </div>
 
                     {/* Title */}
-                    <h3 className="flex-1 text-xl font-bold text-gray-900 dark:text-white">
+                    <h3 className="flex-1 text-xl font-bold text-gray-900">
                       {panel.title}
                     </h3>
 
@@ -202,8 +202,8 @@ export function FourEventDetail({ project }: { project: Project }) {
                       isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
-                    <div className="px-6 pb-6 pl-[5.75rem] border-t border-gray-100 dark:border-gray-700/50 pt-4">
-                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                    <div className="px-6 pb-6 pl-[5.75rem] border-t border-gray-100 pt-4">
+                      <p className="text-gray-600 leading-relaxed text-lg">
                         {panel.content}
                       </p>
                     </div>
@@ -218,7 +218,7 @@ export function FourEventDetail({ project }: { project: Project }) {
         {/* TECH STACK: Horizontal scrolling strip       */}
         {/* ============================================ */}
         <section className="mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-8">
             {t.projects.techStack}
           </h2>
 
@@ -226,7 +226,7 @@ export function FourEventDetail({ project }: { project: Project }) {
             {project.techStack.map((tech) => (
               <span
                 key={tech}
-                className="inline-flex items-center px-6 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 text-orange-700 dark:text-orange-300 border border-orange-200/60 dark:border-orange-700/40 shadow-sm"
+                className="inline-flex items-center px-6 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-orange-50 to-amber-50 text-orange-700 border border-orange-200/60 shadow-sm"
               >
                 {tech}
               </span>
@@ -239,17 +239,17 @@ export function FourEventDetail({ project }: { project: Project }) {
         {/* ============================================ */}
         {project.links?.demo && (
           <section className="mb-20">
-            <div className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl p-8 md:p-12 border border-orange-200/50 dark:border-orange-700/30">
+            <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-8 md:p-12 border border-orange-200/50">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
                     {locale === 'ru'
                       ? 'Попробуйте демо'
                       : locale === 'uz'
                         ? 'Demoni sinab ko\'ring'
                         : 'Try the Demo'}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed">
                     {locale === 'ru'
                       ? 'Посмотрите платформу в действии с нашим живым демо.'
                       : locale === 'uz'

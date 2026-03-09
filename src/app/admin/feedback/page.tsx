@@ -103,13 +103,21 @@ export default async function FeedbackPage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Feedback Management
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Review and approve customer feedback and testimonials
-        </p>
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Feedback Management
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Review and approve customer feedback and testimonials
+          </p>
+        </div>
+        <a
+          href="/admin/feedback/new"
+          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
+        >
+          + Add Review
+        </a>
       </div>
 
       {/* Stats */}

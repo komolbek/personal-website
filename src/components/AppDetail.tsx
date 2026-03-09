@@ -31,7 +31,7 @@ export function AppDetail({ app }: AppDetailProps) {
         {/* Back button */}
         <Link
           href="/apps"
-          className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-indigo-600 transition-colors mb-8"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -87,7 +87,7 @@ export function AppDetail({ app }: AppDetailProps) {
             >
               {app.category}
             </span>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
+            <p className="text-gray-600 text-lg">
               {app.description[locale]}
             </p>
           </div>
@@ -128,7 +128,7 @@ export function AppDetail({ app }: AppDetailProps) {
               href={app.webUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-6 py-4 border-2 border-gray-200 dark:border-gray-700 rounded-2xl hover:border-indigo-500 transition-all hover:scale-105"
+              className="flex items-center gap-3 px-6 py-4 border-2 border-gray-200 rounded-2xl hover:border-indigo-500 transition-all hover:scale-105"
             >
               <ExternalLinkIcon className="w-6 h-6" />
               <div className="font-semibold">{t.apps.visitWeb}</div>
@@ -139,7 +139,7 @@ export function AppDetail({ app }: AppDetailProps) {
         {/* Long Description */}
         {app.longDescription && (
           <div className="mb-12">
-            <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+            <p className="text-gray-600 text-lg leading-relaxed">
               {app.longDescription[locale]}
             </p>
           </div>
@@ -153,7 +153,7 @@ export function AppDetail({ app }: AppDetailProps) {
               {app.features[locale].map((feature, index) => (
                 <div
                   key={index}
-                  className="flex items-start gap-3 p-4 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
+                  className="flex items-start gap-3 p-4 rounded-2xl bg-white/50 backdrop-blur-sm border border-gray-200/50"
                 >
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
@@ -171,7 +171,7 @@ export function AppDetail({ app }: AppDetailProps) {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+                  <span className="text-gray-700">{feature}</span>
                 </div>
               ))}
             </div>
@@ -186,7 +186,7 @@ export function AppDetail({ app }: AppDetailProps) {
               {app.screenshots.map((screenshot, index) => (
                 <div
                   key={index}
-                  className="flex-shrink-0 w-64 h-[450px] rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-lg"
+                  className="flex-shrink-0 w-64 h-[450px] rounded-2xl overflow-hidden bg-gray-100 shadow-lg"
                 >
                   <Image
                     src={screenshot}

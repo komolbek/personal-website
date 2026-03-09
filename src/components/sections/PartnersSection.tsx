@@ -16,7 +16,7 @@ export function PartnersSection({ showTestimonials = false }: PartnersSectionPro
   const partnersWithTestimonials = getPartnersWithTestimonials();
 
   return (
-    <section className="py-20 px-4 bg-gray-50/50 dark:bg-gray-900/50">
+    <section className="py-20 px-4 bg-gray-50/50">
       <div className="max-w-6xl mx-auto">
         <SectionHeading
           title={t.home.partners.title}
@@ -33,7 +33,7 @@ export function PartnersSection({ showTestimonials = false }: PartnersSectionPro
         {/* Testimonials */}
         {showTestimonials && partnersWithTestimonials.length > 0 && (
           <div className="mt-16">
-            <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8">
+            <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
               {t.partners.testimonials}
             </h3>
             <div className="grid md:grid-cols-2 gap-6">

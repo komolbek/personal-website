@@ -12,35 +12,35 @@ export default function TermsPage() {
       <div className="max-w-3xl mx-auto">
         <Link
           href="/"
-          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-8 transition-colors"
+          className="inline-flex items-center text-sm text-gray-600 hover:text-indigo-600 mb-8 transition-colors"
         >
           ← {t.common.backToHome}
         </Link>
 
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">
           <span className="gradient-text">{t.legal.terms.title}</span>
         </h1>
 
-        <p className="text-gray-500 dark:text-gray-400 mb-8">
+        <p className="text-gray-500 mb-8">
           {t.legal.terms.lastUpdated}: January 2025
         </p>
 
-        <div className="prose prose-gray dark:prose-invert max-w-none">
+        <div className="prose prose-gray max-w-none">
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Agreement to Terms
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed">
               By accessing or using the services provided by {siteConfig.name}, you agree to be bound
               by these Terms of Service. If you do not agree to these terms, please do not use our services.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Services
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed">
               {siteConfig.name} provides software development services including but not limited to:
               business automation, custom CRM development, website development, e-commerce solutions,
               mobile application development, and AI integration services.
@@ -48,10 +48,10 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Intellectual Property
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed">
               All content, features, and functionality on our website are owned by {siteConfig.name}
               and are protected by international copyright, trademark, and other intellectual property laws.
               Upon full payment, clients receive ownership of custom-developed solutions as specified in
@@ -60,13 +60,13 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Project Agreements
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+            <p className="text-gray-600 leading-relaxed mb-4">
               Individual projects are governed by separate project agreements that specify:
             </p>
-            <ul className="list-disc pl-6 text-gray-600 dark:text-gray-400 space-y-2">
+            <ul className="list-disc pl-6 text-gray-600 space-y-2">
               <li>Scope of work and deliverables</li>
               <li>Timeline and milestones</li>
               <li>Payment terms and conditions</li>
@@ -76,10 +76,10 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Limitation of Liability
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed">
               {siteConfig.name} shall not be liable for any indirect, incidental, special, consequential,
               or punitive damages resulting from your use of our services. Our total liability shall not
               exceed the amount paid for the specific services in question.
@@ -87,10 +87,10 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Confidentiality
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed">
               We treat all client information and project details as confidential. We will not disclose
               any confidential information to third parties without your explicit consent, except as
               required by law.
@@ -98,10 +98,10 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Modifications
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed">
               We reserve the right to modify these Terms of Service at any time. Changes will be
               effective immediately upon posting to our website. Your continued use of our services
               after any modifications indicates your acceptance of the updated terms.
@@ -109,22 +109,22 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Governing Law
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed">
               These Terms of Service shall be governed by and construed in accordance with the laws
               of Uzbekistan, without regard to its conflict of law provisions.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Contact Us
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed">
               If you have any questions about these Terms of Service, please{' '}
-              <a href="/contact" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+              <a href="/contact" className="text-indigo-600 hover:underline">
                 contact us
               </a>.
             </p>

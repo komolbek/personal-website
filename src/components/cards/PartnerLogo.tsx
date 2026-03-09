@@ -26,8 +26,8 @@ export function PartnerLogo({ partner, size = 'md' }: PartnerLogoProps) {
           className={`${sizeClasses[size]} w-auto object-contain`}
         />
       ) : (
-        <div className={`${sizeClasses[size]} flex items-center justify-center px-4 bg-gray-200 dark:bg-gray-700 rounded-lg`}>
-          <span className="font-semibold text-gray-600 dark:text-gray-400 text-sm">
+        <div className={`${sizeClasses[size]} flex items-center justify-center px-4 bg-gray-200 rounded-lg`}>
+          <span className="font-semibold text-gray-600 text-sm">
             {partner.name}
           </span>
         </div>
