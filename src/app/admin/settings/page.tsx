@@ -196,22 +196,6 @@ export default async function SettingsPage({
         </form>
       </div>
 
-      {/* Database Information */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mt-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Database Information
-        </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          This website uses PostgreSQL database for storing dynamic content.
-          Make sure your DATABASE_URL environment variable is properly configured.
-        </p>
-        <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          <code className="text-sm text-gray-600 dark:text-gray-300">
-            DATABASE_URL=postgresql://user:password@host:5432/database
-          </code>
-        </div>
-      </div>
-
       {/* Quick Links */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mt-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">

@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { ConfirmButton } from '@/components/admin/ConfirmButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -245,17 +246,12 @@ export default async function FeedbackPage() {
 
                   <form action={deleteFeedback} className="ml-auto">
                     <input type="hidden" name="id" value={item.id} />
-                    <button
-                      type="submit"
+                    <ConfirmButton
                       className="px-3 py-1.5 text-red-600 hover:text-red-700 dark:text-red-400 text-sm transition-colors"
-                      onClick={(e) => {
-                        if (!confirm('Are you sure you want to delete this feedback?')) {
-                          e.preventDefault();
-                        }
-                      }}
+                      message="Are you sure you want to delete this feedback?"
                     >
                       Delete
-                    </button>
+                    </ConfirmButton>
                   </form>
                 </div>
               </div>

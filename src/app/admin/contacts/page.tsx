@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { ConfirmButton } from '@/components/admin/ConfirmButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -151,17 +152,12 @@ export default async function ContactsPage() {
 
                     <form action={deleteContact}>
                       <input type="hidden" name="id" value={contact.id} />
-                      <button
-                        type="submit"
+                      <ConfirmButton
                         className="p-2 text-gray-400 hover:text-red-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                        onClick={(e) => {
-                          if (!confirm('Are you sure you want to delete this submission?')) {
-                            e.preventDefault();
-                          }
-                        }}
+                        message="Are you sure you want to delete this submission?"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-                      </button>
+                      </ConfirmButton>
                     </form>
                   </div>
                 </div>
