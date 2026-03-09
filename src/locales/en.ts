@@ -1,6 +1,7 @@
 export const en = {
   nav: {
     home: 'Home',
+    services: 'Services',
     solutions: 'Products',
     projects: 'Projects',
     portfolio: 'Portfolio',
@@ -11,8 +12,8 @@ export const en = {
   home: {
     hero: {
       badge: 'IT Solutions & Software Development',
-      title: 'We Build Digital Solutions That Drive Business Growth',
-      subtitle: 'From business automation to AI integration, we deliver tailored software solutions for your unique challenges.',
+      title: 'Automate Your Business. Scale Without Limits.',
+      subtitle: 'We help Uzbek companies streamline operations with custom CRM, ERP, and AI-powered solutions — from legal firms to education centers.',
       cta: 'View Our Work',
       contact: 'Get a Free Consultation',
     },
@@ -34,20 +35,20 @@ export const en = {
       },
       features: {
         expertise: {
-          title: 'Expert Team',
-          desc: 'Skilled developers with years of experience in modern technologies',
+          title: 'Local Expertise',
+          desc: 'Deep understanding of the Uzbek market and business processes',
         },
         technology: {
-          title: 'Modern Technology',
-          desc: 'Using the latest tools and frameworks for optimal performance',
+          title: 'Modern Stack',
+          desc: 'React, Next.js, Node.js, AI/ML — we use what works best for your project',
         },
         agile: {
-          title: 'Agile Process',
-          desc: 'Flexible and transparent development with regular updates',
+          title: 'End-to-End Delivery',
+          desc: 'From concept to deployment and ongoing support — one team, full ownership',
         },
         support: {
-          title: 'Ongoing Support',
-          desc: 'Dedicated support and maintenance after project launch',
+          title: 'Product Mindset',
+          desc: 'We build products, not just projects. Creators of Yuridix, Ordo & TalimX',
         },
       },
     },
@@ -55,10 +56,50 @@ export const en = {
       title: 'Trusted By',
       subtitle: 'Companies that rely on our solutions',
     },
+    testimonials: {
+      title: 'What Our Clients Say',
+      subtitle: 'Real results from real partnerships',
+    },
     cta: {
       title: 'Ready to Start Your Project?',
       subtitle: "Let's discuss how we can help transform your business with modern technology solutions.",
       button: 'Get in Touch',
+    },
+  },
+  servicesPage: {
+    title: 'Our Services',
+    subtitle: 'End-to-end software development for businesses in Uzbekistan and beyond',
+    items: {
+      webDev: {
+        title: 'Web Development',
+        desc: 'Custom websites, web applications, and SaaS platforms built with modern frameworks for speed, scalability, and SEO.',
+        tech: ['React', 'Next.js', 'Node.js', 'PostgreSQL'],
+      },
+      mobileDev: {
+        title: 'Mobile Development',
+        desc: 'Native and cross-platform mobile apps for iOS and Android with intuitive UX and seamless backend integration.',
+        tech: ['React Native', 'Swift', 'Kotlin', 'Firebase'],
+      },
+      crmErp: {
+        title: 'CRM / ERP Systems',
+        desc: 'Custom business management systems tailored to your workflows — from client management to resource planning and analytics.',
+        tech: ['Custom CRM', 'ERP', 'Automation', 'Analytics'],
+      },
+      uiux: {
+        title: 'UI/UX Design',
+        desc: 'User-centered design that converts. From wireframes to polished interfaces, we craft experiences your users will love.',
+        tech: ['Figma', 'Prototyping', 'User Research', 'Design Systems'],
+      },
+      ai: {
+        title: 'AI Integration',
+        desc: 'Leverage artificial intelligence for automation, data analysis, natural language processing, and intelligent decision-making.',
+        tech: ['OpenAI', 'LLMs', 'Computer Vision', 'NLP'],
+      },
+      consulting: {
+        title: 'IT Consulting',
+        desc: 'Strategic technology consulting to help you choose the right stack, architecture, and approach for your digital transformation.',
+        tech: ['Architecture', 'Strategy', 'Audit', 'Migration'],
+      },
     },
   },
   solutions: {
@@ -74,13 +115,13 @@ export const en = {
     process: {
       title: 'Our Process',
       discovery: 'Discovery',
-      discoveryDesc: 'We analyze your needs and define project scope',
+      discoveryDesc: 'We analyze your needs, study your market, and define the project scope',
       design: 'Design',
-      designDesc: 'Creating user-centric designs and architecture',
+      designDesc: 'Creating user-centric designs and scalable architecture',
       development: 'Development',
-      developmentDesc: 'Building your solution with modern technologies',
+      developmentDesc: 'Building your solution with modern technologies and best practices',
       launch: 'Launch',
-      launchDesc: 'Deploying and ensuring smooth operation',
+      launchDesc: 'Deploying, testing, and ensuring smooth operation with ongoing support',
     },
   },
   projects: {
@@ -117,36 +158,45 @@ export const en = {
   },
   about: {
     title: 'About Us',
-    subtitle: 'Your trusted technology partner',
+    subtitle: 'Your trusted technology partner in Uzbekistan',
     mission: {
       title: 'Our Mission',
-      text: 'To empower businesses with innovative technology solutions that drive growth, efficiency, and competitive advantage in the digital age.',
+      text: 'To help Uzbek businesses compete in the digital age by building reliable, custom software — from legal management systems to education platforms and everything in between.',
     },
     story: {
       title: 'Our Story',
-      text: 'Necto Automations was founded with a vision to bridge the gap between business needs and technology. We believe that every business, regardless of size, deserves access to powerful, custom-built software solutions. Our team combines deep technical expertise with a genuine passion for solving complex problems.',
+      text: 'Necto Automations was founded in Tashkent with a clear goal: build software that actually solves real business problems. We started with Yuridix — a legal practice management system born from seeing law firms struggle with paper-based workflows. That product mindset drives everything we do. Today we maintain three in-house products (Yuridix, Ordo, TalimX) and deliver custom projects for businesses across Uzbekistan.',
+    },
+    approach: {
+      title: 'Our Approach',
+      items: [
+        { title: 'Understand', desc: 'We start by deeply understanding your business, not just your requirements' },
+        { title: 'Prototype', desc: 'Rapid prototyping to validate ideas before full development' },
+        { title: 'Build', desc: 'Clean, maintainable code with modern technologies' },
+        { title: 'Support', desc: 'Long-term partnership with dedicated post-launch support' },
+      ],
     },
     team: {
       title: 'Our Team',
-      subtitle: 'Meet the experts behind your success',
+      subtitle: 'A team of developers, designers, and consultants passionate about building great software',
     },
     values: {
-      title: 'Our Values',
+      title: 'What We Stand For',
       innovation: {
-        title: 'Innovation',
-        desc: 'Constantly exploring new technologies and approaches',
+        title: 'Local Expertise',
+        desc: 'We understand the Uzbek market, its regulations, and business culture',
       },
       quality: {
-        title: 'Quality',
-        desc: 'Delivering excellence in every line of code',
+        title: 'Product Mindset',
+        desc: 'We build products we use ourselves — that\'s our quality guarantee',
       },
       transparency: {
-        title: 'Transparency',
-        desc: 'Clear communication and honest collaboration',
+        title: 'Full Transparency',
+        desc: 'Clear pricing, honest timelines, and open communication throughout',
       },
       partnership: {
-        title: 'Partnership',
-        desc: 'Building lasting relationships with our clients',
+        title: 'Long-term Partnership',
+        desc: 'We don\'t disappear after launch — we grow with our clients',
       },
     },
     stats: {
@@ -166,7 +216,7 @@ export const en = {
       company: 'Company Name',
       companyPlaceholder: 'Optional',
       phone: 'Phone Number',
-      phonePlaceholder: 'Optional',
+      phonePlaceholder: '+998 XX XXX XX XX',
       service: 'Service Interested In',
       selectService: 'Select a service',
       budget: 'Estimated Budget',
@@ -189,9 +239,18 @@ export const en = {
       email: 'Email',
       phone: 'Phone',
       address: 'Address',
+      telegram: 'Telegram',
+      telegramCta: 'Write us on Telegram',
     },
     social: 'Follow Us',
     responseNote: 'We typically respond within 24 hours during business days.',
+  },
+  blog: {
+    title: 'Insights & Resources',
+    subtitle: 'Articles about business automation, technology trends, and digital transformation in Uzbekistan',
+    comingSoon: 'Coming Soon',
+    comingSoonDesc: 'We\'re preparing useful articles about business automation and technology. Follow us on Telegram to get notified when we publish.',
+    followTelegram: 'Follow on Telegram',
   },
   legal: {
     privacy: {
@@ -221,10 +280,12 @@ export const en = {
     company: 'Company',
     services: 'Products',
     resources: 'Resources',
+    contact: 'Contact',
     legal: 'Legal',
     privacy: 'Privacy Policy',
     terms: 'Terms of Service',
-    description: 'In-house developed software products: Yuridix, Ordo, TalimX and custom project development.',
+    blog: 'Blog',
+    description: 'Custom software development in Tashkent. Creators of Yuridix, Ordo & TalimX.',
   },
   language: {
     en: 'English',

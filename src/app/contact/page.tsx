@@ -6,7 +6,10 @@ import { siteConfig } from '@/config/site';
 import {
   PhoneIcon,
   MapPinIcon,
+  MailIcon,
+  TelegramIcon,
 } from '@/components/ui/Icons';
+import { FadeIn, SlideInLeft, SlideInRight } from '@/components/ui/AnimatedSection';
 
 export default function ContactPage() {
   const { locale, t } = useLocale();
@@ -99,18 +102,20 @@ export default function ContactPage() {
 
       <div className="max-w-6xl mx-auto">
         {/* Page Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
-            {t.contact.title}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
-            {t.contact.subtitle}
-          </p>
-        </div>
+        <FadeIn>
+          <div className="text-center mb-16">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
+              {t.contact.title}
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+              {t.contact.subtitle}
+            </p>
+          </div>
+        </FadeIn>
 
         <div className="grid lg:grid-cols-5 gap-12">
           {/* Contact Info */}
-          <div className="lg:col-span-2 space-y-6">
+          <SlideInLeft className="lg:col-span-2 space-y-6">
             {/* Contact Information Card */}
             <div className="p-6 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
               <h3 className="text-lg font-semibold mb-4">{t.contact.info.title}</h3>
@@ -127,6 +132,40 @@ export default function ContactPage() {
                     <div>
                       <div className="text-sm text-gray-500 dark:text-gray-500">{t.contact.info.phone}</div>
                       <span>{siteConfig.phone}</span>
+                    </div>
+                  </a>
+                )}
+
+                {/* Email */}
+                {siteConfig.email && (
+                  <a
+                    href={`mailto:${siteConfig.email}`}
+                    className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
+                      <MailIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500 dark:text-gray-500">{t.contact.info.email}</div>
+                      <span>{siteConfig.email}</span>
+                    </div>
+                  </a>
+                )}
+
+                {/* Telegram */}
+                {siteConfig.telegram && (
+                  <a
+                    href={`https://t.me/${siteConfig.telegram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
+                      <TelegramIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500 dark:text-gray-500">{t.contact.info.telegram}</div>
+                      <span>{t.contact.info.telegramCta}</span>
                     </div>
                   </a>
                 )}
@@ -152,10 +191,10 @@ export default function ContactPage() {
                 {t.contact.responseNote}
               </p>
             </div>
-          </div>
+          </SlideInLeft>
 
           {/* Contact Form */}
-          <div className="lg:col-span-3">
+          <SlideInRight className="lg:col-span-3">
             <form
               onSubmit={handleSubmit}
               className="p-8 rounded-3xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
@@ -317,7 +356,7 @@ export default function ContactPage() {
                 </button>
               </div>
             </form>
-          </div>
+          </SlideInRight>
         </div>
       </div>
     </div>

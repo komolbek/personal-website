@@ -7,6 +7,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ServiceCard } from '@/components/cards/ServiceCard';
 import { ProjectCard } from '@/components/cards/ProjectCard';
 import { Button } from '@/components/ui/Button';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/ui/AnimatedSection';
 
 export function PortfolioPreview() {
   const { locale, t } = useLocale();
@@ -17,29 +18,34 @@ export function PortfolioPreview() {
   return (
     <section className="py-20 px-4">
       <div className="max-w-6xl mx-auto">
-        <SectionHeading
-          title={portfolio.title}
-          subtitle={portfolio.subtitle}
-        />
+        <FadeIn>
+          <SectionHeading
+            title={portfolio.title}
+            subtitle={portfolio.subtitle}
+          />
+        </FadeIn>
 
         {/* Products sub-section */}
         <div className="mt-12 mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-8 rounded-full bg-gradient-to-b from-indigo-500 to-purple-500" />
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-              {portfolio.productsHeading}
-            </h3>
-          </div>
+          <FadeIn>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-1 h-8 rounded-full bg-gradient-to-b from-indigo-500 to-purple-500" />
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                {portfolio.productsHeading}
+              </h3>
+            </div>
+          </FadeIn>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {solutions.map((solution) => (
-              <ServiceCard
-                key={solution.slug}
-                solution={solution}
-                locale={locale}
-              />
+              <StaggerItem key={solution.slug}>
+                <ServiceCard
+                  solution={solution}
+                  locale={locale}
+                />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
 
         {/* Subtle divider */}
@@ -49,29 +55,34 @@ export function PortfolioPreview() {
 
         {/* Projects sub-section */}
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-8 rounded-full bg-gradient-to-b from-pink-500 to-amber-500" />
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-              {portfolio.projectsHeading}
-            </h3>
-          </div>
+          <FadeIn>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-1 h-8 rounded-full bg-gradient-to-b from-pink-500 to-amber-500" />
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                {portfolio.projectsHeading}
+              </h3>
+            </div>
+          </FadeIn>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredProjects.map((project) => (
-              <ProjectCard
-                key={project.slug}
-                project={project}
-                locale={locale}
-              />
+              <StaggerItem key={project.slug}>
+                <ProjectCard
+                  project={project}
+                  locale={locale}
+                />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
 
-        <div className="text-center mt-12">
-          <Button href="/portfolio" variant="outline">
-            {portfolio.viewAll}
-          </Button>
-        </div>
+        <FadeIn>
+          <div className="text-center mt-12">
+            <Button href="/portfolio" variant="outline">
+              {portfolio.viewAll}
+            </Button>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );

@@ -10,6 +10,7 @@ import { siteConfig } from '@/config/site';
 
 const navItems = [
   { key: 'home', href: '/' },
+  { key: 'services', href: '/services' },
   { key: 'portfolio', href: '/portfolio' },
   { key: 'about', href: '/about' },
   { key: 'contact', href: '/contact' },

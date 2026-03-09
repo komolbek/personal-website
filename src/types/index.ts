@@ -93,7 +93,7 @@ export interface CompanyStats {
 export interface SocialLink {
   platform: string;
   url: string;
-  icon: string;
+  icon?: string;
 }
 
 // Enhanced contact form

@@ -6,6 +6,8 @@ export const siteConfig = {
   description: 'Professional IT solutions including business automation, custom CRM, mobile apps, e-commerce, and AI integration. Transform your business with modern technology.',
   url: 'https://necto.uz',
   phone: '+998 77 070 72 70',
+  email: 'info@necto.uz',
+  telegram: 'necto_customers_bot',
   address: {
     en: 'Tashkent, Uzbekistan',
     ru: 'Ташкент, Узбекистан',
@@ -22,7 +24,10 @@ export const companyStats: CompanyStats = {
   satisfaction: 98,
 };
 
-export const socialLinks: SocialLink[] = [];
+export const socialLinks: SocialLink[] = [
+  { platform: 'telegram', url: 'https://t.me/necto_customers_bot' },
+  { platform: 'instagram', url: 'https://instagram.com/necto.uz' },
+];
 
 // Apps/Projects are now managed through the admin panel as Client Projects
 // This array is kept for backwards compatibility but should remain empty

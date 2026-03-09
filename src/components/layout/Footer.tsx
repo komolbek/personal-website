@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useLocale } from '@/hooks/useLocale';
 import { siteConfig } from '@/config/site';
 import { solutions } from '@/config/solutions';
-import { HeartIcon } from '@/components/ui/Icons';
+import { HeartIcon, TelegramIcon, MailIcon, PhoneIcon } from '@/components/ui/Icons';
 
 export function Footer() {
   const { locale, t } = useLocale();
@@ -22,6 +22,32 @@ export function Footer() {
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 leading-relaxed">
               {t.footer.description}
             </p>
+            {/* Social Icons */}
+            <div className="flex items-center gap-3 mt-4">
+              <a
+                href={`https://t.me/${siteConfig.telegram}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20 transition-colors"
+                aria-label="Telegram"
+              >
+                <TelegramIcon className="w-4 h-4" />
+              </a>
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="w-9 h-9 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20 transition-colors"
+                aria-label="Email"
+              >
+                <MailIcon className="w-4 h-4" />
+              </a>
+              <a
+                href={`tel:${siteConfig.phone}`}
+                className="w-9 h-9 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20 transition-colors"
+                aria-label="Phone"
+              >
+                <PhoneIcon className="w-4 h-4" />
+              </a>
+            </div>
           </div>
 
           {/* Products Links */}
@@ -51,6 +77,14 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
+                  href="/services"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                >
+                  {t.nav.services}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/about"
                   className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                 >
@@ -67,6 +101,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/blog"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                >
+                  {t.footer.blog}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/contact"
                   className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                 >
@@ -76,24 +118,49 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Legal Links */}
+          {/* Contact Info */}
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-              {t.footer.legal}
+              {t.footer.contact}
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               <li>
+                <a
+                  href={`tel:${siteConfig.phone}`}
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                >
+                  {siteConfig.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${siteConfig.email}`}
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                >
+                  {siteConfig.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://t.me/${siteConfig.telegram}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                >
+                  @{siteConfig.telegram}
+                </a>
+              </li>
+              <li className="pt-2">
                 <Link
                   href="/legal/privacy"
-                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                  className="text-xs text-gray-500 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                 >
                   {t.footer.privacy}
                 </Link>
-              </li>
-              <li>
+                <span className="text-xs text-gray-400 mx-2">|</span>
                 <Link
                   href="/legal/terms"
-                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                  className="text-xs text-gray-500 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                 >
                   {t.footer.terms}
                 </Link>

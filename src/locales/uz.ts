@@ -1,6 +1,7 @@
 export const uz = {
   nav: {
     home: 'Bosh sahifa',
+    services: 'Xizmatlar',
     solutions: 'Mahsulotlar',
     projects: 'Loyihalar',
     portfolio: 'Portfolio',
@@ -11,15 +12,15 @@ export const uz = {
   home: {
     hero: {
       badge: 'IT Yechimlar va Dasturiy Ta\'minot',
-      title: 'Biznes o\'sishini ta\'minlaydigan raqamli yechimlar yaratamiz',
-      subtitle: 'Biznes avtomatlashtirishdan AI integratsiyasigacha — sizning noyob muammolaringiz uchun maxsus dasturiy yechimlar taqdim etamiz.',
+      title: 'Biznesingizni avtomatlashtiring. Chegarasiz rivojlaning.',
+      subtitle: 'O\'zbek kompaniyalariga CRM, ERP va AI yechimlar bilan operatsiyalarni optimallashtrishga yordam beramiz — yuridik firmalardan ta\'lim markazlarigacha.',
       cta: 'Bizning ishlarimiz',
       contact: 'Bepul maslahat',
     },
     portfolio: {
       title: 'Bizning ishlarimiz',
       subtitle: 'O\'z mahsulotlarimiz va mijozlar loyihalari',
-      productsHeading: 'O\'z ishlab chiqarilgan dasturiy mahsulotlar',
+      productsHeading: 'O\'z dasturiy mahsulotlarimiz',
       projectsHeading: 'Mijozlar loyihalari',
       viewAll: 'To\'liq portfolio',
     },
@@ -30,24 +31,24 @@ export const uz = {
         projects: 'Bajarilgan loyihalar',
         clients: 'Mamnun mijozlar',
         years: 'Yillik tajriba',
-        satisfaction: 'Mijozlar mamnuniyati',
+        satisfaction: 'Mamnuniyat',
       },
       features: {
         expertise: {
-          title: 'Ekspert jamoa',
-          desc: 'Zamonaviy texnologiyalarda yillar tajribasiga ega malakali dasturchilar',
+          title: 'Mahalliy ekspertiza',
+          desc: 'O\'zbek bozori va biznes jarayonlarini chuqur tushunish',
         },
         technology: {
-          title: 'Zamonaviy texnologiyalar',
-          desc: 'Optimal samaradorlik uchun eng so\'nggi vositalar va freymvorklar',
+          title: 'Zamonaviy stek',
+          desc: 'React, Next.js, Node.js, AI/ML — loyihangiz uchun eng yaxshisini ishlatamiz',
         },
         agile: {
-          title: 'Moslashuvchan jarayon',
-          desc: 'Muntazam yangilanishlar bilan shaffof ishlab chiqish',
+          title: 'To\'liq tsikl yetkazish',
+          desc: 'Kontseptsiyadan ishga tushirishgacha va qo\'llab-quvvatlash — bitta jamoa, to\'liq javobgarlik',
         },
         support: {
-          title: 'Doimiy qo\'llab-quvvatlash',
-          desc: 'Loyiha ishga tushirilgandan keyin ham maxsus qo\'llab-quvvatlash',
+          title: 'Mahsulot tafakkuri',
+          desc: 'Biz mahsulotlar yaratamiz, shunchaki loyihalar emas. Yuridix, Ordo va TalimX yaratuvchilari',
         },
       },
     },
@@ -55,10 +56,50 @@ export const uz = {
       title: 'Bizga ishonishadi',
       subtitle: 'Yechimlarimizga tayanadigan kompaniyalar',
     },
+    testimonials: {
+      title: 'Mijozlarimiz fikri',
+      subtitle: 'Haqiqiy hamkorlikdan haqiqiy natijalar',
+    },
     cta: {
       title: 'Loyihangizni boshlashga tayyormisiz?',
       subtitle: 'Zamonaviy texnologik yechimlar bilan biznesingizni qanday o\'zgartira olishimizni muhokama qilaylik.',
       button: 'Bog\'lanish',
+    },
+  },
+  servicesPage: {
+    title: 'Bizning xizmatlar',
+    subtitle: 'O\'zbekiston va undan tashqaridagi bizneslar uchun to\'liq tsikl dasturiy ta\'minot ishlab chiqish',
+    items: {
+      webDev: {
+        title: 'Veb-ishlab chiqish',
+        desc: 'Zamonaviy freymvorklarda maxsus saytlar, veb-ilovalar va SaaS platformalar — tez, masshtabli, SEO-optimallashtirilgan.',
+        tech: ['React', 'Next.js', 'Node.js', 'PostgreSQL'],
+      },
+      mobileDev: {
+        title: 'Mobil ishlab chiqish',
+        desc: 'iOS va Android uchun nativ va krossplatforma mobil ilovalar — intuitiv interfeys va server bilan uzluksiz integratsiya.',
+        tech: ['React Native', 'Swift', 'Kotlin', 'Firebase'],
+      },
+      crmErp: {
+        title: 'CRM / ERP tizimlar',
+        desc: 'Jarayonlaringizga moslashtirilgan biznesni boshqarish tizimlari — mijozlarni boshqarishdan resurslarni rejalashtirishgacha.',
+        tech: ['CRM', 'ERP', 'Avtomatlashtirish', 'Analitika'],
+      },
+      uiux: {
+        title: 'UI/UX dizayn',
+        desc: 'Foydalanuvchiga yo\'naltirilgan dizayn. Vayerfreymlardan tayyor interfeyslargacha — foydalanuvchilaringiz yoqtiradigan tajriba.',
+        tech: ['Figma', 'Prototiplash', 'Tadqiqot', 'Dizayn tizimlari'],
+      },
+      ai: {
+        title: 'AI integratsiya',
+        desc: 'Sun\'iy intellektni avtomatlashtirish, ma\'lumotlar tahlili, matn qayta ishlash va aqlli qaror qabul qilish uchun qo\'llang.',
+        tech: ['OpenAI', 'LLM', 'Kompyuter ko\'rish', 'NLP'],
+      },
+      consulting: {
+        title: 'IT maslahat',
+        desc: 'Strategik texnologik maslahat: raqamli transformatsiya uchun to\'g\'ri stek, arxitektura va yondashuvni tanlash.',
+        tech: ['Arxitektura', 'Strategiya', 'Audit', 'Migratsiya'],
+      },
     },
   },
   solutions: {
@@ -74,13 +115,13 @@ export const uz = {
     process: {
       title: 'Bizning jarayon',
       discovery: 'Tahlil',
-      discoveryDesc: 'Ehtiyojlaringizni tahlil qilamiz va loyiha hajmini belgilaymiz',
+      discoveryDesc: 'Ehtiyojlaringizni o\'rganamiz, bozoringizni tahlil qilamiz va loyiha hajmini belgilaymiz',
       design: 'Dizayn',
-      designDesc: 'Foydalanuvchiga yo\'naltirilgan dizayn va arxitektura yaratamiz',
+      designDesc: 'Foydalanuvchiga yo\'naltirilgan dizayn va masshtabli arxitektura yaratamiz',
       development: 'Ishlab chiqish',
-      developmentDesc: 'Zamonaviy texnologiyalar bilan yechimingizni quramiz',
+      developmentDesc: 'Zamonaviy texnologiyalar va eng yaxshi amaliyotlar bilan yechimingizni quramiz',
       launch: 'Ishga tushirish',
-      launchDesc: 'Joylashtiramiz va muammosiz ishlashini ta\'minlaymiz',
+      launchDesc: 'Joylashtiramiz, sinab ko\'ramiz va doimiy qo\'llab-quvvatlash bilan muammosiz ishlashini ta\'minlaymiz',
     },
   },
   projects: {
@@ -117,36 +158,45 @@ export const uz = {
   },
   about: {
     title: 'Biz haqimizda',
-    subtitle: 'Sizning ishonchli texnologik hamkoringiz',
+    subtitle: 'O\'zbekistondagi ishonchli texnologik hamkoringiz',
     mission: {
       title: 'Bizning missiya',
-      text: 'Raqamli davrda o\'sish, samaradorlik va raqobatbardoshlikni ta\'minlaydigan innovatsion texnologik yechimlar bilan bizneslarni qo\'llab-quvvatlash.',
+      text: 'O\'zbek bizneslariga raqamli davrda raqobat qilishga yordam berish — yuridik amaliyotni boshqarish tizimlaridan ta\'lim platformalarigacha ishonchli, maxsus dasturiy ta\'minot yaratish.',
     },
     story: {
       title: 'Bizning tarix',
-      text: 'Necto Automations biznes ehtiyojlari va texnologiya o\'rtasidagi bo\'shliqni to\'ldirish maqsadida tashkil etilgan. Biz har qanday biznes, hajmidan qat\'i nazar, kuchli, maxsus ishlab chiqilgan dasturiy yechimlarga kirish huquqiga ega bo\'lishi kerak deb hisoblaymiz. Jamoamiz chuqur texnik tajribani murakkab muammolarni hal qilishga bo\'lgan chinakam ishtiyoq bilan birlashtiradi.',
+      text: 'Necto Automations Toshkentda aniq maqsad bilan tashkil etilgan: haqiqiy biznes muammolarini hal qiladigan dasturiy ta\'minot yaratish. Biz Yuridix bilan boshladik — yuridik firmalarning qog\'ozli ish oqimlari bilan kurashini ko\'rib tug\'ilgan yuridik amaliyotni boshqarish tizimi. Bu mahsulot tafakkuri biz qilayotgan hamma narsani harakatga keltiradi. Bugun biz uchta o\'z mahsulotimizni (Yuridix, Ordo, TalimX) qo\'llab-quvvatlaymiz va butun O\'zbekiston bo\'ylab bizneslar uchun maxsus loyihalarni amalga oshiramiz.',
+    },
+    approach: {
+      title: 'Bizning yondashuv',
+      items: [
+        { title: 'Tushunish', desc: 'Biz faqat talablarni emas, biznesingizni chuqur tushunishdan boshlaymiz' },
+        { title: 'Prototip', desc: 'To\'liq ishlab chiqishdan oldin g\'oyalarni tekshirish uchun tezkor prototiplash' },
+        { title: 'Qurish', desc: 'Zamonaviy texnologiyalar bilan toza, qo\'llab-quvvatlanadigan kod' },
+        { title: 'Qo\'llab-quvvatlash', desc: 'Ishga tushirilgandan keyin maxsus qo\'llab-quvvatlash bilan uzoq muddatli hamkorlik' },
+      ],
     },
     team: {
       title: 'Bizning jamoa',
-      subtitle: 'Muvaffaqiyatingiz ortidagi ekspertlar bilan tanishing',
+      subtitle: 'Ajoyib dasturiy ta\'minot yaratishga ishtiyoqli dasturchilar, dizaynerlar va maslahatchilar jamoasi',
     },
     values: {
-      title: 'Bizning qadriyatlar',
+      title: 'Biz nimaga ishonamiz',
       innovation: {
-        title: 'Innovatsiya',
-        desc: 'Doimiy ravishda yangi texnologiyalar va yondashuvlarni o\'rganamiz',
+        title: 'Mahalliy ekspertiza',
+        desc: 'Biz O\'zbek bozorini, uning tartiblarini va biznes madaniyatini tushunamiz',
       },
       quality: {
-        title: 'Sifat',
-        desc: 'Har bir kod qatorida mukammallikni ta\'minlaymiz',
+        title: 'Mahsulot tafakkuri',
+        desc: 'Biz o\'zimiz foydalanadigan mahsulotlar yaratamiz — bu bizning sifat kafolatimiz',
       },
       transparency: {
-        title: 'Shaffoflik',
-        desc: 'Aniq muloqot va halol hamkorlik',
+        title: 'To\'liq shaffoflik',
+        desc: 'Aniq narxlar, halol muddatlar va ochiq muloqot',
       },
       partnership: {
-        title: 'Hamkorlik',
-        desc: 'Mijozlarimiz bilan uzoq muddatli munosabatlar quramiz',
+        title: 'Uzoq muddatli hamkorlik',
+        desc: 'Biz ishga tushirilgandan keyin yo\'qolmaymiz — mijozlarimiz bilan birga o\'samiz',
       },
     },
     stats: {
@@ -166,7 +216,7 @@ export const uz = {
       company: 'Kompaniya nomi',
       companyPlaceholder: 'Ixtiyoriy',
       phone: 'Telefon raqami',
-      phonePlaceholder: 'Ixtiyoriy',
+      phonePlaceholder: '+998 XX XXX XX XX',
       service: 'Qiziqtirgan xizmat',
       selectService: 'Xizmatni tanlang',
       budget: 'Taxminiy byudjet',
@@ -189,9 +239,18 @@ export const uz = {
       email: 'Email',
       phone: 'Telefon',
       address: 'Manzil',
+      telegram: 'Telegram',
+      telegramCta: 'Telegramda yozing',
     },
     social: 'Ijtimoiy tarmoqlar',
     responseNote: 'Odatda ish kunlarida 24 soat ichida javob beramiz.',
+  },
+  blog: {
+    title: 'Maqolalar va resurslar',
+    subtitle: 'O\'zbekistonda biznes avtomatlashtirish, texnologik trendlar va raqamli transformatsiya haqida maqolalar',
+    comingSoon: 'Tez orada',
+    comingSoonDesc: 'Biz biznes avtomatlashtirish va texnologiyalar haqida foydali maqolalar tayyorlamoqdamiz. Telegramimizga obuna bo\'ling.',
+    followTelegram: 'Telegramga obuna bo\'lish',
   },
   legal: {
     privacy: {
@@ -221,10 +280,12 @@ export const uz = {
     company: 'Kompaniya',
     services: 'Mahsulotlar',
     resources: 'Resurslar',
+    contact: 'Aloqa',
     legal: 'Huquqiy ma\'lumot',
     privacy: 'Maxfiylik siyosati',
     terms: 'Foydalanish shartlari',
-    description: 'O\'z ishlab chiqarilgan dasturiy mahsulotlar: Yuridix, Ordo, TalimX va buyurtma loyihalar.',
+    blog: 'Blog',
+    description: 'Toshkentda dasturiy ta\'minot ishlab chiqish. Yuridix, Ordo va TalimX yaratuvchilari.',
   },
   language: {
     en: 'English',
