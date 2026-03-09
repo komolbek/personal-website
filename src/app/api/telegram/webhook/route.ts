@@ -1,16 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getBot } from '@/lib/telegram-bot';
+import { ensureBotInitialized } from '@/lib/telegram-bot';
 
 export async function POST(req: NextRequest) {
   try {
-    const token = process.env.TELEGRAM_BOT_TOKEN;
-    if (!token) {
-      console.error('TELEGRAM_BOT_TOKEN is not set');
-      return NextResponse.json({ ok: false, error: 'Bot token not configured' });
-    }
-
     const body = await req.json();
-    const bot = getBot();
+    const bot = await ensureBotInitialized();
     await bot.handleUpdate(body);
     return NextResponse.json({ ok: true });
   } catch (error) {

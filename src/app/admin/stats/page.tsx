@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { ConfirmButton } from '@/components/admin/ConfirmButton';
+import { TranslateButton } from '@/components/admin/TranslateButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -122,104 +124,116 @@ export default async function StatsPage() {
         ) : (
           <div className="space-y-4">
             {stats.map((stat) => (
-              <form key={stat.id} action={updateStat} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                <input type="hidden" name="id" value={stat.id} />
+              <div key={stat.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <form action={updateStat}>
+                  <input type="hidden" name="id" value={stat.id} />
 
-                <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
-                  <div>
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Key</label>
-                    <div className="px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded text-sm text-gray-600 dark:text-gray-300">
-                      {stat.key}
+                  <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
+                    <div>
+                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Key</label>
+                      <div className="px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded text-sm text-gray-600 dark:text-gray-300">
+                        {stat.key}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Value</label>
+                      <input
+                        type="number"
+                        name="value"
+                        defaultValue={stat.value}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Suffix</label>
+                      <input
+                        type="text"
+                        name="suffix"
+                        defaultValue={stat.suffix || ''}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Label (RU)</label>
+                      <input
+                        type="text"
+                        name="label_ru"
+                        id={`stat_${stat.id}_label_ru`}
+                        defaultValue={stat.label_ru || ''}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Label (EN)</label>
+                      <input
+                        type="text"
+                        name="label_en"
+                        id={`stat_${stat.id}_label_en`}
+                        defaultValue={stat.label_en}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Label (UZ)</label>
+                      <input
+                        type="text"
+                        name="label_uz"
+                        id={`stat_${stat.id}_label_uz`}
+                        defaultValue={stat.label_uz || ''}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Value</label>
-                    <input
-                      type="number"
-                      name="value"
-                      defaultValue={stat.value}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    />
-                  </div>
+                  <div className="flex items-center justify-between mt-4">
+                    <div className="flex items-center gap-3">
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          name="isVisible"
+                          value="true"
+                          defaultChecked={stat.isVisible}
+                          className="rounded border-gray-300 dark:border-gray-600 text-indigo-600"
+                        />
+                        <span className="text-sm text-gray-600 dark:text-gray-400">Visible</span>
+                      </label>
+                      <TranslateButton
+                        fields={[{
+                          ruId: `stat_${stat.id}_label_ru`,
+                          enId: `stat_${stat.id}_label_en`,
+                          uzId: `stat_${stat.id}_label_uz`,
+                        }]}
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Suffix</label>
-                    <input
-                      type="text"
-                      name="suffix"
-                      defaultValue={stat.suffix || ''}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Label (EN)</label>
-                    <input
-                      type="text"
-                      name="label_en"
-                      defaultValue={stat.label_en}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Label (RU)</label>
-                    <input
-                      type="text"
-                      name="label_ru"
-                      defaultValue={stat.label_ru || ''}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Label (UZ)</label>
-                    <input
-                      type="text"
-                      name="label_uz"
-                      defaultValue={stat.label_uz || ''}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between mt-4">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      name="isVisible"
-                      value="true"
-                      defaultChecked={stat.isVisible}
-                      className="rounded border-gray-300 dark:border-gray-600 text-indigo-600"
-                    />
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Visible on website</span>
-                  </label>
-
-                  <div className="flex gap-2">
                     <button
                       type="submit"
                       className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition-colors"
                     >
                       Save
                     </button>
-                    <form action={deleteStat} className="inline">
-                      <input type="hidden" name="id" value={stat.id} />
-                      <button
-                        type="submit"
-                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
-                        onClick={(e) => {
-                          if (!confirm('Are you sure you want to delete this stat?')) {
-                            e.preventDefault();
-                          }
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </form>
                   </div>
+                </form>
+
+                {/* Delete form - separate from update form */}
+                <div className="flex justify-end mt-2">
+                  <form action={deleteStat}>
+                    <input type="hidden" name="id" value={stat.id} />
+                    <ConfirmButton
+                      className="px-3 py-1.5 text-xs text-red-600 hover:text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                      message="Are you sure you want to delete this stat? This cannot be undone."
+                      title="Delete Statistic"
+                    >
+                      Delete
+                    </ConfirmButton>
+                  </form>
                 </div>
-              </form>
+              </div>
             ))}
           </div>
         )}
@@ -227,9 +241,18 @@ export default async function StatsPage() {
 
       {/* Add New Stat */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Add New Statistic
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            Add New Statistic
+          </h2>
+          <TranslateButton
+            fields={[{
+              ruId: 'new_stat_label_ru',
+              enId: 'new_stat_label_en',
+              uzId: 'new_stat_label_uz',
+            }]}
+          />
+        </div>
 
         <form action={createStat} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -274,25 +297,27 @@ export default async function StatsPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Label (English)
+                Label (Russian) - primary
               </label>
               <input
                 type="text"
-                name="label_en"
+                name="label_ru"
+                id="new_stat_label_ru"
                 required
-                placeholder="Years in Business"
+                placeholder="Лет в бизнесе"
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Label (Russian)
+                Label (English)
               </label>
               <input
                 type="text"
-                name="label_ru"
+                name="label_en"
+                id="new_stat_label_en"
                 required
-                placeholder="Лет в бизнесе"
+                placeholder="Years in Business"
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>
@@ -303,6 +328,7 @@ export default async function StatsPage() {
               <input
                 type="text"
                 name="label_uz"
+                id="new_stat_label_uz"
                 required
                 placeholder="Yil biznesda"
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"

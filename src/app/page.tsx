@@ -38,9 +38,18 @@ export default async function Home() {
 
   const solutions = dbProducts.map(dbProductToSolution);
   const projects = dbProjects.map(dbProjectToProject);
-  const stats = dbStats.length > 0
-    ? dbStats.map(dbStatToTransformedStat)
+
+  // Deduplicate stats by key to prevent duplicate entries from showing
+  const seenKeys = new Set<string>();
+  const uniqueStats = dbStats.filter(stat => {
+    if (seenKeys.has(stat.key)) return false;
+    seenKeys.add(stat.key);
+    return true;
+  });
+  const stats = uniqueStats.length > 0
+    ? uniqueStats.map(dbStatToTransformedStat)
     : undefined;
+
   const testimonials = dbFeedback.length > 0
     ? dbFeedback.map(f => dbFeedbackToTestimonial(f, f.partner?.name))
     : undefined;

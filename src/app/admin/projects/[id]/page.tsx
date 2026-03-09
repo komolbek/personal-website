@@ -2,6 +2,9 @@ import { getSession } from '@/lib/auth';
 import { redirect, notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { CustomSelect } from '@/components/admin/CustomSelect';
+import { ImageUploader } from '@/components/admin/ImageUploader';
+import { TranslateButton } from '@/components/admin/TranslateButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -133,9 +136,16 @@ export default async function EditProjectPage({
 
           {/* Section 1: Basic Info */}
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Basic Info
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Basic Info
+              </h2>
+              <TranslateButton
+                fields={[
+                  { ruId: 'proj_title_ru', enId: 'proj_title_en', uzId: 'proj_title_uz' },
+                ]}
+              />
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -153,29 +163,31 @@ export default async function EditProjectPage({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Title (English) *
+                  Title (Russian — primary) *
                 </label>
                 <input
                   type="text"
-                  name="title_en"
+                  name="title_ru"
+                  id="proj_title_ru"
                   required
-                  defaultValue={project.title_en}
+                  defaultValue={project.title_ru}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Project Title"
+                  placeholder="Название проекта"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Title (Russian) *
+                  Title (English) *
                 </label>
                 <input
                   type="text"
-                  name="title_ru"
+                  name="title_en"
+                  id="proj_title_en"
                   required
-                  defaultValue={project.title_ru}
+                  defaultValue={project.title_en}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Название проекта"
+                  placeholder="Project Title"
                 />
               </div>
 
@@ -186,6 +198,7 @@ export default async function EditProjectPage({
                 <input
                   type="text"
                   name="title_uz"
+                  id="proj_title_uz"
                   required
                   defaultValue={project.title_uz}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
@@ -239,69 +252,57 @@ export default async function EditProjectPage({
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Category *
                 </label>
-                <select
+                <CustomSelect
                   name="category"
                   required
                   defaultValue={project.category}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                >
-                  <option value="">Select a category</option>
-                  <option value="mobile">Mobile</option>
-                  <option value="website">Website</option>
-                  <option value="crm">CRM</option>
-                  <option value="ai">AI</option>
-                  <option value="ecommerce">E-commerce</option>
-                  <option value="event">Event</option>
-                  <option value="saas">SaaS</option>
-                </select>
+                  options={[
+                    { value: 'mobile', label: 'Mobile' },
+                    { value: 'website', label: 'Website' },
+                    { value: 'crm', label: 'CRM' },
+                    { value: 'ai', label: 'AI' },
+                    { value: 'ecommerce', label: 'E-commerce' },
+                    { value: 'event', label: 'Event' },
+                    { value: 'saas', label: 'SaaS' },
+                  ]}
+                  placeholder="Select a category"
+                />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Linked Product
                 </label>
-                <select
+                <CustomSelect
                   name="productId"
                   defaultValue={project.productId || ''}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                >
-                  <option value="">None</option>
-                  {products.map((product) => (
-                    <option key={product.id} value={product.id}>
-                      {product.title_en}
-                    </option>
-                  ))}
-                </select>
+                  options={products.map((p) => ({ value: p.id, label: p.title_en }))}
+                  placeholder="None"
+                />
               </div>
             </div>
           </div>
 
           {/* Section 4: Descriptions */}
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Descriptions
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Descriptions
+              </h2>
+              <TranslateButton
+                fields={[
+                  { ruId: 'proj_desc_ru', enId: 'proj_desc_en', uzId: 'proj_desc_uz' },
+                ]}
+              />
+            </div>
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Description (English) *
-                </label>
-                <textarea
-                  name="desc_en"
-                  required
-                  rows={3}
-                  defaultValue={project.desc_en}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Project description in English"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Description (Russian) *
+                  Description (Russian — primary) *
                 </label>
                 <textarea
                   name="desc_ru"
+                  id="proj_desc_ru"
                   required
                   rows={3}
                   defaultValue={project.desc_ru}
@@ -312,10 +313,26 @@ export default async function EditProjectPage({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Description (English) *
+                </label>
+                <textarea
+                  name="desc_en"
+                  id="proj_desc_en"
+                  required
+                  rows={3}
+                  defaultValue={project.desc_en}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  placeholder="Project description in English"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Description (Uzbek) *
                 </label>
                 <textarea
                   name="desc_uz"
+                  id="proj_desc_uz"
                   required
                   rows={3}
                   defaultValue={project.desc_uz}
@@ -323,27 +340,29 @@ export default async function EditProjectPage({
                   placeholder="Loyiha tavsifi o'zbek tilida"
                 />
               </div>
+            </div>
+          </div>
 
+          {/* Section 4b: Challenges */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Challenges
+              </h2>
+              <TranslateButton
+                fields={[
+                  { ruId: 'proj_challenge_ru', enId: 'proj_challenge_en', uzId: 'proj_challenge_uz' },
+                ]}
+              />
+            </div>
+            <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Challenge (English) *
-                </label>
-                <textarea
-                  name="challenge_en"
-                  required
-                  rows={3}
-                  defaultValue={project.challenge_en}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="What challenge did the client face?"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Challenge (Russian) *
+                  Challenge (Russian — primary) *
                 </label>
                 <textarea
                   name="challenge_ru"
+                  id="proj_challenge_ru"
                   required
                   rows={3}
                   defaultValue={project.challenge_ru}
@@ -354,10 +373,26 @@ export default async function EditProjectPage({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Challenge (English) *
+                </label>
+                <textarea
+                  name="challenge_en"
+                  id="proj_challenge_en"
+                  required
+                  rows={3}
+                  defaultValue={project.challenge_en}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  placeholder="What challenge did the client face?"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Challenge (Uzbek) *
                 </label>
                 <textarea
                   name="challenge_uz"
+                  id="proj_challenge_uz"
                   required
                   rows={3}
                   defaultValue={project.challenge_uz}
@@ -365,27 +400,29 @@ export default async function EditProjectPage({
                   placeholder="Mijoz qanday muammoga duch keldi?"
                 />
               </div>
+            </div>
+          </div>
 
+          {/* Section 4c: Solutions */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Solutions
+              </h2>
+              <TranslateButton
+                fields={[
+                  { ruId: 'proj_solution_ru', enId: 'proj_solution_en', uzId: 'proj_solution_uz' },
+                ]}
+              />
+            </div>
+            <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Solution (English) *
-                </label>
-                <textarea
-                  name="solution_en"
-                  required
-                  rows={3}
-                  defaultValue={project.solution_en}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="How did you solve the challenge?"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Solution (Russian) *
+                  Solution (Russian — primary) *
                 </label>
                 <textarea
                   name="solution_ru"
+                  id="proj_solution_ru"
                   required
                   rows={3}
                   defaultValue={project.solution_ru}
@@ -396,10 +433,26 @@ export default async function EditProjectPage({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Solution (English) *
+                </label>
+                <textarea
+                  name="solution_en"
+                  id="proj_solution_en"
+                  required
+                  rows={3}
+                  defaultValue={project.solution_en}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  placeholder="How did you solve the challenge?"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Solution (Uzbek) *
                 </label>
                 <textarea
                   name="solution_uz"
+                  id="proj_solution_uz"
                   required
                   rows={3}
                   defaultValue={project.solution_uz}
@@ -407,26 +460,29 @@ export default async function EditProjectPage({
                   placeholder="Muammoni qanday hal qildingiz?"
                 />
               </div>
+            </div>
+          </div>
 
+          {/* Section 4d: Results */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Results
+              </h2>
+              <TranslateButton
+                fields={[
+                  { ruId: 'proj_results_ru', enId: 'proj_results_en', uzId: 'proj_results_uz' },
+                ]}
+              />
+            </div>
+            <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Results (English)
-                </label>
-                <textarea
-                  name="results_en"
-                  rows={3}
-                  defaultValue={project.results_en || ''}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="What results were achieved?"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Results (Russian)
+                  Results (Russian — primary)
                 </label>
                 <textarea
                   name="results_ru"
+                  id="proj_results_ru"
                   rows={3}
                   defaultValue={project.results_ru || ''}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
@@ -436,10 +492,25 @@ export default async function EditProjectPage({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Results (English)
+                </label>
+                <textarea
+                  name="results_en"
+                  id="proj_results_en"
+                  rows={3}
+                  defaultValue={project.results_en || ''}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  placeholder="What results were achieved?"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Results (Uzbek)
                 </label>
                 <textarea
                   name="results_uz"
+                  id="proj_results_uz"
                   rows={3}
                   defaultValue={project.results_uz || ''}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
@@ -455,32 +526,18 @@ export default async function EditProjectPage({
               Media
             </h2>
             <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Thumbnail URL *
-                </label>
-                <input
-                  type="text"
-                  name="thumbnail"
-                  required
-                  defaultValue={project.thumbnail}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="https://example.com/thumbnail.jpg"
-                />
-              </div>
+              <ImageUploader
+                name="thumbnail"
+                defaultValue={project.thumbnail}
+                label="Thumbnail *"
+              />
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Images (one URL per line)
-                </label>
-                <textarea
-                  name="images"
-                  rows={4}
-                  defaultValue={project.images.join('\n')}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder={"https://example.com/image1.jpg\nhttps://example.com/image2.jpg\nhttps://example.com/image3.jpg"}
-                />
-              </div>
+              <ImageUploader
+                name="images"
+                multiple
+                defaultValue={project.images.join('\n')}
+                label="Project Images"
+              />
             </div>
           </div>
 

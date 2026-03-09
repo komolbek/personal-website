@@ -335,6 +335,7 @@ ${session.description}`;
 
 // Singleton bot instance
 let botInstance: Bot | null = null;
+let botInitialized = false;
 
 export function getBot(): Bot {
   if (!botInstance) {
@@ -345,4 +346,13 @@ export function getBot(): Bot {
     botInstance = createBot(token);
   }
   return botInstance;
+}
+
+export async function ensureBotInitialized(): Promise<Bot> {
+  const bot = getBot();
+  if (!botInitialized) {
+    await bot.init();
+    botInitialized = true;
+  }
+  return bot;
 }

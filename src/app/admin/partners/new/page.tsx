@@ -2,6 +2,7 @@ import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { TranslateButton } from '@/components/admin/TranslateButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -111,27 +112,34 @@ export default async function NewPartnerPage() {
             </div>
           </div>
 
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Descriptions</h3>
+            <TranslateButton fields={[{ ruId: 'partner_desc_ru', enId: 'partner_desc_en', uzId: 'partner_desc_uz' }]} />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Description (Russian) - primary
+            </label>
+            <textarea
+              name="desc_ru"
+              id="partner_desc_ru"
+              rows={2}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              placeholder="Краткое описание компании-партнера"
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Description (English)
             </label>
             <textarea
               name="desc_en"
+              id="partner_desc_en"
               rows={2}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="Brief description of the partner company"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Description (Russian)
-            </label>
-            <textarea
-              name="desc_ru"
-              rows={2}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              placeholder="Краткое описание компании-партнера"
             />
           </div>
 
@@ -141,6 +149,7 @@ export default async function NewPartnerPage() {
             </label>
             <textarea
               name="desc_uz"
+              id="partner_desc_uz"
               rows={2}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="Hamkor kompaniyaning qisqacha tavsifi"
