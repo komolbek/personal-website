@@ -109,7 +109,10 @@ export function TestimonialsSection({ dbTestimonials }: TestimonialsSectionProps
                     </div>
                   )}
 
-                  <p className="text-gray-700 text-base leading-relaxed mb-8 flex-1">
+                  <p
+                    className="text-gray-700 text-base leading-relaxed mb-8 flex-1"
+                    lang={locale === 'ru' ? 'ru' : locale === 'uz' ? 'uz' : 'en'}
+                  >
                     &ldquo;{testimonial.quote[locale]}&rdquo;
                   </p>
 

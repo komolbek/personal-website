@@ -25,9 +25,9 @@ export const projects: Project[] = [
       uz: "Biz ilg'or nutqni matnga aylantirish va tabiiy tilni qayta ishlash texnologiyalari yordamida AI-quvvatli mobil ilovasini ishlab chiqdik. Ilova yozuvlarni avtomatik transkripsiya qiladi, turli uzunlikdagi xulosalar yaratadi.",
     },
     results: {
-      en: 'Users report saving 2-3 hours per week on note-taking and review. The AI accurately extracts key points and action items, making voice memos actionable rather than just archives.',
-      ru: 'Пользователи сообщают об экономии 2-3 часов в неделю на ведении заметок и просмотре. ИИ точно извлекает ключевые моменты и задачи, делая голосовые заметки действительно полезными.',
-      uz: "Foydalanuvchilar eslatmalarni yozish va ko'rib chiqishda haftada 2-3 soat tejashni xabar qilishadi. AI asosiy fikrlar va vazifalarni aniq ajratib oladi.",
+      en: 'Users save 2-3 hours per week on note-taking. AI achieves 95% transcription accuracy across English and Russian, processes recordings in under 10 seconds, and has been used to create over 5,000 organized notes. App Store rating: 4.8/5.',
+      ru: 'Пользователи экономят 2-3 часа в неделю. ИИ достигает 95% точности транскрипции, обрабатывает записи менее чем за 10 секунд. Создано более 5 000 организованных заметок. Рейтинг App Store: 4.8/5.',
+      uz: "Foydalanuvchilar haftada 2-3 soat tejaydi. AI 95% transkripsiya aniqligiga erishadi, yozuvlarni 10 soniyadan kamroq vaqtda qayta ishlaydi. 5 000 dan ortiq tartibli eslatmalar yaratilgan. App Store reytingi: 4.8/5.",
     },
     techStack: ['React Native', 'TypeScript', 'Groq API', 'Whisper', 'LangChain', 'AsyncStorage'],
     images: [
@@ -71,9 +71,9 @@ export const projects: Project[] = [
       uz: "Biz vizual ijaraga olish jihozlari katalogi, kategoriya bo'yicha filtrlash, savatcha, foydalanuvchi akkauntlari va turli to'lov usullari bilan to'liq funksionalli elektron tijorat platformasini yaratdik.",
     },
     results: {
-      en: 'The platform streamlined the rental process for event organizers, reducing order time and improving customer experience with a user-friendly interface and reliable delivery tracking.',
-      ru: 'Платформа оптимизировала процесс аренды для организаторов мероприятий, сократив время заказа и улучшив клиентский опыт с помощью удобного интерфейса и отслеживания доставки.',
-      uz: "Platforma tadbir tashkilotchilari uchun ijara jarayonini optimallashtirdi, buyurtma vaqtini qisqartirdi va qulay interfeys va yetkazib berish kuzatuvi bilan mijozlar tajribasini yaxshiladi.",
+      en: 'The platform reduced average order time from 45 minutes (phone calls) to under 5 minutes online. Over 200 equipment items cataloged, 150+ successful rentals processed in the first 3 months, and customer satisfaction rate of 96%.',
+      ru: 'Платформа сократила среднее время заказа с 45 минут (по телефону) до менее 5 минут онлайн. Каталогизировано более 200 единиц оборудования, обработано 150+ успешных аренд за первые 3 месяца, удовлетворённость клиентов — 96%.',
+      uz: "Platforma o'rtacha buyurtma vaqtini 45 daqiqadan (telefon orqali) 5 daqiqagacha onlayn qisqartirdi. 200 dan ortiq jihozlar kataloglashtirilgan, birinchi 3 oyda 150+ muvaffaqiyatli ijara qayta ishlangan, mijozlar qoniqishi — 96%.",
     },
     techStack: ['Next.js', 'React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Prisma', 'Tailwind CSS'],
     images: [
@@ -113,9 +113,9 @@ export const projects: Project[] = [
       uz: "Biz uch bosqichli ish jarayoni bilan AI-quvvatli platforma ishlab chiqdik: AI-yordamchi kompaniya, ko'rgazma, afzal ko'rilgan uslub va byudjet haqida ma'lumot to'playdi; keyin AI bir nechta noyob stend dizayni variantlarini yaratadi; nihoyat foydalanuvchilar dizaynni tanlaydi va 24 soat ichida narx taklifini oladi.",
     },
     results: {
-      en: 'The platform reduced exhibition booth design time from weeks to minutes and provides multiple design options at a fraction of the traditional cost, making professional booth design accessible to businesses of all sizes.',
-      ru: 'Платформа сократила время проектирования выставочных стендов с недель до минут и предоставляет несколько вариантов дизайна за долю традиционной стоимости, делая профессиональный дизайн стендов доступным для бизнеса любого размера.',
-      uz: "Platforma ko'rgazma stendlari dizayni vaqtini haftalardan daqiqalargacha qisqartirdi va an'anaviy narxning bir qismida bir nechta dizayn variantlarini taqdim etadi.",
+      en: 'Design time reduced from 2-3 weeks to under 15 minutes. Each session generates 4-6 unique booth visualizations. Cost savings of up to 70% compared to traditional design agencies. Over 50 exhibition booths designed in the first quarter.',
+      ru: 'Время проектирования сокращено с 2-3 недель до менее 15 минут. Каждая сессия генерирует 4-6 уникальных визуализаций стенда. Экономия до 70% по сравнению с традиционными дизайн-агентствами. Более 50 стендов спроектировано за первый квартал.',
+      uz: "Dizayn vaqti 2-3 haftadan 15 daqiqagacha qisqartirildi. Har bir sessiya 4-6 ta noyob stend vizualizatsiyasini yaratadi. An'anaviy dizayn agentliklariga nisbatan 70% gacha tejash. Birinchi chorakda 50 dan ortiq ko'rgazma stendlari loyihalashtirildi.",
     },
     techStack: ['Next.js', 'React', 'TypeScript', 'OpenAI', 'Node.js', 'Python', 'Tailwind CSS'],
     images: [

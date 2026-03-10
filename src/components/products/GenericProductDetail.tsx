@@ -214,36 +214,112 @@ export function GenericProductDetail({ solution }: { solution: Solution }) {
         {/* Pricing Section */}
         {solution.pricing?.[locale] && (
           <section className="mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
               {locale === 'ru' ? 'Стоимость' : locale === 'uz' ? 'Narxlar' : 'Pricing'}
             </h2>
-            <div className="max-w-lg mx-auto">
-              <div className="relative overflow-hidden rounded-2xl bg-white/70 backdrop-blur-sm border border-gray-200/60 shadow-xl p-8 text-center">
-                {/* Decorative top border */}
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600" />
+            <p className="text-gray-600 text-center mb-10 max-w-xl mx-auto">
+              {locale === 'ru'
+                ? 'Выберите подходящий план для вашего бизнеса'
+                : locale === 'uz'
+                  ? 'Biznesingiz uchun mos rejani tanlang'
+                  : 'Choose the right plan for your business'}
+            </p>
 
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="12" y1="1" x2="12" y2="23" />
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                  </svg>
+            <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+              {/* Starter Plan */}
+              <div className="relative overflow-hidden rounded-2xl bg-white/70 backdrop-blur-sm border border-gray-200/60 shadow-lg p-8">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gray-300" />
+                <div className="text-center mb-6">
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                    {locale === 'ru' ? 'Стартовый' : locale === 'uz' ? 'Boshlang\'ich' : 'Starter'}
+                  </h3>
+                  <div className="text-3xl font-bold text-gray-900">
+                    {solution.pricing[locale]?.split('.')[0]}
+                  </div>
                 </div>
-
-                <p className="text-xl font-semibold text-gray-900 mb-4">
-                  {solution.pricing[locale]}
-                </p>
-
+                <ul className="space-y-3 mb-8">
+                  {solution.features[locale].slice(0, 4).map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                      <CheckCircleIcon className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
+                  className="block w-full text-center py-3 rounded-full border-2 border-indigo-500/30 text-indigo-600 font-medium hover:bg-indigo-50 transition-colors"
+                >
+                  {locale === 'ru' ? 'Начать бесплатно' : locale === 'uz' ? 'Bepul boshlash' : 'Start Free Trial'}
+                </Link>
+              </div>
+
+              {/* Pro Plan */}
+              <div className="relative overflow-hidden rounded-2xl bg-white/70 backdrop-blur-sm border-2 border-indigo-500 shadow-xl p-8">
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600" />
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-full">
+                    {locale === 'ru' ? 'Популярный' : locale === 'uz' ? 'Mashhur' : 'Popular'}
+                  </span>
+                </div>
+                <div className="text-center mb-6">
+                  <h3 className="text-lg font-semibold text-indigo-600 mb-2">
+                    {locale === 'ru' ? 'Профессиональный' : locale === 'uz' ? 'Professional' : 'Professional'}
+                  </h3>
+                  <div className="text-3xl font-bold text-gray-900">
+                    {locale === 'ru' ? 'Индивидуально' : locale === 'uz' ? 'Individual' : 'Custom'}
+                  </div>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  {solution.features[locale].map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                      <CheckCircleIcon className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/contact"
+                  className="block w-full text-center py-3 rounded-full bg-gradient-to-r from-indigo-600 to-pink-600 text-white font-medium hover:from-indigo-700 hover:to-pink-700 transition-all shadow-lg shadow-indigo-500/25"
                 >
                   {locale === 'ru' ? 'Связаться с нами' : locale === 'uz' ? 'Biz bilan bog\'lanish' : 'Get in touch'}
-                  <ArrowRightIcon className="w-4 h-4" />
                 </Link>
               </div>
             </div>
           </section>
         )}
+
+        {/* Related Services */}
+        <section className="mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+            {locale === 'ru' ? 'Связанные услуги' : locale === 'uz' ? 'Tegishli xizmatlar' : 'Related Services'}
+          </h2>
+          <p className="text-gray-600 text-center mb-10 max-w-xl mx-auto">
+            {locale === 'ru'
+              ? 'Мы также предлагаем эти услуги для вашего бизнеса'
+              : locale === 'uz'
+                ? 'Biznesingiz uchun ushbu xizmatlarni ham taklif qilamiz'
+                : 'We also offer these services for your business'}
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { key: 'webdev', label: { en: 'Web Development', ru: 'Веб-разработка', uz: 'Veb-ishlab chiqish' }, icon: '🌐' },
+              { key: 'crm', label: { en: 'CRM / ERP Systems', ru: 'CRM / ERP системы', uz: 'CRM / ERP tizimlari' }, icon: '📊' },
+              { key: 'ai', label: { en: 'AI Integration', ru: 'AI интеграция', uz: 'AI integratsiya' }, icon: '✨' },
+            ].map((svc) => (
+              <Link
+                key={svc.key}
+                href={`/services#${svc.key}`}
+                className="group flex items-center gap-4 p-5 rounded-2xl bg-white/60 backdrop-blur-sm border border-gray-200/60 hover:border-indigo-300 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300"
+              >
+                <span className="text-2xl">{svc.icon}</span>
+                <span className="font-semibold text-gray-700 group-hover:text-indigo-600 transition-colors">
+                  {svc.label[locale]}
+                </span>
+                <ArrowRightIcon className="w-4 h-4 text-gray-400 group-hover:text-indigo-500 ml-auto group-hover:translate-x-1 transition-all" />
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* Bottom CTA */}
         <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-10 md:p-16 text-center">

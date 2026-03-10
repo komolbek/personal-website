@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useLocale } from '@/hooks/useLocale';
 import { getSortedSolutions } from '@/config/solutions';
 import { getFeaturedProjects } from '@/config/projects';
@@ -20,6 +21,7 @@ interface BentoItem {
   href: string;
   gradient: string;
   techStack: string[];
+  thumbnail?: string;
 }
 
 const productGradients: Record<string, string> = {
@@ -62,6 +64,7 @@ export function PortfolioPreview({ solutions: dbSolutions, projects: dbProjects 
       href: `/solutions/${s.slug}`,
       gradient: getGradient(s.slug, 'product', i),
       techStack: s.technologies.slice(0, 3),
+      thumbnail: s.images?.[0],
     })),
     ...featuredProjects.map((p, i) => ({
       type: 'project' as const,
@@ -71,6 +74,7 @@ export function PortfolioPreview({ solutions: dbSolutions, projects: dbProjects 
       href: `/projects/${p.slug}`,
       gradient: getGradient(p.slug, 'project', i + solutions.length),
       techStack: p.techStack.slice(0, 3),
+      thumbnail: p.thumbnail || p.images?.[0],
     })),
   ];
 
@@ -122,11 +126,26 @@ function BentoCard({ item, locale, isLarge }: { item: BentoItem; locale: Locale;
   return (
     <Link href={item.href} className="block h-full">
       <div className={`group relative h-full rounded-3xl bg-gradient-to-br ${item.gradient} overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl`}>
+        {/* Product screenshot */}
+        {item.thumbnail && (
+          <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+            <Image
+              src={item.thumbnail}
+              alt=""
+              fill
+              sizes={isLarge ? '(max-width: 768px) 100vw, 66vw' : '(max-width: 768px) 100vw, 33vw'}
+              className="object-cover object-top"
+            />
+          </div>
+        )}
+
         {/* Decorative elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-6 right-6 w-32 h-32 border-2 border-white rounded-full" />
-          <div className="absolute -bottom-8 -left-8 w-48 h-48 border-2 border-white rounded-full" />
-        </div>
+        {!item.thumbnail && (
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-6 right-6 w-32 h-32 border-2 border-white rounded-full" />
+            <div className="absolute -bottom-8 -left-8 w-48 h-48 border-2 border-white rounded-full" />
+          </div>
+        )}
 
         {/* Content overlay */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />

@@ -4,6 +4,7 @@ import { PortfolioPreview } from '@/components/sections/PortfolioPreview';
 import { AboutSection } from '@/components/sections/AboutSection';
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
 import { CTASection } from '@/components/sections/CTASection';
+import { FAQSection } from '@/components/sections/FAQSection';
 import { siteConfig } from '@/config/site';
 import { prisma } from '@/lib/prisma';
 import {
@@ -62,6 +63,7 @@ export default async function Home() {
       <PortfolioPreview solutions={solutions} projects={projects} />
       <AboutSection />
       <TestimonialsSection dbTestimonials={testimonials} />
+      <FAQSection />
       <CTASection overrides={ctaOverrides} />
     </>
   );

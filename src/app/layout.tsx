@@ -51,9 +51,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteConfig.url,
     languages: {
-      'en': siteConfig.url,
-      'ru': `${siteConfig.url}?lang=ru`,
-      'uz': `${siteConfig.url}?lang=uz`,
+      'en': `${siteConfig.url}/en`,
+      'ru': siteConfig.url,
+      'uz': `${siteConfig.url}/uz`,
+      'x-default': siteConfig.url,
     },
   },
   openGraph: {

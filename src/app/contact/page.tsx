@@ -187,16 +187,25 @@ export default function ContactPage() {
   const sendingLabel = locale === 'ru' ? 'Отправка...' : locale === 'uz' ? 'Yuborilmoqda...' : 'Sending...';
   const homeLabel = locale === 'ru' ? 'На главную' : locale === 'uz' ? 'Bosh sahifaga' : 'Back to Home';
 
+  const stepLabels = titles;
+
   return (
-    <div className="min-h-screen flex flex-col" onKeyDown={handleKeyDown}>
+    <div className="min-h-screen flex flex-col" onKeyDown={handleKeyDown} role="form" aria-label={locale === 'ru' ? 'Форма обратной связи' : locale === 'uz' ? 'Aloqa formasi' : 'Contact form'}>
       {/* Background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute top-20 right-20 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-20 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
       </div>
 
+      {/* Screen reader step announcement */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {step < TOTAL_STEPS
+          ? `${locale === 'ru' ? 'Шаг' : locale === 'uz' ? 'Qadam' : 'Step'} ${step + 1} ${locale === 'ru' ? 'из' : locale === 'uz' ? '/' : 'of'} ${TOTAL_STEPS}: ${stepLabels[step]}`
+          : locale === 'ru' ? 'Форма отправлена' : locale === 'uz' ? 'Forma yuborildi' : 'Form submitted'}
+      </div>
+
       {/* Progress bar */}
-      <div className="fixed top-[72px] left-0 right-0 z-40">
+      <div className="fixed top-[72px] left-0 right-0 z-40" role="progressbar" aria-valuenow={step + 1} aria-valuemin={1} aria-valuemax={TOTAL_STEPS} aria-label={`${locale === 'ru' ? 'Шаг' : locale === 'uz' ? 'Qadam' : 'Step'} ${step + 1} / ${TOTAL_STEPS}`}>
         <div className="h-1 bg-gray-200/50">
           <motion.div
             className="h-full bg-gradient-to-r from-indigo-500 to-pink-500"
@@ -508,10 +517,13 @@ export default function ContactPage() {
 
           {/* Step indicators */}
           {step < TOTAL_STEPS && (
-            <div className="flex justify-center gap-2 mt-8">
+            <div className="flex justify-center gap-2 mt-8" role="tablist" aria-label={locale === 'ru' ? 'Шаги формы' : locale === 'uz' ? 'Forma qadamlari' : 'Form steps'}>
               {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
                 <div
                   key={i}
+                  role="tab"
+                  aria-selected={i === step}
+                  aria-label={`${locale === 'ru' ? 'Шаг' : locale === 'uz' ? 'Qadam' : 'Step'} ${i + 1}`}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     i === step
                       ? 'w-8 bg-gradient-to-r from-indigo-500 to-pink-500'
