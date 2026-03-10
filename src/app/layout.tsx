@@ -6,6 +6,7 @@ import { LocaleProvider } from '@/hooks/useLocale';
 import { siteConfig } from '@/config/site';
 import { LayoutContent } from '@/components/layout/LayoutContent';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { HtmlLangSetter } from '@/components/seo/HtmlLangSetter';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -100,8 +101,10 @@ export default function RootLayout({
       >
         <JsonLd />
         <LocaleProvider>
+          <HtmlLangSetter />
           <LayoutContent>{children}</LayoutContent>
         </LocaleProvider>
+
         <Analytics />
       </body>
     </html>

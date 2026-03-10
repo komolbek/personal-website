@@ -23,7 +23,7 @@ export async function generateMetadata({
     const title = project.title?.en || project.title?.ru || slug;
     const description = project.description?.en || project.description?.ru || '';
     return {
-      title: `${title} - ${description.slice(0, 60)} | Necto Automations`,
+      title: title,
       description,
       alternates: {
         canonical: `${siteConfig.url}/projects/${slug}`,
@@ -35,7 +35,7 @@ export async function generateMetadata({
   const project = getProjectBySlug(slug);
   if (project) {
     return {
-      title: `${project.title.en} - ${project.description.en.slice(0, 60)} | Necto Automations`,
+      title: project.title.en,
       description: project.description.en,
       alternates: {
         canonical: `${siteConfig.url}/projects/${slug}`,
@@ -44,7 +44,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'Project Not Found | Necto Automations',
+    title: 'Project Not Found',
   };
 }
 

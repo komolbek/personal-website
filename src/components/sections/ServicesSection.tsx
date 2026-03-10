@@ -16,10 +16,20 @@ import {
 const serviceIcons = [WebsiteIcon, MobileIcon, CRMIcon, TargetIcon, AIIcon, ShieldIcon];
 const serviceKeys = ['webDev', 'mobileDev', 'crmErp', 'uiux', 'ai', 'consulting'] as const;
 
+// Map services to related portfolio items
+const servicePortfolioLinks: Record<string, { slug: string; name: string; type: 'solutions' | 'projects' }[]> = {
+  webDev: [{ slug: 'ordo', name: 'Ordo', type: 'solutions' }, { slug: '4event', name: '4Event', type: 'projects' }],
+  mobileDev: [{ slug: 'memomind', name: 'MemoMind', type: 'projects' }],
+  crmErp: [{ slug: 'yuridix', name: 'Yuridix', type: 'solutions' }, { slug: 'talimx', name: 'TalimX', type: 'solutions' }],
+  uiux: [],
+  ai: [{ slug: 'standai', name: 'StandAI', type: 'projects' }, { slug: 'memomind', name: 'MemoMind', type: 'projects' }],
+  consulting: [],
+};
+
 const processSteps = ['discovery', 'design', 'development', 'launch'] as const;
 
 export function ServicesSection() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   const services = t.servicesPage;
 
   return (
@@ -66,13 +76,31 @@ export function ServicesSection() {
                       </span>
                     ))}
                   </div>
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:gap-2 transition-all"
-                  >
-                    {t.common.getStarted}
-                    <ArrowRightIcon className="w-4 h-4" />
-                  </Link>
+                  <div className="flex flex-col gap-2">
+                    <Link
+                      href="/contact"
+                      className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:gap-2 transition-all"
+                    >
+                      {t.common.getStarted}
+                      <ArrowRightIcon className="w-4 h-4" />
+                    </Link>
+                    {servicePortfolioLinks[key]?.length > 0 && (
+                      <div className="flex flex-wrap items-center gap-1.5 text-xs text-gray-500">
+                        <span>{locale === 'ru' ? 'Примеры:' : locale === 'uz' ? 'Misollar:' : 'Examples:'}</span>
+                        {servicePortfolioLinks[key].map((link, idx) => (
+                          <span key={link.slug}>
+                            <Link
+                              href={`/${link.type}/${link.slug}`}
+                              className="text-indigo-500 hover:text-indigo-700 underline underline-offset-2"
+                            >
+                              {link.name}
+                            </Link>
+                            {idx < servicePortfolioLinks[key].length - 1 && ','}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </StaggerItem>
             );

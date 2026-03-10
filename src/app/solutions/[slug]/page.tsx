@@ -21,10 +21,10 @@ export async function generateMetadata({
   if (dbProduct) {
     const solution = dbProductToSolution(dbProduct);
     const title = solution.title?.en || solution.title?.ru || slug;
-    const description = solution.shortDescription?.en || solution.shortDescription?.ru || '';
+    const shortDesc = solution.shortDescription?.en || solution.shortDescription?.ru || '';
     return {
-      title: `${title} - ${description.slice(0, 60)} | Necto Automations`,
-      description,
+      title: `${title} - ${shortDesc.slice(0, 40)}`,
+      description: shortDesc,
       alternates: {
         canonical: `${siteConfig.url}/solutions/${slug}`,
       },
@@ -35,7 +35,7 @@ export async function generateMetadata({
   const solution = getSolutionBySlug(slug);
   if (solution) {
     return {
-      title: `${solution.title.en} - ${solution.shortDescription.en.slice(0, 60)} | Necto Automations`,
+      title: `${solution.title.en} - ${solution.shortDescription.en.slice(0, 40)}`,
       description: solution.shortDescription.en,
       alternates: {
         canonical: `${siteConfig.url}/solutions/${slug}`,
@@ -44,7 +44,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'Product Not Found | Necto Automations',
+    title: 'Product Not Found',
   };
 }
 

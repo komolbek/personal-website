@@ -15,8 +15,8 @@ import {
 import { getSettings } from '@/lib/settings';
 
 export const metadata: Metadata = {
-  title: 'Necto Automations - IT Solutions & Software Development | Razrabotka saytov Tashkent',
-  description: 'Professional IT solutions in Tashkent: website development, business automation, CRM systems, mobile apps, AI integration. Razrabotka saytov, avtomatizatsiya biznesa, CRM sistemy v Tashkente. Sayt yaratish, biznes avtomatlashtirish Toshkentda.',
+  title: 'Necto Automations - IT Solutions & Software Development in Tashkent',
+  description: 'Custom software development in Tashkent: CRM systems, web & mobile apps, business automation, and AI integration. 20+ clients, 6+ products shipped.',
   alternates: {
     canonical: siteConfig.url,
   },

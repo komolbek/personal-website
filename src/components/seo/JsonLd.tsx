@@ -109,6 +109,53 @@ export function JsonLd() {
     },
   };
 
+  const faqPage = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How long does it take to develop a custom system?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Typical projects take 4-12 weeks depending on complexity. A simple booking platform can be ready in 4-6 weeks, while a full CRM or management system takes 8-12 weeks.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do you offer ongoing support after launch?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes! All products include ongoing technical support, regular updates, and bug fixes. We also offer extended maintenance plans for hosting, monitoring, and feature additions.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is the cost of your services?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'SaaS products start from 4,200,000 UZS/month (~$336). Custom development projects are quoted individually based on scope. We offer a free initial consultation.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can you integrate AI into my existing system?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Absolutely. We specialize in adding AI capabilities to existing systems — from chatbots and document processing to intelligent analytics and recommendation engines.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do you work with clients outside Uzbekistan?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes, we work with clients worldwide. Our team communicates fluently in English, Russian, and Uzbek and uses modern project management tools for smooth collaboration.',
+        },
+      },
+    ],
+  };
+
   return (
     <>
       <script
@@ -122,6 +169,10 @@ export function JsonLd() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }}
       />
     </>
   );

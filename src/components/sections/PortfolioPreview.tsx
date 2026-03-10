@@ -131,7 +131,7 @@ function BentoCard({ item, locale, isLarge }: { item: BentoItem; locale: Locale;
           <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
             <Image
               src={item.thumbnail}
-              alt=""
+              alt={`${item.title[locale] || item.title.en} - ${item.type === 'product' ? 'product interface' : 'project screenshot'}`}
               fill
               sizes={isLarge ? '(max-width: 768px) 100vw, 66vw' : '(max-width: 768px) 100vw, 33vw'}
               className="object-cover object-top"

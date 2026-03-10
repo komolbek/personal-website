@@ -162,6 +162,19 @@ body {
   }
 }
 
+/* Fallback: ensure scroll-animated elements become visible even if IntersectionObserver fails */
+@keyframes ensureVisible {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[style*="opacity: 0"],
+[style*="opacity:0"] {
+  animation: ensureVisible 0s 1.5s forwards;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
