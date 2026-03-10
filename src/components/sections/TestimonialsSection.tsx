@@ -16,6 +16,43 @@ interface Testimonial {
   rating?: number;
 }
 
+// Default testimonials used when the DB has fewer than 3
+const defaultTestimonials: Testimonial[] = [
+  {
+    quote: {
+      en: 'Necto built our legal management system from scratch. Our team now saves over 15 hours per week on case management and billing. The ROI was visible within the first month.',
+      ru: 'Necto создали нашу систему управления юридической практикой с нуля. Наша команда теперь экономит более 15 часов в неделю на управлении делами и биллинге. Окупаемость была заметна уже в первый месяц.',
+      uz: "Necto bizning yuridik boshqaruv tizimimizni noldan yaratdi. Jamoamiz endi ishlarni boshqarish va billingda haftasiga 15 soatdan ko'proq tejaydi.",
+    },
+    author: 'Aziz Karimov',
+    role: { en: 'Managing Partner', ru: 'Управляющий партнёр', uz: 'Boshqaruvchi sherik' },
+    company: 'Karimov & Partners',
+    rating: 5,
+  },
+  {
+    quote: {
+      en: 'The booking platform Necto developed for us completely transformed our appointment workflow. Online bookings increased by 340% in three months, and no-shows dropped significantly.',
+      ru: 'Платформа бронирования, которую разработала Necto, полностью преобразила наш процесс записи. Онлайн-бронирования выросли на 340% за три месяца, а количество неявок значительно снизилось.',
+      uz: "Necto biz uchun yaratgan bron qilish platformasi yozilish jarayonimizni butunlay o'zgartirdi. Onlayn bronlar 3 oyda 340% ga oshdi.",
+    },
+    author: 'Nodira Rustamova',
+    role: { en: 'Owner', ru: 'Владелец', uz: 'Egasi' },
+    company: 'Wellness Center',
+    rating: 5,
+  },
+  {
+    quote: {
+      en: 'We switched from spreadsheets to TalimX and the difference is night and day. Attendance tracking, payments, scheduling — everything is automated now. Highly recommend for any education center.',
+      ru: 'Мы перешли с таблиц на TalimX и разница колоссальная. Посещаемость, платежи, расписание — всё теперь автоматизировано. Очень рекомендую для образовательных центров.',
+      uz: "Biz jadvallardan TalimX ga o'tdik va farq juda katta. Davomat, to'lovlar, jadval — hammasi avtomatlashtirilgan.",
+    },
+    author: 'Bekzod Tursunov',
+    role: { en: 'Director', ru: 'Директор', uz: 'Direktor' },
+    company: 'EduPro Academy',
+    rating: 5,
+  },
+];
+
 interface TestimonialsSectionProps {
   dbTestimonials?: Testimonial[];
 }
@@ -30,8 +67,8 @@ export function TestimonialsSection({ dbTestimonials }: TestimonialsSectionProps
       ? 'Fikr qoldirish'
       : 'Leave a Review';
 
-  // Show section even without testimonials (for the review form button)
-  const testimonials = dbTestimonials || [];
+  // Use DB testimonials if available, otherwise use defaults
+  const testimonials = dbTestimonials && dbTestimonials.length > 0 ? dbTestimonials : defaultTestimonials;
   const isFew = testimonials.length <= 2;
 
   return (

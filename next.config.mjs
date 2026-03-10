@@ -52,11 +52,11 @@ const nextConfig = {
         destination: '/portfolio',
         permanent: true,
       },
-      // Redirect deleted About page
+      // Redirect About page to homepage about section
       {
         source: '/about',
-        destination: '/',
-        permanent: true,
+        destination: '/#about',
+        permanent: false,
       },
     ];
   },

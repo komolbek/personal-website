@@ -3,7 +3,7 @@ import { ServicesSection } from '@/components/sections/ServicesSection';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: 'Services - Web, Mobile, CRM Development | Necto Automations',
+  title: 'Services - Web, Mobile, CRM Development',
   description: 'Professional IT services in Tashkent: web development, mobile apps, CRM/ERP systems, UI/UX design, AI integration, IT consulting. Custom software solutions for Uzbek businesses.',
   alternates: {
     canonical: `${siteConfig.url}/services`,

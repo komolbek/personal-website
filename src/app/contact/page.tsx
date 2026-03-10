@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocale } from '@/hooks/useLocale';
 import { BudgetSlider } from '@/components/ui/BudgetSlider';
@@ -43,7 +44,7 @@ const serviceIcons: Record<string, React.ReactNode> = {
 
 const slideVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 300 : -300,
+    x: direction > 0 ? 100 : -100,
     opacity: 0,
   }),
   center: {
@@ -51,7 +52,7 @@ const slideVariants = {
     opacity: 1,
   },
   exit: (direction: number) => ({
-    x: direction < 0 ? 300 : -300,
+    x: direction < 0 ? 100 : -100,
     opacity: 0,
   }),
 };
@@ -184,6 +185,7 @@ export default function ContactPage() {
   const backLabel = locale === 'ru' ? 'Назад' : locale === 'uz' ? 'Orqaga' : 'Back';
   const sendLabel = locale === 'ru' ? 'Отправить' : locale === 'uz' ? 'Yuborish' : 'Send';
   const sendingLabel = locale === 'ru' ? 'Отправка...' : locale === 'uz' ? 'Yuborilmoqda...' : 'Sending...';
+  const homeLabel = locale === 'ru' ? 'На главную' : locale === 'uz' ? 'Bosh sahifaga' : 'Back to Home';
 
   return (
     <div className="min-h-screen flex flex-col" onKeyDown={handleKeyDown}>
@@ -205,8 +207,8 @@ export default function ContactPage() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex items-center justify-center px-4 pt-24 pb-16">
-        <div className="w-full max-w-2xl">
+      <div className="flex-1 flex items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
+        <div className="w-full max-w-2xl overflow-hidden">
           <AnimatePresence mode="wait" custom={direction}>
             {/* Step 0: Service Selection */}
             {step === 0 && (
@@ -424,9 +426,19 @@ export default function ContactPage() {
                 <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
                   {t.contact.form.success.split('!')[0]}!
                 </h1>
-                <p className="text-gray-500 text-lg max-w-md mx-auto">
+                <p className="text-gray-500 text-lg max-w-md mx-auto mb-8">
                   {t.contact.responseNote}
                 </p>
+
+                <Link
+                  href="/"
+                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white font-medium rounded-full transition-all duration-300 shadow-lg shadow-indigo-500/25"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z" />
+                  </svg>
+                  {homeLabel}
+                </Link>
               </motion.div>
             )}
           </AnimatePresence>

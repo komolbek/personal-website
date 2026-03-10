@@ -152,6 +152,16 @@ body {
   animation-play-state: paused;
 }
 
+/* Accessibility: ensure animated content is visible when reduced motion is preferred */
+@media (prefers-reduced-motion: reduce) {
+  [style*="opacity: 0"],
+  [style*="opacity:0"] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Hero } from '@/components/sections/Hero';
 import { PortfolioPreview } from '@/components/sections/PortfolioPreview';
+import { AboutSection } from '@/components/sections/AboutSection';
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
 import { CTASection } from '@/components/sections/CTASection';
 import { siteConfig } from '@/config/site';
@@ -59,6 +60,7 @@ export default async function Home() {
     <>
       <Hero overrides={heroOverrides} />
       <PortfolioPreview solutions={solutions} projects={projects} />
+      <AboutSection />
       <TestimonialsSection dbTestimonials={testimonials} />
       <CTASection overrides={ctaOverrides} />
     </>

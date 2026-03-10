@@ -1,10 +1,52 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { dbProjectToProject } from '@/lib/transforms';
 import { getProjectBySlug, projects as staticProjects } from '@/config/projects';
 import { ProjectDetail } from '@/components/ProjectDetail';
+import { siteConfig } from '@/config/site';
 
 export const dynamicParams = true;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  // Try DB first
+  const dbProject = await prisma.clientProject.findUnique({ where: { slug } }).catch(() => null);
+
+  if (dbProject) {
+    const project = dbProjectToProject(dbProject);
+    const title = project.title?.en || project.title?.ru || slug;
+    const description = project.description?.en || project.description?.ru || '';
+    return {
+      title: `${title} - ${description.slice(0, 60)} | Necto Automations`,
+      description,
+      alternates: {
+        canonical: `${siteConfig.url}/projects/${slug}`,
+      },
+    };
+  }
+
+  // Fall back to static config
+  const project = getProjectBySlug(slug);
+  if (project) {
+    return {
+      title: `${project.title.en} - ${project.description.en.slice(0, 60)} | Necto Automations`,
+      description: project.description.en,
+      alternates: {
+        canonical: `${siteConfig.url}/projects/${slug}`,
+      },
+    };
+  }
+
+  return {
+    title: 'Project Not Found | Necto Automations',
+  };
+}
 
 export async function generateStaticParams() {
   const dbProjects = await prisma.clientProject.findMany({
