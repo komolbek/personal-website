@@ -3,8 +3,8 @@ import { ServicesSection } from '@/components/sections/ServicesSection';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: 'Services - Web, Mobile, CRM Development',
-  description: 'Professional IT services in Tashkent: web development, mobile apps, CRM/ERP systems, UI/UX design, AI integration, IT consulting. Custom software solutions for Uzbek businesses.',
+  title: 'Услуги — Веб, мобильная разработка, CRM',
+  description: 'IT-услуги в Ташкенте: разработка сайтов, мобильных приложений, CRM/ERP систем, UI/UX дизайн, интеграция ИИ, IT-консалтинг. Professional IT services in Tashkent.',
   alternates: {
     canonical: `${siteConfig.url}/services`,
   },

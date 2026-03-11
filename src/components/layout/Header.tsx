@@ -18,7 +18,7 @@ const navItems = [
 ] as const;
 
 export function Header() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -54,17 +54,18 @@ export function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="font-bold text-xl gradient-text hover:opacity-80 transition-opacity"
+            className="font-bold text-lg sm:text-xl gradient-text hover:opacity-80 transition-opacity flex-shrink-0"
           >
             {siteConfig.name}
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
             {navItems.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   isActive(item.href)
                     ? 'bg-indigo-500/10 text-indigo-600'
@@ -77,7 +78,7 @@ export function Header() {
           </nav>
 
           {/* Right side */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1 sm:gap-4">
             {/* Desktop CTA */}
             <Link
               href="/contact"
@@ -91,8 +92,9 @@ export function Header() {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-indigo-500/10 transition-colors"
+              className="lg:hidden p-2 rounded-lg hover:bg-indigo-500/10 transition-colors flex-shrink-0"
               aria-label="Toggle menu"
+              aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? (
                 <CloseIcon className="w-6 h-6" />
@@ -112,22 +114,32 @@ export function Header() {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2, ease: 'easeInOut' }}
               className="lg:hidden overflow-hidden border-t border-indigo-500/10"
+              aria-label="Mobile navigation"
             >
-              <div className="py-4">
+              <div className="py-4 space-y-1">
                 {navItems.map((item) => (
                   <Link
                     key={item.key}
                     href={item.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`block py-3 px-4 rounded-lg transition-colors ${
+                    aria-current={isActive(item.href) ? 'page' : undefined}
+                    className={`block py-3 px-4 rounded-lg transition-colors text-base ${
                       isActive(item.href)
-                        ? 'bg-indigo-500/10 text-indigo-600'
+                        ? 'bg-indigo-500/10 text-indigo-600 font-medium'
                         : 'text-gray-600 hover:bg-indigo-500/5'
                     }`}
                   >
                     {t.nav[item.key]}
                   </Link>
                 ))}
+                {/* Mobile CTA */}
+                <Link
+                  href="/contact"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block mt-3 mx-4 py-3 text-center bg-gradient-to-r from-indigo-600 to-pink-600 text-white text-sm font-medium rounded-full shadow-md"
+                >
+                  {t.common.contactUs}
+                </Link>
               </div>
             </motion.nav>
           )}

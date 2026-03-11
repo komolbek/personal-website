@@ -2,8 +2,8 @@ import { App, SocialLink } from '@/types';
 
 export const siteConfig = {
   name: 'Necto Automations',
-  title: 'Necto Automations - IT Solutions & Software Development',
-  description: 'Professional IT solutions including business automation, custom CRM, mobile apps, e-commerce, and AI integration. Transform your business with modern technology.',
+  title: 'Necto Automations — Разработка ПО и IT-решения в Ташкенте',
+  description: 'Разработка сайтов, CRM, мобильных приложений и автоматизация бизнеса в Ташкенте. Professional IT solutions: custom CRM, web & mobile apps, AI integration.',
   url: 'https://necto.uz',
   phone: '+998 77 070 72 70',
   email: 'info@necto.uz',

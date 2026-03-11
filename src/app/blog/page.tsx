@@ -4,8 +4,8 @@ import { BlogListClient } from './BlogListClient';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: 'Blog - Business Automation & Tech Insights',
-  description: 'Articles about business automation, technology trends, and digital transformation in Uzbekistan.',
+  title: 'Блог — Автоматизация бизнеса и технологии',
+  description: 'Статьи об автоматизации бизнеса, технологических трендах и цифровой трансформации в Узбекистане. Business automation & tech insights.',
   alternates: {
     canonical: `${siteConfig.url}/blog`,
   },

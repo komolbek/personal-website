@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useRef, useEffect, useState, ReactNode } from 'react';
 
 interface AnimationProps {
@@ -10,12 +10,13 @@ interface AnimationProps {
 }
 
 export function FadeIn({ children, className, delay = 0 }: AnimationProps) {
+  const prefersReducedMotion = useReducedMotion();
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0 }}
-      transition={{ duration: 0.6, delay, ease: 'easeOut' }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : delay, ease: 'easeOut' }}
       className={className}
     >
       {children}
@@ -24,12 +25,13 @@ export function FadeIn({ children, className, delay = 0 }: AnimationProps) {
 }
 
 export function SlideInLeft({ children, className, delay = 0 }: AnimationProps) {
+  const prefersReducedMotion = useReducedMotion();
   return (
     <motion.div
-      initial={{ opacity: 0, x: -60 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, x: -60 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0 }}
-      transition={{ duration: 0.6, delay, ease: 'easeOut' }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : delay, ease: 'easeOut' }}
       className={className}
     >
       {children}
@@ -38,12 +40,13 @@ export function SlideInLeft({ children, className, delay = 0 }: AnimationProps) 
 }
 
 export function SlideInRight({ children, className, delay = 0 }: AnimationProps) {
+  const prefersReducedMotion = useReducedMotion();
   return (
     <motion.div
-      initial={{ opacity: 0, x: 60 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, x: 60 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0 }}
-      transition={{ duration: 0.6, delay, ease: 'easeOut' }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : delay, ease: 'easeOut' }}
       className={className}
     >
       {children}
@@ -52,12 +55,13 @@ export function SlideInRight({ children, className, delay = 0 }: AnimationProps)
 }
 
 export function ScaleIn({ children, className, delay = 0 }: AnimationProps) {
+  const prefersReducedMotion = useReducedMotion();
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.85 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.85 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, amount: 0 }}
-      transition={{ duration: 0.5, delay, ease: 'easeOut' }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: prefersReducedMotion ? 0 : delay, ease: 'easeOut' }}
       className={className}
     >
       {children}

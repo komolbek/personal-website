@@ -154,7 +154,9 @@ function BentoCard({ item, locale, isLarge }: { item: BentoItem; locale: Locale;
           {/* Type badge */}
           <div className="mb-auto">
             <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white/90 text-xs font-medium">
-              {item.type === 'product' ? 'Product' : 'Project'}
+              {item.type === 'product'
+                ? (locale === 'ru' ? 'Продукт' : locale === 'uz' ? 'Mahsulot' : 'Product')
+                : (locale === 'ru' ? 'Проект' : locale === 'uz' ? 'Loyiha' : 'Project')}
             </span>
           </div>
 

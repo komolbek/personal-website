@@ -5,6 +5,18 @@ import { Project, Locale } from '@/types';
 import { Badge } from '@/components/ui/Badge';
 import { ArrowRightIcon, AIIcon } from '@/components/ui/Icons';
 
+const viewCaseLabels: Record<Locale, string> = {
+  en: 'View Case Study',
+  ru: 'Смотреть кейс',
+  uz: 'Keyni ko\'rish',
+};
+
+const featuredLabels: Record<Locale, string> = {
+  en: 'Featured',
+  ru: 'Избранное',
+  uz: 'Tanlangan',
+};
+
 function BrainIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -131,7 +143,7 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
           {project.featured && (
             <div className="absolute top-3 right-3">
               <Badge variant="primary" size="sm">
-                Featured
+                {featuredLabels[locale]}
               </Badge>
             </div>
           )}
@@ -169,7 +181,7 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
           </div>
 
           <div className="flex items-center text-indigo-600 font-medium">
-            <span>View Case Study</span>
+            <span>{viewCaseLabels[locale]}</span>
             <ArrowRightIcon className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
           </div>
         </div>

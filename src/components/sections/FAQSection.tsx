@@ -111,6 +111,8 @@ export function FAQSection() {
                   onClick={() => setOpenIndex(openIndex === i ? null : i)}
                   className="w-full flex items-center justify-between p-6 text-left"
                   aria-expanded={openIndex === i}
+                  aria-controls={`faq-answer-${i}`}
+                  id={`faq-button-${i}`}
                 >
                   <span className="font-semibold text-gray-900 pr-4">
                     {faq.question[locale]}
@@ -119,6 +121,7 @@ export function FAQSection() {
                     animate={{ rotate: openIndex === i ? 45 : 0 }}
                     transition={{ duration: 0.2 }}
                     className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center"
+                    aria-hidden="true"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -129,6 +132,9 @@ export function FAQSection() {
                 <AnimatePresence>
                   {openIndex === i && (
                     <motion.div
+                      id={`faq-answer-${i}`}
+                      role="region"
+                      aria-labelledby={`faq-button-${i}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
