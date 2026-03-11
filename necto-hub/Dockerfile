@@ -35,17 +35,16 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/public ./public
-
-RUN mkdir .next
+RUN mkdir -p .next public
 RUN chown nextjs:nodejs .next
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy Prisma files for runtime migrations
-COPY --from=builder /app/node_modules/.prisma/client ./node_modules/.prisma/client
+# Copy Prisma schema for runtime migrations
 COPY --from=builder /app/prisma ./prisma
+# Copy generated Prisma client (pnpm nests it inside .pnpm)
+COPY --from=builder /app/node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/.prisma ./node_modules/.prisma
 
 COPY --chown=nextjs:nodejs start.sh ./
 RUN chmod +x start.sh
