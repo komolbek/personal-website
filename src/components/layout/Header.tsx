@@ -18,7 +18,7 @@ const navItems = [
 ] as const;
 
 export function Header() {
-  const { locale, t } = useLocale();
+  const { t } = useLocale();
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
