@@ -1,17 +1,13 @@
 import { getSession } from '@/lib/auth';
 import { redirect, notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { KanbanBoard } from '@/components/shared/KanbanBoard';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
-import { ArrowLeft, Users, Plus } from 'lucide-react';
+import { ArrowLeft, Users } from 'lucide-react';
+import { AddLeadDialog } from './LeadDialogs';
 
 const LEAD_STATUSES = [
   { value: 'NOT_CONTACTED', label: 'Not Contacted' },
@@ -22,15 +18,6 @@ const LEAD_STATUSES = [
   { value: 'NEGOTIATING', label: 'Negotiating' },
   { value: 'SIGNED', label: 'Signed' },
   { value: 'LOST', label: 'Lost' },
-];
-
-const LEAD_SOURCES = [
-  { value: 'WALK_IN', label: 'Walk-in' },
-  { value: 'INSTAGRAM', label: 'Instagram' },
-  { value: 'REFERRAL', label: 'Referral' },
-  { value: 'GOOGLE_MAPS', label: 'Google Maps' },
-  { value: 'TWOGIS', label: '2GIS' },
-  { value: 'OTHER', label: 'Other' },
 ];
 
 async function createLead(formData: FormData) {
@@ -72,7 +59,6 @@ export default async function LeadsPage({ params }: { params: { slug: string } }
 
   if (!product) notFound();
 
-  // Build columns for Kanban board - show all statuses
   const kanbanColumns = LEAD_STATUSES.map((s) => ({
     ...s,
     leads: product.leads
@@ -93,66 +79,20 @@ export default async function LeadsPage({ params }: { params: { slug: string } }
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <Link href="/products">
+        <Link href={`/products/${params.slug}`}>
           <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </Link>
-        <div>
+        <div className="flex-1">
           <h1 className="text-2xl font-bold">{product.name} - Leads</h1>
           <p className="text-muted-foreground">{product.leads.length} total leads</p>
         </div>
+        {session.role !== 'VIEWER' && (
+          <AddLeadDialog productId={product.id} slug={params.slug} action={createLead} />
+        )}
       </div>
 
-      {/* Add Lead Form */}
-      {session.role !== 'VIEWER' && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Lead
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form action={createLead} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <input type="hidden" name="productId" value={product.id} />
-              <input type="hidden" name="slug" value={params.slug} />
-              <div className="space-y-2">
-                <Label>Business Name</Label>
-                <Input name="name" placeholder="e.g., Salon Bella" required />
-              </div>
-              <div className="space-y-2">
-                <Label>Contact Person</Label>
-                <Input name="contactPerson" placeholder="Name" />
-              </div>
-              <div className="space-y-2">
-                <Label>Phone</Label>
-                <Input name="phone" placeholder="+998..." />
-              </div>
-              <div className="space-y-2">
-                <Label>Telegram</Label>
-                <Input name="telegram" placeholder="@username" />
-              </div>
-              <div className="space-y-2">
-                <Label>Source</Label>
-                <Select name="source" defaultValue="OTHER" options={LEAD_SOURCES} />
-              </div>
-              <div className="space-y-2">
-                <Label>Follow-up Date</Label>
-                <Input name="followUp" type="date" />
-              </div>
-              <div className="space-y-2 sm:col-span-2 lg:col-span-3">
-                <Label>Notes</Label>
-                <Textarea name="notes" placeholder="Initial observations..." rows={2} />
-              </div>
-              <div>
-                <Button type="submit" size="sm">Add Lead</Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Kanban Board with Drag & Drop */}
       {product.leads.length === 0 ? (
         <EmptyState
           icon={<Users className="h-12 w-12" />}

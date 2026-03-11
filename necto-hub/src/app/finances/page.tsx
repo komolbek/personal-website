@@ -3,29 +3,13 @@ import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select } from '@/components/ui/select';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
-import { DollarSign, TrendingUp, TrendingDown, Plus, AlertTriangle } from 'lucide-react';
+import { DollarSign, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react';
 import { RevenueChart } from '@/components/charts/RevenueChart';
 import { CategoryPieChart } from '@/components/charts/CategoryPieChart';
-
-const PAYMENT_CATEGORIES = [
-  { value: 'PROJECT_REVENUE', label: 'Project Revenue' },
-  { value: 'PRODUCT_REVENUE', label: 'Product Revenue' },
-  { value: 'HOSTING', label: 'Hosting' },
-  { value: 'DOMAINS', label: 'Domains' },
-  { value: 'OFFICE', label: 'Office' },
-  { value: 'SMS_API', label: 'SMS/API' },
-  { value: 'MARKETING', label: 'Marketing' },
-  { value: 'SALARY', label: 'Salary' },
-  { value: 'TRANSPORT', label: 'Transport' },
-  { value: 'TOOLS', label: 'Tools' },
-  { value: 'OTHER', label: 'Other' },
-];
+import { TransactionDialog } from './TransactionDialog';
 
 async function addPayment(formData: FormData) {
   'use server';
@@ -68,7 +52,6 @@ async function runOverdueCheck() {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-  // Mark clients as overdue if last payment was > 30 days ago
   await prisma.hubClient.updateMany({
     where: {
       paymentStatus: 'ACTIVE',
@@ -162,7 +145,6 @@ export default async function FinancesPage() {
 
   const monthlyData = getMonthlyData(payments);
   const expenseCategories = getCategoryBreakdown(payments, 'EXPENSE');
-  const incomeCategories = getCategoryBreakdown(payments, 'INCOME');
 
   return (
     <div className="space-y-6">
@@ -171,13 +153,18 @@ export default async function FinancesPage() {
           <h1 className="text-2xl font-bold">Finances</h1>
           <p className="text-muted-foreground">Income, expenses, and financial overview</p>
         </div>
-        {session.role === 'ADMIN' && (
-          <form action={runOverdueCheck}>
-            <Button type="submit" variant="outline" size="sm">
-              <AlertTriangle className="h-4 w-4 mr-2" /> Check Overdue
-            </Button>
-          </form>
-        )}
+        <div className="flex items-center gap-2">
+          {session.role === 'ADMIN' && (
+            <>
+              <TransactionDialog action={addPayment} projects={projects} products={products} />
+              <form action={runOverdueCheck}>
+                <Button type="submit" variant="outline" size="sm">
+                  <AlertTriangle className="h-4 w-4 mr-2" /> Check Overdue
+                </Button>
+              </form>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Summary Cards */}
@@ -244,94 +231,6 @@ export default async function FinancesPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Add Payment Form (Admin only) */}
-      {session.role === 'ADMIN' && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Record Transaction
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form action={addPayment} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="space-y-2">
-                <Label htmlFor="type">Type</Label>
-                <Select
-                  id="type"
-                  name="type"
-                  defaultValue="INCOME"
-                  options={[
-                    { value: 'INCOME', label: 'Income' },
-                    { value: 'EXPENSE', label: 'Expense' },
-                  ]}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="amount">Amount</Label>
-                <Input id="amount" name="amount" type="number" step="0.01" placeholder="0.00" required />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="currency">Currency</Label>
-                <Select
-                  id="currency"
-                  name="currency"
-                  defaultValue="USD"
-                  options={[
-                    { value: 'USD', label: 'USD' },
-                    { value: 'UZS', label: 'UZS' },
-                  ]}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="category">Category</Label>
-                <Select id="category" name="category" defaultValue="OTHER" options={PAYMENT_CATEGORIES} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Input id="description" name="description" placeholder="What is this payment for?" required />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="date">Date</Label>
-                <Input id="date" name="date" type="date" defaultValue={new Date().toISOString().split('T')[0]} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="projectId">Link to Project</Label>
-                <Select
-                  id="projectId"
-                  name="projectId"
-                  defaultValue=""
-                  options={[
-                    { value: '', label: 'None' },
-                    ...projects.map((p) => ({ value: p.id, label: p.name })),
-                  ]}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="productId">Link to Product</Label>
-                <Select
-                  id="productId"
-                  name="productId"
-                  defaultValue=""
-                  options={[
-                    { value: '', label: 'None' },
-                    ...products.map((p) => ({ value: p.id, label: p.name })),
-                  ]}
-                />
-              </div>
-              <div className="space-y-2 flex items-end">
-                <label className="flex items-center gap-2 text-sm">
-                  <input type="checkbox" name="recurring" className="rounded" />
-                  Recurring
-                </label>
-              </div>
-              <div className="sm:col-span-2 lg:col-span-3">
-                <Button type="submit" size="sm">Record Transaction</Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Transaction List */}
       {payments.length === 0 ? (

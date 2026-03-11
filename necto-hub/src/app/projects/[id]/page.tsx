@@ -8,11 +8,15 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { StatusBadge } from '@/components/shared/StatusBadge';
+import { EmptyState } from '@/components/shared/EmptyState';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
-import { ArrowLeft, Plus } from 'lucide-react';
+import { ArrowLeft, Plus, DollarSign, Trash2 } from 'lucide-react';
 import { logActivity } from '@/lib/activity';
+import { PhoneInput } from '@/components/ui/phone-input';
+import { AmountInput } from '@/components/ui/amount-input';
+import { AddPaymentDialog } from './ProjectDetailClient';
 
 const PROJECT_STATUSES = [
   { value: 'LEAD', label: 'Lead' },
@@ -23,6 +27,38 @@ const PROJECT_STATUSES = [
   { value: 'DELIVERED', label: 'Delivered' },
   { value: 'PAID', label: 'Paid' },
   { value: 'LOST', label: 'Lost' },
+];
+
+const PROJECT_TYPES = [
+  { value: '', label: 'None' },
+  { value: 'Website / Landing Page', label: 'Website / Landing Page' },
+  { value: 'Web Application / SaaS', label: 'Web Application / SaaS' },
+  { value: 'Telegram Bot', label: 'Telegram Bot' },
+  { value: 'Mobile Application', label: 'Mobile Application' },
+  { value: 'CRM System', label: 'CRM System' },
+  { value: 'E-commerce', label: 'E-commerce' },
+  { value: 'AI/ML Solution', label: 'AI/ML Solution' },
+  { value: 'Design / Branding', label: 'Design / Branding' },
+];
+
+const REFERRAL_SOURCES = [
+  { value: '', label: 'None' },
+  { value: 'Personal Network', label: 'Personal Network' },
+  { value: 'IT Park', label: 'IT Park' },
+  { value: 'Partner', label: 'Partner' },
+  { value: 'Telegram Group', label: 'Telegram Group' },
+  { value: 'Instagram', label: 'Instagram' },
+  { value: 'LinkedIn', label: 'LinkedIn' },
+  { value: 'Friend / Colleague', label: 'Friend / Colleague' },
+  { value: 'Event', label: 'Event' },
+  { value: 'Other', label: 'Other' },
+];
+
+const REFERRAL_FEES = [
+  { value: '0', label: 'None (0%)' },
+  { value: '5', label: '5%' },
+  { value: '10', label: '10%' },
+  { value: '15', label: '15%' },
 ];
 
 const MILESTONE_STATUSES = [
@@ -37,8 +73,8 @@ async function updateProject(formData: FormData) {
   if (!session || !['ADMIN', 'MANAGER'].includes(session.role)) return;
 
   const id = formData.get('id') as string;
-
   const name = formData.get('name') as string;
+
   await prisma.hubProject.update({
     where: { id },
     data: {
@@ -95,7 +131,6 @@ async function updateMilestoneStatus(formData: FormData) {
   if (status === 'PAID') {
     updateData.paidDate = new Date();
 
-    // Auto-create payment record
     const milestone = await prisma.hubProjectMilestone.findUnique({
       where: { id },
       include: { project: true },
@@ -117,6 +152,52 @@ async function updateMilestoneStatus(formData: FormData) {
   }
 
   await prisma.hubProjectMilestone.update({ where: { id }, data: updateData });
+  revalidatePath(`/projects/${projectId}`);
+}
+
+async function deleteMilestone(formData: FormData) {
+  'use server';
+  const session = await getSession();
+  if (!session || !['ADMIN', 'MANAGER'].includes(session.role)) return;
+
+  const id = formData.get('id') as string;
+  const projectId = formData.get('projectId') as string;
+
+  await prisma.hubProjectMilestone.delete({ where: { id } });
+  revalidatePath(`/projects/${projectId}`);
+}
+
+async function addPayment(formData: FormData) {
+  'use server';
+  const session = await getSession();
+  if (!session || !['ADMIN', 'MANAGER'].includes(session.role)) return;
+
+  const projectId = formData.get('projectId') as string;
+
+  await prisma.hubPayment.create({
+    data: {
+      type: formData.get('type') as any,
+      amount: parseFloat(formData.get('amount') as string),
+      currency: (formData.get('currency') as any) || 'USD',
+      category: formData.get('category') as any,
+      projectId,
+      description: formData.get('description') as string,
+      date: formData.get('date') ? new Date(formData.get('date') as string) : new Date(),
+    },
+  });
+
+  revalidatePath(`/projects/${projectId}`);
+}
+
+async function deletePayment(formData: FormData) {
+  'use server';
+  const session = await getSession();
+  if (!session || !['ADMIN', 'MANAGER'].includes(session.role)) return;
+
+  const id = formData.get('id') as string;
+  const projectId = formData.get('projectId') as string;
+
+  await prisma.hubPayment.delete({ where: { id } });
   revalidatePath(`/projects/${projectId}`);
 }
 
@@ -151,6 +232,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
     .reduce((s, p) => s + p.amount, 0);
 
   const dateToInput = (d: Date | null) => d ? new Date(d).toISOString().split('T')[0] : '';
+  const isEditor = ['ADMIN', 'MANAGER'].includes(session.role);
 
   return (
     <div className="space-y-6">
@@ -184,7 +266,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               </div>
               <div className="space-y-2">
                 <Label htmlFor="type">Type</Label>
-                <Input id="type" name="type" defaultValue={project.type || ''} />
+                <Select id="type" name="type" defaultValue={project.type || ''} options={PROJECT_TYPES} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
@@ -192,15 +274,15 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               </div>
               <div className="space-y-2">
                 <Label htmlFor="totalPrice">Total Price (USD)</Label>
-                <Input id="totalPrice" name="totalPrice" type="number" step="0.01" defaultValue={project.totalPrice || ''} />
+                <AmountInput id="totalPrice" name="totalPrice" defaultValue={project.totalPrice} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="clientContact">Client Contact</Label>
                 <Input id="clientContact" name="clientContact" defaultValue={project.clientContact || ''} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="clientPhone">Client Phone</Label>
-                <Input id="clientPhone" name="clientPhone" defaultValue={project.clientPhone || ''} />
+                <Label>Client Phone</Label>
+                <PhoneInput name="clientPhone" defaultValue={project.clientPhone || ''} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="startDate">Start Date</Label>
@@ -212,11 +294,11 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               </div>
               <div className="space-y-2">
                 <Label htmlFor="referralSource">Referral Source</Label>
-                <Input id="referralSource" name="referralSource" defaultValue={project.referralSource || ''} />
+                <Select id="referralSource" name="referralSource" defaultValue={project.referralSource || ''} options={REFERRAL_SOURCES} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="referralFeePercent">Referral Fee %</Label>
-                <Input id="referralFeePercent" name="referralFeePercent" type="number" step="0.1" defaultValue={project.referralFeePercent || ''} />
+                <Label htmlFor="referralFeePercent">Referral Fee</Label>
+                <Select id="referralFeePercent" name="referralFeePercent" defaultValue={String(project.referralFeePercent || 0)} options={REFERRAL_FEES} />
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="notes">Notes</Label>
@@ -299,24 +381,35 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                       <td className="p-3">{formatDate(ms.dueDate)}</td>
                       <td className="p-3"><StatusBadge status={ms.status} /></td>
                       <td className="p-3">
-                        {ms.status !== 'PAID' && ['ADMIN', 'MANAGER'].includes(session.role) && (
-                          <form action={updateMilestoneStatus} className="flex items-center gap-2">
-                            <input type="hidden" name="id" value={ms.id} />
-                            <input type="hidden" name="projectId" value={project.id} />
-                            <Select
-                              name="status"
-                              defaultValue={ms.status}
-                              options={MILESTONE_STATUSES}
-                              className="h-8 text-xs w-28"
-                            />
-                            <Button type="submit" size="sm" variant="outline" className="h-8">
-                              Update
-                            </Button>
-                          </form>
-                        )}
-                        {ms.status === 'PAID' && (
-                          <span className="text-xs text-muted-foreground">Paid {formatDate(ms.paidDate)}</span>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {ms.status !== 'PAID' && isEditor && (
+                            <form action={updateMilestoneStatus} className="flex items-center gap-2">
+                              <input type="hidden" name="id" value={ms.id} />
+                              <input type="hidden" name="projectId" value={project.id} />
+                              <Select
+                                name="status"
+                                defaultValue={ms.status}
+                                options={MILESTONE_STATUSES}
+                                className="h-8 text-xs w-28"
+                              />
+                              <Button type="submit" size="sm" variant="outline" className="h-8">
+                                Update
+                              </Button>
+                            </form>
+                          )}
+                          {ms.status === 'PAID' && (
+                            <span className="text-xs text-muted-foreground">Paid {formatDate(ms.paidDate)}</span>
+                          )}
+                          {isEditor && (
+                            <form action={deleteMilestone}>
+                              <input type="hidden" name="id" value={ms.id} />
+                              <input type="hidden" name="projectId" value={project.id} />
+                              <Button type="submit" variant="ghost" size="sm" className="h-8 text-destructive hover:text-destructive">
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </form>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -325,7 +418,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
             </div>
           )}
 
-          {['ADMIN', 'MANAGER'].includes(session.role) && (
+          {isEditor && (
             <form action={addMilestone} className="flex items-end gap-3 flex-wrap">
               <input type="hidden" name="projectId" value={project.id} />
               <div className="space-y-1">
@@ -334,7 +427,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Amount (USD)</Label>
-                <Input name="amount" type="number" step="0.01" placeholder="0.00" required className="h-9 w-28" />
+                <AmountInput name="amount" required placeholder="0" className="h-9 w-28" />
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Due Date</Label>
@@ -349,12 +442,21 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
       </Card>
 
       {/* Payment History */}
-      {project.payments.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Payment History</CardTitle>
-          </CardHeader>
-          <CardContent>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>Payment History</CardTitle>
+          {isEditor && (
+            <AddPaymentDialog projectId={project.id} action={addPayment} />
+          )}
+        </CardHeader>
+        <CardContent>
+          {project.payments.length === 0 ? (
+            <EmptyState
+              icon={<DollarSign className="h-8 w-8" />}
+              title="No payments yet"
+              description="Record payments to track project finances."
+            />
+          ) : (
             <div className="border rounded-lg overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
@@ -363,6 +465,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                     <th className="text-left p-3 font-medium">Description</th>
                     <th className="text-left p-3 font-medium">Type</th>
                     <th className="text-right p-3 font-medium">Amount</th>
+                    {isEditor && <th className="p-3 w-12"></th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -376,14 +479,25 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                       <td className={`p-3 text-right font-medium ${payment.type === 'INCOME' ? 'text-green-600' : 'text-red-600'}`}>
                         {payment.type === 'INCOME' ? '+' : '-'}{formatCurrency(payment.amount)}
                       </td>
+                      {isEditor && (
+                        <td className="p-3">
+                          <form action={deletePayment}>
+                            <input type="hidden" name="id" value={payment.id} />
+                            <input type="hidden" name="projectId" value={project.id} />
+                            <Button type="submit" variant="ghost" size="sm" className="h-7 text-destructive hover:text-destructive">
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          </form>
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

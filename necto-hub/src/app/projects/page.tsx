@@ -1,30 +1,14 @@
 import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select';
 import { StatusBadge } from '@/components/shared/StatusBadge';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { formatCurrency, formatDate, daysUntil } from '@/lib/utils';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
-import { FolderKanban, Plus } from 'lucide-react';
+import { FolderKanban } from 'lucide-react';
 import { logActivity } from '@/lib/activity';
-
-const PROJECT_STATUSES = [
-  { value: 'LEAD', label: 'Lead' },
-  { value: 'PROPOSAL', label: 'Proposal' },
-  { value: 'NEGOTIATING', label: 'Negotiating' },
-  { value: 'IN_PROGRESS', label: 'In Progress' },
-  { value: 'FROZEN', label: 'Frozen' },
-  { value: 'DELIVERED', label: 'Delivered' },
-  { value: 'PAID', label: 'Paid' },
-  { value: 'LOST', label: 'Lost' },
-];
+import { ProjectFormDialog } from './ProjectFormDialog';
 
 async function createProject(formData: FormData) {
   'use server';
@@ -69,53 +53,10 @@ export default async function ProjectsPage() {
           <h1 className="text-2xl font-bold">Projects</h1>
           <p className="text-muted-foreground">Client projects and engagements</p>
         </div>
+        {['ADMIN', 'MANAGER'].includes(session.role) && (
+          <ProjectFormDialog action={createProject} />
+        )}
       </div>
-
-      {/* Add Project Form */}
-      {['ADMIN', 'MANAGER'].includes(session.role) && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <Plus className="h-4 w-4" /> New Project
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form action={createProject} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="space-y-2">
-                <Label htmlFor="name">Project Name</Label>
-                <Input id="name" name="name" placeholder="e.g., 4Event" required />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="type">Type</Label>
-                <Input id="type" name="type" placeholder="e.g., Web App, Website" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
-                <Select id="status" name="status" defaultValue="LEAD" options={PROJECT_STATUSES} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="clientContact">Client Contact</Label>
-                <Input id="clientContact" name="clientContact" placeholder="Name" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="clientPhone">Client Phone</Label>
-                <Input id="clientPhone" name="clientPhone" placeholder="+998..." />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="totalPrice">Total Price (USD)</Label>
-                <Input id="totalPrice" name="totalPrice" type="number" step="0.01" placeholder="0.00" />
-              </div>
-              <div className="space-y-2 sm:col-span-2 lg:col-span-3">
-                <Label htmlFor="notes">Notes</Label>
-                <Textarea id="notes" name="notes" placeholder="Additional details..." rows={2} />
-              </div>
-              <div className="sm:col-span-2 lg:col-span-3">
-                <Button type="submit" size="sm">Create Project</Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Project List */}
       {projects.length === 0 ? (
