@@ -199,30 +199,93 @@ async function main() {
 
   console.log('Leads and clients created');
 
-  // 8. Seed pricing configs
-  const pricingData = [
-    // Websites
-    { projectType: 'website', itemName: 'Base: Single page, responsive, deployed', itemType: 'BASE' as const, price: 400, sortOrder: 0 },
-    { projectType: 'website', itemName: 'Additional page (per page)', itemType: 'FEATURE' as const, price: 80, sortOrder: 1 },
-    { projectType: 'website', itemName: 'CMS / admin panel', itemType: 'FEATURE' as const, price: 300, sortOrder: 2 },
-    { projectType: 'website', itemName: 'Multi-language support (per language)', itemType: 'FEATURE' as const, price: 150, sortOrder: 3 },
-    { projectType: 'website', itemName: 'Contact form with Telegram notification', itemType: 'FEATURE' as const, price: 50, sortOrder: 4 },
-    // Web Apps
-    { projectType: 'webapp', itemName: 'Base: Auth + 1 CRUD module + basic UI + deployed', itemType: 'BASE' as const, price: 1500, sortOrder: 0 },
-    { projectType: 'webapp', itemName: 'Additional CRUD module', itemType: 'FEATURE' as const, price: 400, sortOrder: 1 },
-    { projectType: 'webapp', itemName: 'User roles & permissions', itemType: 'FEATURE' as const, price: 300, sortOrder: 2 },
-    { projectType: 'webapp', itemName: 'Dashboard with charts & analytics', itemType: 'FEATURE' as const, price: 500, sortOrder: 3 },
-    // Telegram Bots
-    { projectType: 'telegram_bot', itemName: 'Base: Menu navigation + auto-replies + basic flow', itemType: 'BASE' as const, price: 250, sortOrder: 0 },
-    { projectType: 'telegram_bot', itemName: 'Database integration', itemType: 'FEATURE' as const, price: 200, sortOrder: 1 },
-    // Mobile
-    { projectType: 'mobile', itemName: 'Base: 1 platform, 3 screens, basic API', itemType: 'BASE' as const, price: 2000, sortOrder: 0 },
-    { projectType: 'mobile', itemName: 'Cross-platform (add second platform)', itemType: 'FEATURE' as const, price: 1500, sortOrder: 1 },
+  // 8. Seed project types and features
+  const projectTypesData = [
+    {
+      name: 'Website / Landing Page',
+      basePrice: 400,
+      baseDescription: 'Single page, responsive, deployed',
+      sortOrder: 0,
+      features: [
+        { name: 'Additional page', price: 80, supportsQuantity: true, unitLabel: 'page', sortOrder: 0 },
+        { name: 'CMS / admin panel', price: 300, supportsQuantity: false, unitLabel: null, sortOrder: 1 },
+        { name: 'Multi-language support', price: 150, supportsQuantity: true, unitLabel: 'language', sortOrder: 2 },
+        { name: 'Contact form with Telegram notification', price: 50, supportsQuantity: false, unitLabel: null, sortOrder: 3 },
+        { name: 'Gallery', price: 100, supportsQuantity: false, unitLabel: null, sortOrder: 4 },
+        { name: 'Blog', price: 200, supportsQuantity: false, unitLabel: null, sortOrder: 5 },
+        { name: 'Animations', price: 150, supportsQuantity: false, unitLabel: null, sortOrder: 6 },
+        { name: 'SEO', price: 100, supportsQuantity: false, unitLabel: null, sortOrder: 7 },
+        { name: 'Analytics', price: 50, supportsQuantity: false, unitLabel: null, sortOrder: 8 },
+      ],
+    },
+    {
+      name: 'Web Application / SaaS',
+      basePrice: 1500,
+      baseDescription: 'Auth + 1 CRUD module + basic UI + deployed',
+      sortOrder: 1,
+      features: [
+        { name: 'Additional CRUD module', price: 400, supportsQuantity: true, unitLabel: null, sortOrder: 0 },
+        { name: 'User roles & permissions', price: 300, supportsQuantity: false, unitLabel: null, sortOrder: 1 },
+        { name: 'Dashboard with charts & analytics', price: 500, supportsQuantity: false, unitLabel: null, sortOrder: 2 },
+        { name: 'PDF / Excel reports', price: 300, supportsQuantity: false, unitLabel: null, sortOrder: 3 },
+        { name: 'Telegram bot integration', price: 400, supportsQuantity: false, unitLabel: null, sortOrder: 4 },
+        { name: 'Email notifications', price: 200, supportsQuantity: false, unitLabel: null, sortOrder: 5 },
+        { name: 'File uploads', price: 200, supportsQuantity: false, unitLabel: null, sortOrder: 6 },
+        { name: 'Search & filtering', price: 200, supportsQuantity: false, unitLabel: null, sortOrder: 7 },
+        { name: 'Multi-language support', price: 200, supportsQuantity: true, unitLabel: 'language', sortOrder: 8 },
+        { name: 'Multi-tenant SaaS', price: 800, supportsQuantity: false, unitLabel: null, sortOrder: 9 },
+        { name: 'API layer', price: 500, supportsQuantity: false, unitLabel: null, sortOrder: 10 },
+      ],
+    },
+    {
+      name: 'Telegram Bot',
+      basePrice: 250,
+      baseDescription: 'Menu navigation + auto-replies + basic flow',
+      sortOrder: 2,
+      features: [
+        { name: 'Database integration', price: 200, supportsQuantity: false, unitLabel: null, sortOrder: 0 },
+        { name: 'Booking flow', price: 300, supportsQuantity: false, unitLabel: null, sortOrder: 1 },
+        { name: 'Order / catalog flow', price: 350, supportsQuantity: false, unitLabel: null, sortOrder: 2 },
+        { name: 'Admin notifications', price: 100, supportsQuantity: false, unitLabel: null, sortOrder: 3 },
+        { name: 'Web admin panel', price: 500, supportsQuantity: false, unitLabel: null, sortOrder: 4 },
+        { name: 'Multi-language support', price: 150, supportsQuantity: true, unitLabel: 'language', sortOrder: 5 },
+        { name: 'Analytics', price: 200, supportsQuantity: false, unitLabel: null, sortOrder: 6 },
+      ],
+    },
+    {
+      name: 'Mobile Application',
+      basePrice: 2000,
+      baseDescription: '1 platform, 3 screens, basic API',
+      sortOrder: 3,
+      features: [
+        { name: 'Cross-platform (add second platform)', price: 1500, supportsQuantity: false, unitLabel: null, sortOrder: 0 },
+        { name: 'Additional screen', price: 200, supportsQuantity: true, unitLabel: 'screen', sortOrder: 1 },
+        { name: 'Push notifications', price: 300, supportsQuantity: false, unitLabel: null, sortOrder: 2 },
+        { name: 'Auth system', price: 400, supportsQuantity: false, unitLabel: null, sortOrder: 3 },
+        { name: 'Offline mode', price: 400, supportsQuantity: false, unitLabel: null, sortOrder: 4 },
+        { name: 'Camera integration', price: 200, supportsQuantity: false, unitLabel: null, sortOrder: 5 },
+        { name: 'App Store submission', price: 150, supportsQuantity: true, unitLabel: 'store', sortOrder: 6 },
+      ],
+    },
   ];
 
-  await prisma.hubPricingConfig.createMany({ data: pricingData });
+  for (const typeData of projectTypesData) {
+    const { features, ...typeFields } = typeData;
+    const projectType = await prisma.hubProjectType.upsert({
+      where: { name: typeFields.name },
+      update: {},
+      create: typeFields,
+    });
+    for (const feature of features) {
+      await prisma.hubProjectTypeFeature.upsert({
+        where: { projectTypeId_name: { projectTypeId: projectType.id, name: feature.name } },
+        update: {},
+        create: { ...feature, projectTypeId: projectType.id },
+      });
+    }
+  }
 
-  console.log('Pricing configs created');
+  console.log('Project types and features created');
   console.log('Seed complete!');
   console.log('\nLogin credentials:');
   console.log('  Email: admin@necto.uz');

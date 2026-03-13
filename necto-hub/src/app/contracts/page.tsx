@@ -85,8 +85,19 @@ export default async function ContractsPage() {
                 <Input name="clientContact" />
               </div>
               <div className="space-y-2">
-                <Label>Total Price (USD)</Label>
+                <Label>Total Price</Label>
                 <Input name="totalPrice" type="number" step="0.01" required />
+              </div>
+              <div className="space-y-2">
+                <Label>Currency</Label>
+                <Select
+                  name="currency"
+                  defaultValue="USD"
+                  options={[
+                    { value: 'USD', label: 'USD' },
+                    { value: 'UZS', label: 'UZS' },
+                  ]}
+                />
               </div>
               <div className="space-y-2">
                 <Label>Start Date</Label>

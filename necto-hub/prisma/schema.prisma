@@ -157,14 +157,6 @@ enum HubContractStatus {
   @@schema("hub")
 }
 
-enum HubPricingItemType {
-  BASE
-  FEATURE
-  RUSH
-
-  @@schema("hub")
-}
-
 // ============================================================================
 // MODELS
 // ============================================================================
@@ -434,15 +426,35 @@ model HubActivityLog {
   @@schema("hub")
 }
 
-model HubPricingConfig {
-  id          String             @id @default(cuid())
-  projectType String             @map("project_type")
-  itemName    String             @map("item_name")
-  itemType    HubPricingItemType @map("item_type")
-  price       Float
-  currency    HubCurrency        @default(USD)
-  sortOrder   Int                @default(0) @map("sort_order")
+model HubProjectType {
+  id              String   @id @default(cuid())
+  name            String   @unique
+  basePrice       Float    @map("base_price")
+  baseDescription String   @map("base_description")
+  sortOrder       Int      @default(0) @map("sort_order")
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
-  @@map("hub_pricing_configs")
+  features HubProjectTypeFeature[]
+
+  @@map("hub_project_types")
+  @@schema("hub")
+}
+
+model HubProjectTypeFeature {
+  id               String  @id @default(cuid())
+  projectTypeId    String  @map("project_type_id")
+  name             String
+  price            Float
+  supportsQuantity Boolean @default(false) @map("supports_quantity")
+  unitLabel        String? @map("unit_label")
+  sortOrder        Int     @default(0) @map("sort_order")
+  isActive         Boolean @default(true) @map("is_active")
+
+  projectType HubProjectType @relation(fields: [projectTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([projectTypeId, name])
+  @@map("hub_project_type_features")
   @@schema("hub")
 }

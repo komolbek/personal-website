@@ -1,61 +1,75 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Calculator } from 'lucide-react';
+import { Calculator, Package } from 'lucide-react';
 
-type PricingItem = {
+type ProjectTypeData = {
+  id: string;
   name: string;
-  type: string;
-  price: number;
-  checked: boolean;
+  basePrice: number;
+  baseDescription: string;
+  features: {
+    id: string;
+    name: string;
+    price: number;
+    supportsQuantity: boolean;
+    unitLabel: string | null;
+  }[];
 };
 
-const PROJECT_TYPES = [
-  { value: 'website', label: 'Website / Landing Page' },
-  { value: 'webapp', label: 'Web Application / SaaS' },
-  { value: 'telegram_bot', label: 'Telegram Bot' },
-  { value: 'mobile', label: 'Mobile Application' },
-];
-
-export function CalculatorClient({
-  pricingData,
-}: {
-  pricingData: Record<string, { name: string; type: string; price: number }[]>;
-}) {
-  const [projectType, setProjectType] = useState('website');
-  const [items, setItems] = useState<PricingItem[]>([]);
+export function CalculatorClient({ projectTypes }: { projectTypes: ProjectTypeData[] }) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [checkedFeatures, setCheckedFeatures] = useState<Record<string, boolean>>({});
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [rushFee, setRushFee] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [quantity, setQuantity] = useState<Record<number, number>>({});
-  const [clientName, setClientName] = useState('');
   const [referralPercent, setReferralPercent] = useState(0);
+  const [clientName, setClientName] = useState('');
+  const [clientPhone, setClientPhone] = useState('');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  useEffect(() => {
-    const data = pricingData[projectType] || [];
-    setItems(data.map((i) => ({ ...i, checked: i.type === 'BASE' })));
-    setQuantity({});
-  }, [projectType, pricingData]);
+  const currentType = projectTypes[selectedIndex];
 
-  const toggleItem = (index: number) => {
-    setItems((prev) =>
-      prev.map((item, i) =>
-        i === index && item.type !== 'BASE' ? { ...item, checked: !item.checked } : item
-      )
+  if (!currentType) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">Pricing Calculator</h1>
+          <p className="text-muted-foreground">Generate project quotes with feature-based pricing</p>
+        </div>
+        <Card>
+          <CardContent className="pt-6 text-center text-muted-foreground">
+            No project types available. An admin needs to create project types in Settings.
+          </CardContent>
+        </Card>
+      </div>
     );
+  }
+
+  const handleTypeChange = (index: number) => {
+    setSelectedIndex(index);
+    setCheckedFeatures({});
+    setQuantities({});
   };
 
-  const getItemTotal = (item: PricingItem, index: number) => {
-    if (!item.checked) return 0;
-    return item.price * (quantity[index] || 1);
+  const toggleFeature = (featureId: string) => {
+    setCheckedFeatures((prev) => ({ ...prev, [featureId]: !prev[featureId] }));
   };
 
-  const subtotal = items.reduce((sum, item, i) => sum + getItemTotal(item, i), 0);
+  const getFeatureTotal = (feature: ProjectTypeData['features'][0]) => {
+    if (!checkedFeatures[feature.id]) return 0;
+    return feature.price * (quantities[feature.id] || 1);
+  };
+
+  const subtotal =
+    currentType.basePrice +
+    currentType.features.reduce((sum, f) => sum + getFeatureTotal(f), 0);
+
   const rushAmount = subtotal * (rushFee / 100);
   const afterRush = subtotal + rushAmount;
   const discountAmount = afterRush * (discount / 100);
@@ -67,13 +81,20 @@ export function CalculatorClient({
     if (!clientName.trim()) return;
     setSaving(true);
 
-    const selectedItems = items
-      .map((item, i) => ({
-        feature: item.name,
-        price: getItemTotal(item, i),
-        quantity: quantity[i] || 1,
-      }))
-      .filter((_, i) => items[i].checked);
+    const selectedItems = [
+      {
+        feature: `Base: ${currentType.baseDescription}`,
+        price: currentType.basePrice,
+        quantity: 1,
+      },
+      ...currentType.features
+        .filter((f) => checkedFeatures[f.id])
+        .map((f) => ({
+          feature: f.name,
+          price: getFeatureTotal(f),
+          quantity: quantities[f.id] || 1,
+        })),
+    ];
 
     try {
       await fetch('/api/quotes', {
@@ -81,12 +102,14 @@ export function CalculatorClient({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           clientName,
+          clientPhone: clientPhone || null,
           items: selectedItems,
           basePrice: subtotal,
           totalPrice: total,
           rushFeeApplied: rushFee > 0,
           rushFeePercent: rushFee || null,
           discountPercent: discount || null,
+          projectTypeName: currentType.name,
         }),
       });
       setSaved(true);
@@ -107,23 +130,44 @@ export function CalculatorClient({
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-4">
-          {/* Project Type Selection */}
+          {/* Project Type Tabs */}
           <Card>
             <CardContent className="pt-6">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {PROJECT_TYPES.map((pt) => (
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {projectTypes.map((pt, i) => (
                   <button
-                    key={pt.value}
-                    onClick={() => setProjectType(pt.value)}
-                    className={`p-3 rounded-lg border text-sm font-medium transition-colors ${
-                      projectType === pt.value
+                    key={pt.id}
+                    onClick={() => handleTypeChange(i)}
+                    className={`shrink-0 p-3 rounded-lg border text-sm font-medium transition-colors ${
+                      selectedIndex === i
                         ? 'bg-primary text-primary-foreground border-primary'
                         : 'hover:bg-accent'
                     }`}
                   >
-                    {pt.label}
+                    {pt.name}
                   </button>
                 ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Base Package */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Package className="h-4 w-4" /> Base Package
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between p-3 rounded-lg border bg-primary/5 border-primary/30">
+                <div className="flex items-center gap-3">
+                  <input type="checkbox" checked disabled className="rounded" />
+                  <span className="text-sm">
+                    {currentType.baseDescription}
+                    <span className="ml-2 text-xs text-muted-foreground">(always included)</span>
+                  </span>
+                </div>
+                <span className="text-sm font-medium">${currentType.basePrice.toLocaleString()}</span>
               </div>
             </CardContent>
           </Card>
@@ -131,49 +175,49 @@ export function CalculatorClient({
           {/* Feature Checklist */}
           <Card>
             <CardHeader>
-              <CardTitle>Features</CardTitle>
+              <CardTitle>Add-on Features</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {items.map((item, index) => (
+                {currentType.features.map((feature) => (
                   <label
-                    key={index}
+                    key={feature.id}
                     className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
-                      item.checked ? 'bg-primary/5 border-primary/30' : 'hover:bg-accent'
-                    } ${item.type === 'BASE' ? 'opacity-80 cursor-default' : ''}`}
+                      checkedFeatures[feature.id] ? 'bg-primary/5 border-primary/30' : 'hover:bg-accent'
+                    }`}
                   >
                     <div className="flex items-center gap-3">
                       <input
                         type="checkbox"
-                        checked={item.checked}
-                        onChange={() => toggleItem(index)}
-                        disabled={item.type === 'BASE'}
+                        checked={!!checkedFeatures[feature.id]}
+                        onChange={() => toggleFeature(feature.id)}
                         className="rounded"
                       />
-                      <span className="text-sm">
-                        {item.name}
-                        {item.type === 'BASE' && (
-                          <span className="ml-2 text-xs text-muted-foreground">(included)</span>
-                        )}
-                      </span>
+                      <span className="text-sm">{feature.name}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      {item.checked && item.name.includes('per ') && (
-                        <Input
-                          type="number"
-                          min="1"
-                          value={quantity[index] || 1}
-                          onChange={(e) =>
-                            setQuantity((prev) => ({
-                              ...prev,
-                              [index]: parseInt(e.target.value) || 1,
-                            }))
-                          }
-                          className="w-16 h-7 text-xs text-center"
-                        />
+                      {checkedFeatures[feature.id] && feature.supportsQuantity && (
+                        <div className="flex items-center gap-1">
+                          <Input
+                            type="number"
+                            min="1"
+                            value={quantities[feature.id] || 1}
+                            onChange={(e) =>
+                              setQuantities((prev) => ({
+                                ...prev,
+                                [feature.id]: parseInt(e.target.value) || 1,
+                              }))
+                            }
+                            className="w-16 h-7 text-xs text-center"
+                            onClick={(e) => e.preventDefault()}
+                          />
+                          {feature.unitLabel && (
+                            <span className="text-xs text-muted-foreground">{feature.unitLabel}</span>
+                          )}
+                        </div>
                       )}
-                      <span className="text-sm font-medium w-16 text-right">
-                        ${getItemTotal(item, index).toLocaleString()}
+                      <span className="text-sm font-medium w-20 text-right">
+                        ${getFeatureTotal(feature).toLocaleString() || feature.price.toLocaleString()}
                       </span>
                     </div>
                   </label>
@@ -198,6 +242,15 @@ export function CalculatorClient({
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
                   placeholder="Client name for quote"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Client Phone <span className="text-muted-foreground text-xs">(optional)</span></Label>
+                <Input
+                  value={clientPhone}
+                  onChange={(e) => setClientPhone(e.target.value)}
+                  placeholder="+998 ..."
                 />
               </div>
 
