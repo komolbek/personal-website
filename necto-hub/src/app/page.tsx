@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { RevenueChart } from '@/components/charts/RevenueChart';
 import { ProjectPipelineChart } from '@/components/charts/ProjectPipelineChart';
 
-function getMonthlyData(payments: { type: string; amount: number; date: Date }[]) {
+function getMonthlyData(payments: { type: string; amount: number; currency: string; date: Date }[]) {
   const months: Record<string, { income: number; expenses: number }> = {};
   const now = new Date();
 
@@ -20,7 +20,8 @@ function getMonthlyData(payments: { type: string; amount: number; date: Date }[]
     months[key] = { income: 0, expenses: 0 };
   }
 
-  payments.forEach((p) => {
+  // Only include USD payments in the chart to avoid mixing currencies
+  payments.filter((p) => p.currency === 'USD').forEach((p) => {
     const d = new Date(p.date);
     const key = d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
     if (months[key]) {
@@ -63,8 +64,10 @@ export default async function DashboardPage() {
   if (!session) redirect('/login');
 
   const [
-    incomePayments,
-    expensePayments,
+    incomeUSD,
+    incomeUZS,
+    expenseUSD,
+    expenseUZS,
     activeProjects,
     allProjects,
     products,
@@ -75,11 +78,19 @@ export default async function DashboardPage() {
     recentActivity,
   ] = await Promise.all([
     prisma.hubPayment.aggregate({
-      where: { type: 'INCOME' },
+      where: { type: 'INCOME', currency: 'USD' },
       _sum: { amount: true },
     }),
     prisma.hubPayment.aggregate({
-      where: { type: 'EXPENSE' },
+      where: { type: 'INCOME', currency: 'UZS' },
+      _sum: { amount: true },
+    }),
+    prisma.hubPayment.aggregate({
+      where: { type: 'EXPENSE', currency: 'USD' },
+      _sum: { amount: true },
+    }),
+    prisma.hubPayment.aggregate({
+      where: { type: 'EXPENSE', currency: 'UZS' },
       _sum: { amount: true },
     }),
     prisma.hubProject.findMany({
@@ -127,7 +138,7 @@ export default async function DashboardPage() {
       where: {
         date: { gte: new Date(new Date().setMonth(new Date().getMonth() - 6)) },
       },
-      select: { type: true, amount: true, date: true },
+      select: { type: true, amount: true, currency: true, date: true },
     }),
     // Recent activity
     prisma.hubActivityLog.findMany({
@@ -136,8 +147,10 @@ export default async function DashboardPage() {
     }),
   ]);
 
-  const totalEarned = incomePayments._sum.amount || 0;
-  const totalExpenses = expensePayments._sum.amount || 0;
+  const totalEarnedUSD = incomeUSD._sum.amount || 0;
+  const totalEarnedUZS = incomeUZS._sum.amount || 0;
+  const totalExpensesUSD = expenseUSD._sum.amount || 0;
+  const totalExpensesUZS = expenseUZS._sum.amount || 0;
 
   const outstandingMilestones = activeProjects.reduce((sum, p) => {
     const unpaid = p.milestones
@@ -173,7 +186,10 @@ export default async function DashboardPage() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(totalEarned)}</div>
+            <div className="text-2xl font-bold">{formatCurrency(totalEarnedUSD)}</div>
+            {totalEarnedUZS > 0 && (
+              <div className="text-sm text-muted-foreground mt-1">{formatCurrency(totalEarnedUZS, 'UZS')}</div>
+            )}
           </CardContent>
         </Card>
 
