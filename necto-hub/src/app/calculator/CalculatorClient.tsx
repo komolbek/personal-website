@@ -21,13 +21,22 @@ type ProjectTypeData = {
   }[];
 };
 
-export function CalculatorClient({ projectTypes }: { projectTypes: ProjectTypeData[] }) {
+type ContactData = {
+  id: string;
+  name: string;
+  phone: string | null;
+  company: string | null;
+  type: string;
+};
+
+export function CalculatorClient({ projectTypes, contacts }: { projectTypes: ProjectTypeData[]; contacts: ContactData[] }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [checkedFeatures, setCheckedFeatures] = useState<Record<string, boolean>>({});
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [rushFee, setRushFee] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [referralPercent, setReferralPercent] = useState(0);
+  const [contactId, setContactId] = useState<string | null>(null);
   const [clientName, setClientName] = useState('');
   const [clientPhone, setClientPhone] = useState('');
   const [saving, setSaving] = useState(false);
@@ -101,6 +110,7 @@ export function CalculatorClient({ projectTypes }: { projectTypes: ProjectTypeDa
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          contactId: contactId || null,
           clientName,
           clientPhone: clientPhone || null,
           items: selectedItems,
@@ -237,11 +247,47 @@ export function CalculatorClient({ projectTypes }: { projectTypes: ProjectTypeDa
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
+                <Label>Client</Label>
+                <select
+                  value={contactId || '__new__'}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === '__new__') {
+                      setContactId(null);
+                      setClientName('');
+                      setClientPhone('');
+                    } else {
+                      const contact = contacts.find((c) => c.id === val);
+                      if (contact) {
+                        setContactId(contact.id);
+                        setClientName(contact.name);
+                        setClientPhone(contact.phone || '');
+                      }
+                    }
+                  }}
+                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm"
+                >
+                  <option value="__new__">+ New client</option>
+                  {contacts.length > 0 && (
+                    <>
+                      <option disabled>───────────</option>
+                      {contacts.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.name}{c.company ? ` (${c.company})` : ''}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </select>
+              </div>
+
+              <div className="space-y-2">
                 <Label>Client Name</Label>
                 <Input
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
                   placeholder="Client name for quote"
+                  disabled={!!contactId}
                 />
               </div>
 
@@ -251,6 +297,7 @@ export function CalculatorClient({ projectTypes }: { projectTypes: ProjectTypeDa
                   value={clientPhone}
                   onChange={(e) => setClientPhone(e.target.value)}
                   placeholder="+998 ..."
+                  disabled={!!contactId}
                 />
               </div>
 

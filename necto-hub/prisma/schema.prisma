@@ -326,6 +326,8 @@ model HubContact {
   notes     String?          @db.Text
   createdAt DateTime         @default(now()) @map("created_at")
 
+  quotes HubQuote[]
+
   @@map("hub_contacts")
   @@schema("hub")
 }
@@ -333,6 +335,7 @@ model HubContact {
 model HubQuote {
   id              String         @id @default(cuid())
   projectId       String?        @map("project_id")
+  contactId       String?        @map("contact_id")
   clientName      String         @map("client_name")
   clientPhone     String?        @map("client_phone")
   items           Json           @default("[]")
@@ -348,6 +351,7 @@ model HubQuote {
   createdAt       DateTime       @default(now()) @map("created_at")
 
   project HubProject? @relation(fields: [projectId], references: [id])
+  contact HubContact? @relation(fields: [contactId], references: [id])
 
   @@map("hub_quotes")
   @@schema("hub")

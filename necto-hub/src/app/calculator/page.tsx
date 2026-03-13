@@ -7,16 +7,22 @@ export default async function CalculatorPage() {
   const session = await getSession();
   if (!session) redirect('/login');
 
-  const projectTypes = await prisma.hubProjectType.findMany({
-    where: { isActive: true },
-    include: {
-      features: {
-        where: { isActive: true },
-        orderBy: { sortOrder: 'asc' },
+  const [projectTypes, contacts] = await Promise.all([
+    prisma.hubProjectType.findMany({
+      where: { isActive: true },
+      include: {
+        features: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+        },
       },
-    },
-    orderBy: { sortOrder: 'asc' },
-  });
+      orderBy: { sortOrder: 'asc' },
+    }),
+    prisma.hubContact.findMany({
+      select: { id: true, name: true, phone: true, company: true, type: true },
+      orderBy: { name: 'asc' },
+    }),
+  ]);
 
   // Serialize for client component
   const serialized = projectTypes.map((pt) => ({
@@ -33,5 +39,5 @@ export default async function CalculatorPage() {
     })),
   }));
 
-  return <CalculatorClient projectTypes={serialized} />;
+  return <CalculatorClient projectTypes={serialized} contacts={contacts} />;
 }

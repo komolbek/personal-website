@@ -11,10 +11,25 @@ export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
 
+    // Resolve or create contact
+    let contactId = data.contactId || null;
+    if (!contactId && data.clientName?.trim()) {
+      // Auto-create a contact for new clients
+      const contact = await prisma.hubContact.create({
+        data: {
+          name: data.clientName.trim(),
+          phone: data.clientPhone || null,
+          type: 'POTENTIAL',
+        },
+      });
+      contactId = contact.id;
+    }
+
     const quote = await prisma.hubQuote.create({
       data: {
         clientName: data.clientName,
         clientPhone: data.clientPhone || null,
+        contactId,
         items: data.items,
         basePrice: data.basePrice,
         totalPrice: data.totalPrice,

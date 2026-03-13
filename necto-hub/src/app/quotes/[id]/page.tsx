@@ -29,7 +29,7 @@ export default async function QuoteDetailPage({ params }: { params: { id: string
 
   const quote = await prisma.hubQuote.findUnique({
     where: { id: params.id },
-    include: { project: true },
+    include: { project: true, contact: true },
   });
 
   if (!quote) notFound();
@@ -115,7 +115,10 @@ export default async function QuoteDetailPage({ params }: { params: { id: string
           <CardContent className="space-y-4">
             <div>
               <span className="text-sm text-muted-foreground">Client</span>
-              <p className="font-medium">{quote.clientName}</p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">{quote.clientName}</p>
+                {quote.contact && <StatusBadge status={quote.contact.type} />}
+              </div>
             </div>
             {quote.clientPhone && (
               <div>
