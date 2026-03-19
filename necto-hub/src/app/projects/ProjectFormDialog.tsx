@@ -23,6 +23,7 @@ const PROJECT_STATUSES = [
 ];
 
 const PROJECT_TYPES = [
+  { value: '', label: 'Select type' },
   { value: 'Website / Landing Page', label: 'Website / Landing Page' },
   { value: 'Web Application / SaaS', label: 'Web Application / SaaS' },
   { value: 'Telegram Bot', label: 'Telegram Bot' },
@@ -31,6 +32,9 @@ const PROJECT_TYPES = [
   { value: 'E-commerce', label: 'E-commerce' },
   { value: 'AI/ML Solution', label: 'AI/ML Solution' },
   { value: 'Design / Branding', label: 'Design / Branding' },
+  { value: 'Bitrix24 Integration', label: 'Bitrix24 Integration' },
+  { value: 'IoT / Hardware Integration', label: 'IoT / Hardware Integration' },
+  { value: 'Production Management System', label: 'Production Management System' },
 ];
 
 export function ProjectFormDialog({ action }: { action: (formData: FormData) => Promise<void> }) {
@@ -44,6 +48,10 @@ export function ProjectFormDialog({ action }: { action: (formData: FormData) => 
       <Dialog open={open} onOpenChange={setOpen} title="New Project">
         <form
           action={async (formData) => {
+            const customType = (formData.get('customType') as string)?.trim();
+            if (customType) {
+              formData.set('type', customType);
+            }
             await action(formData);
             setOpen(false);
           }}
@@ -56,6 +64,7 @@ export function ProjectFormDialog({ action }: { action: (formData: FormData) => 
           <div className="space-y-2">
             <Label htmlFor="type">Type</Label>
             <Select id="type" name="type" options={PROJECT_TYPES} placeholder="Select type" />
+            <Input name="customType" placeholder="Or enter custom type..." className="mt-1" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="status">Status</Label>

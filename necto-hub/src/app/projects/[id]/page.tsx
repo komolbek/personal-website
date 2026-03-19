@@ -12,11 +12,11 @@ import { EmptyState } from '@/components/shared/EmptyState';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
-import { ArrowLeft, Plus, DollarSign, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, DollarSign, Trash2, FileText, FileCheck, Download } from 'lucide-react';
 import { logActivity } from '@/lib/activity';
 import { PhoneInput } from '@/components/ui/phone-input';
 import { AmountInput } from '@/components/ui/amount-input';
-import { AddPaymentDialog } from './ProjectDetailClient';
+import { AddPaymentDialog, AddQuoteDialog, CreateContractDialog } from './ProjectDetailClient';
 
 const PROJECT_STATUSES = [
   { value: 'LEAD', label: 'Lead' },
@@ -39,6 +39,9 @@ const PROJECT_TYPES = [
   { value: 'E-commerce', label: 'E-commerce' },
   { value: 'AI/ML Solution', label: 'AI/ML Solution' },
   { value: 'Design / Branding', label: 'Design / Branding' },
+  { value: 'Bitrix24 Integration', label: 'Bitrix24 Integration' },
+  { value: 'IoT / Hardware Integration', label: 'IoT / Hardware Integration' },
+  { value: 'Production Management System', label: 'Production Management System' },
 ];
 
 const REFERRAL_SOURCES = [
@@ -74,12 +77,15 @@ async function updateProject(formData: FormData) {
 
   const id = formData.get('id') as string;
   const name = formData.get('name') as string;
+  const customType = (formData.get('customType') as string)?.trim();
+  const selectedType = (formData.get('type') as string) || null;
+  const projectType = customType || selectedType;
 
   await prisma.hubProject.update({
     where: { id },
     data: {
       name,
-      type: (formData.get('type') as string) || null,
+      type: projectType,
       status: formData.get('status') as any,
       clientContact: (formData.get('clientContact') as string) || null,
       clientPhone: (formData.get('clientPhone') as string) || null,
@@ -211,6 +217,87 @@ async function deleteProject(formData: FormData) {
   redirect('/projects');
 }
 
+async function createQuote(formData: FormData) {
+  'use server';
+  const session = await getSession();
+  if (!session || !['ADMIN', 'MANAGER'].includes(session.role)) return;
+
+  const projectId = formData.get('projectId') as string;
+  const items = JSON.parse(formData.get('items') as string || '[]');
+  const basePrice = items.reduce((sum: number, item: any) => sum + item.price, 0);
+  const discountPercent = parseFloat(formData.get('discountPercent') as string) || 0;
+  const totalPrice = basePrice * (1 - discountPercent / 100);
+
+  await prisma.hubQuote.create({
+    data: {
+      projectId,
+      clientName: formData.get('clientName') as string,
+      clientPhone: (formData.get('clientPhone') as string) || null,
+      items,
+      basePrice,
+      totalPrice,
+      currency: (formData.get('currency') as any) || 'USD',
+      discountPercent: discountPercent || null,
+      notes: (formData.get('notes') as string) || null,
+      validUntil: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  revalidatePath(`/projects/${projectId}`);
+}
+
+async function updateQuoteStatus(formData: FormData) {
+  'use server';
+  const session = await getSession();
+  if (!session) return;
+
+  const id = formData.get('id') as string;
+  const projectId = formData.get('projectId') as string;
+  const status = formData.get('status') as any;
+
+  await prisma.hubQuote.update({ where: { id }, data: { status } });
+  revalidatePath(`/projects/${projectId}`);
+}
+
+async function createContract(formData: FormData) {
+  'use server';
+  const session = await getSession();
+  if (!session || session.role !== 'ADMIN') return;
+
+  const projectId = formData.get('projectId') as string;
+
+  await prisma.hubContract.create({
+    data: {
+      projectId,
+      clientName: formData.get('clientName') as string,
+      clientContact: (formData.get('clientContact') as string) || null,
+      scopeDescription: (formData.get('scopeDescription') as string) || null,
+      totalPrice: parseFloat(formData.get('totalPrice') as string),
+      currency: (formData.get('currency') as any) || 'USD',
+      paymentTerms: (formData.get('paymentTerms') as string) || null,
+      startDate: formData.get('startDate') ? new Date(formData.get('startDate') as string) : null,
+      deadline: formData.get('deadline') ? new Date(formData.get('deadline') as string) : null,
+    },
+  });
+
+  revalidatePath(`/projects/${projectId}`);
+}
+
+async function updateContractStatus(formData: FormData) {
+  'use server';
+  const session = await getSession();
+  if (!session || session.role !== 'ADMIN') return;
+
+  const id = formData.get('id') as string;
+  const projectId = formData.get('projectId') as string;
+  const status = formData.get('status') as any;
+  const updateData: any = { status };
+  if (status === 'SIGNED') updateData.signedDate = new Date();
+
+  await prisma.hubContract.update({ where: { id }, data: updateData });
+  revalidatePath(`/projects/${projectId}`);
+}
+
 export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
   const session = await getSession();
   if (!session) redirect('/login');
@@ -267,6 +354,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               <div className="space-y-2">
                 <Label htmlFor="type">Type</Label>
                 <Select id="type" name="type" defaultValue={project.type || ''} options={PROJECT_TYPES} />
+                <Input name="customType" placeholder="Or enter custom type..." className="mt-1" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
@@ -354,6 +442,173 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
           </CardContent>
         </Card>
       </div>
+
+      {/* Contract */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <FileCheck className="h-4 w-4" /> Contract
+          </CardTitle>
+          {!project.contract && isEditor && session.role === 'ADMIN' && (
+            <CreateContractDialog
+              projectId={project.id}
+              clientName={project.clientContact || ''}
+              clientContact={project.clientPhone || ''}
+              totalPrice={project.totalPrice || 0}
+              action={createContract}
+            />
+          )}
+        </CardHeader>
+        <CardContent>
+          {project.contract ? (
+            <div className="space-y-4">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-sm">
+                <div>
+                  <span className="text-muted-foreground">Client</span>
+                  <p className="font-medium">{project.contract.clientName}</p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Total</span>
+                  <p className="font-medium">{formatCurrency(project.contract.totalPrice, project.contract.currency)}</p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Status</span>
+                  <p><StatusBadge status={project.contract.status} /></p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Timeline</span>
+                  <p>{formatDate(project.contract.startDate)} — {formatDate(project.contract.deadline)}</p>
+                </div>
+              </div>
+              {project.contract.scopeDescription && (
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Scope</span>
+                  <p className="whitespace-pre-wrap mt-1">{project.contract.scopeDescription}</p>
+                </div>
+              )}
+              {project.contract.paymentTerms && (
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Payment Terms</span>
+                  <p className="whitespace-pre-wrap mt-1">{project.contract.paymentTerms}</p>
+                </div>
+              )}
+              {project.contract.signedDate && (
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Signed</span>
+                  <p>{formatDate(project.contract.signedDate)}</p>
+                </div>
+              )}
+              <div className="flex items-center gap-2 pt-2">
+                <a href={`/api/contracts/${project.contract.id}/pdf`} target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" size="sm">
+                    <Download className="h-4 w-4 mr-1" /> PDF
+                  </Button>
+                </a>
+                {session.role === 'ADMIN' && (
+                  <form action={updateContractStatus} className="flex items-center gap-2">
+                    <input type="hidden" name="id" value={project.contract.id} />
+                    <input type="hidden" name="projectId" value={project.id} />
+                    <Select
+                      name="status"
+                      defaultValue={project.contract.status}
+                      options={[
+                        { value: 'DRAFT', label: 'Draft' },
+                        { value: 'SENT', label: 'Sent' },
+                        { value: 'SIGNED', label: 'Signed' },
+                      ]}
+                      className="h-8 text-xs w-28"
+                    />
+                    <Button type="submit" size="sm" variant="outline" className="h-8">Update</Button>
+                  </form>
+                )}
+              </div>
+            </div>
+          ) : (
+            <EmptyState
+              icon={<FileCheck className="h-8 w-8" />}
+              title="No contract"
+              description="Create a contract for this project."
+            />
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Quotes */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="h-4 w-4" /> Quotes ({project.quotes.length})
+          </CardTitle>
+          {isEditor && (
+            <AddQuoteDialog
+              projectId={project.id}
+              clientName={project.clientContact || ''}
+              clientPhone={project.clientPhone || ''}
+              action={createQuote}
+            />
+          )}
+        </CardHeader>
+        <CardContent>
+          {project.quotes.length === 0 ? (
+            <EmptyState
+              icon={<FileText className="h-8 w-8" />}
+              title="No quotes yet"
+              description="Create a price quote for this project."
+            />
+          ) : (
+            <div className="border rounded-lg overflow-hidden">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b bg-muted/50">
+                    <th className="text-left p-3 font-medium">Client</th>
+                    <th className="text-left p-3 font-medium">Total</th>
+                    <th className="text-left p-3 font-medium">Status</th>
+                    <th className="text-left p-3 font-medium">Valid Until</th>
+                    <th className="text-left p-3 font-medium">Created</th>
+                    <th className="p-3 w-32"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {project.quotes.map((quote) => (
+                    <tr key={quote.id} className="border-b">
+                      <td className="p-3 font-medium">{quote.clientName}</td>
+                      <td className="p-3 font-medium">{formatCurrency(quote.totalPrice, quote.currency)}</td>
+                      <td className="p-3"><StatusBadge status={quote.status} /></td>
+                      <td className="p-3">{formatDate(quote.validUntil)}</td>
+                      <td className="p-3">{formatDate(quote.createdAt)}</td>
+                      <td className="p-3">
+                        <div className="flex items-center gap-2">
+                          <a href={`/api/quotes/${quote.id}/pdf`} target="_blank" rel="noopener noreferrer">
+                            <Button variant="outline" size="sm" className="h-7 text-xs">
+                              <Download className="h-3 w-3 mr-1" /> PDF
+                            </Button>
+                          </a>
+                          <form action={updateQuoteStatus} className="flex items-center gap-1">
+                            <input type="hidden" name="id" value={quote.id} />
+                            <input type="hidden" name="projectId" value={project.id} />
+                            <Select
+                              name="status"
+                              defaultValue={quote.status}
+                              options={[
+                                { value: 'DRAFT', label: 'Draft' },
+                                { value: 'SENT', label: 'Sent' },
+                                { value: 'ACCEPTED', label: 'Accepted' },
+                                { value: 'REJECTED', label: 'Rejected' },
+                              ]}
+                              className="h-7 text-xs w-24"
+                            />
+                            <Button type="submit" size="sm" variant="ghost" className="h-7 text-xs">Update</Button>
+                          </form>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Milestones */}
       <Card>

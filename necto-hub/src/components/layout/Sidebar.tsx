@@ -9,10 +9,6 @@ import {
   Package,
   DollarSign,
   Users,
-  Calculator,
-  FileText,
-  FileCheck,
-  CalendarCheck,
   Settings,
   X,
   Menu,
@@ -26,10 +22,6 @@ const navItems = [
   { href: '/products', label: 'Products', icon: Package },
   { href: '/finances', label: 'Finances', icon: DollarSign },
   { href: '/contacts', label: 'Contacts', icon: Users },
-  { href: '/calculator', label: 'Calculator', icon: Calculator },
-  { href: '/quotes', label: 'Quotes', icon: FileText },
-  { href: '/contracts', label: 'Contracts', icon: FileCheck },
-  { href: '/reviews', label: 'Reviews', icon: CalendarCheck },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 

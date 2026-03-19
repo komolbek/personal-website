@@ -10,7 +10,6 @@ import { StatusBadge } from '@/components/shared/StatusBadge';
 import { hashPassword } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import { Settings, UserPlus } from 'lucide-react';
-import { PricingAdmin } from './PricingAdmin';
 
 async function createUser(formData: FormData) {
   'use server';
@@ -48,15 +47,9 @@ export default async function SettingsPage() {
   const session = await getSession();
   if (!session) redirect('/login');
 
-  const [users, projectTypes] = session.role === 'ADMIN'
-    ? await Promise.all([
-        prisma.hubUser.findMany({ orderBy: { createdAt: 'asc' } }),
-        prisma.hubProjectType.findMany({
-          include: { features: { orderBy: { sortOrder: 'asc' } } },
-          orderBy: { sortOrder: 'asc' },
-        }),
-      ])
-    : [[], []];
+  const users = session.role === 'ADMIN'
+    ? await prisma.hubUser.findMany({ orderBy: { createdAt: 'asc' } })
+    : [];
 
   return (
     <div className="space-y-6">
@@ -173,7 +166,6 @@ export default async function SettingsPage() {
             </CardContent>
           </Card>
 
-          <PricingAdmin projectTypes={projectTypes} />
         </>
       )}
     </div>

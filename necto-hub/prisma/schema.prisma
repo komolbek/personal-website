@@ -169,8 +169,6 @@ model HubUser {
   role          HubUserRole @default(VIEWER)
   createdAt     DateTime    @default(now()) @map("created_at")
 
-  weeklyReviews HubWeeklyReview[]
-
   @@map("hub_users")
   @@schema("hub")
 }
@@ -379,42 +377,6 @@ model HubContract {
   @@schema("hub")
 }
 
-model HubWeeklyReview {
-  id     String @id @default(cuid())
-  userId String @map("user_id")
-
-  weekStart DateTime @map("week_start")
-  weekEnd   DateTime @map("week_end")
-
-  // Auto-calculated
-  totalIncome          Float @default(0) @map("total_income")
-  totalExpenses        Float @default(0) @map("total_expenses")
-  netCashFlow          Float @default(0) @map("net_cash_flow")
-  newLeadsThisWeek     Int   @default(0) @map("new_leads_this_week")
-  newClientsThisWeek   Int   @default(0) @map("new_clients_this_week")
-  activeProjectsCount  Int   @default(0) @map("active_projects_count")
-  overduePaymentsCount Int   @default(0) @map("overdue_payments_count")
-  outstandingAmount    Float @default(0) @map("outstanding_amount")
-
-  // Manual
-  biggestWin     String? @map("biggest_win") @db.Text
-  biggestBlocker String? @map("biggest_blocker") @db.Text
-  avoidedTask    String? @map("avoided_task") @db.Text
-  priority1      String? @map("priority_1")
-  priority2      String? @map("priority_2")
-  priority3      String? @map("priority_3")
-  energyLevel    Int?    @map("energy_level")
-  burnoutRisk    String? @map("burnout_risk")
-  selfCarePlan   String? @map("self_care_plan") @db.Text
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  user HubUser @relation(fields: [userId], references: [id])
-
-  @@map("hub_weekly_reviews")
-  @@schema("hub")
-}
-
 model HubActivityLog {
   id         String   @id @default(cuid())
   userId     String   @map("user_id")
@@ -430,35 +392,3 @@ model HubActivityLog {
   @@schema("hub")
 }
 
-model HubProjectType {
-  id              String   @id @default(cuid())
-  name            String   @unique
-  basePrice       Float    @map("base_price")
-  baseDescription String   @map("base_description")
-  sortOrder       Int      @default(0) @map("sort_order")
-  isActive        Boolean  @default(true) @map("is_active")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
-
-  features HubProjectTypeFeature[]
-
-  @@map("hub_project_types")
-  @@schema("hub")
-}
-
-model HubProjectTypeFeature {
-  id               String  @id @default(cuid())
-  projectTypeId    String  @map("project_type_id")
-  name             String
-  price            Float
-  supportsQuantity Boolean @default(false) @map("supports_quantity")
-  unitLabel        String? @map("unit_label")
-  sortOrder        Int     @default(0) @map("sort_order")
-  isActive         Boolean @default(true) @map("is_active")
-
-  projectType HubProjectType @relation(fields: [projectTypeId], references: [id], onDelete: Cascade)
-
-  @@unique([projectTypeId, name])
-  @@map("hub_project_type_features")
-  @@schema("hub")
-}
