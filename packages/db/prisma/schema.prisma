@@ -1,0 +1,594 @@
+// Unified Prisma schema for Necto Automations
+// Merges: main site (public schema) + hub (hub schema)
+
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "linux-musl-openssl-3.0.x"]
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "hub"]
+}
+
+// ============================================================================
+// PUBLIC SCHEMA — Main Website Models
+// ============================================================================
+
+// Admin user for authentication
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("public")
+}
+
+// Products/Solutions - services the company offers
+model Product {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title_en     String
+  title_ru     String
+  title_uz     String
+  shortDesc_en String
+  shortDesc_ru String
+  shortDesc_uz String
+  fullDesc_en  String   @db.Text
+  fullDesc_ru  String   @db.Text
+  fullDesc_uz  String   @db.Text
+  icon         String
+  features_en  String[] // Array of features
+  features_ru  String[]
+  features_uz  String[]
+  benefits_en  String[]
+  benefits_ru  String[]
+  benefits_uz  String[]
+  order        Int      @default(0)
+  isVisible    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relation to client projects
+  clientProjects ClientProject[]
+
+  @@schema("public")
+}
+
+// Client Projects - work done for clients
+model ClientProject {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title_en      String
+  title_ru      String
+  title_uz      String
+  clientName    String?
+  clientLogo    String?
+  category      String // mobile, website, crm, ai, ecommerce
+  desc_en       String    @db.Text
+  desc_ru       String    @db.Text
+  desc_uz       String    @db.Text
+  challenge_en  String    @db.Text
+  challenge_ru  String    @db.Text
+  challenge_uz  String    @db.Text
+  solution_en   String    @db.Text
+  solution_ru   String    @db.Text
+  solution_uz   String    @db.Text
+  results_en    String?   @db.Text
+  results_ru    String?   @db.Text
+  results_uz    String?   @db.Text
+  images        String[]
+  thumbnail     String
+  appStoreUrl   String?
+  playStoreUrl  String?
+  websiteUrl    String?
+  completedDate DateTime?
+  featured      Boolean   @default(false)
+  isVisible     Boolean   @default(true)
+  order         Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relation to products/solutions
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+
+  @@schema("public")
+}
+
+// Partners
+model Partner {
+  id        String   @id @default(cuid())
+  name      String
+  logo      String
+  website   String?
+  desc_en   String?
+  desc_ru   String?
+  desc_uz   String?
+  featured  Boolean  @default(false)
+  isVisible Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation to feedback/testimonials
+  testimonials Feedback[]
+
+  @@schema("public")
+}
+
+// Feedback/Testimonials with approval workflow
+model Feedback {
+  id          String         @id @default(cuid())
+  authorName  String
+  authorEmail String?
+  position_en String?
+  position_ru String?
+  position_uz String?
+  avatar      String?
+  quote_en    String         @db.Text
+  quote_ru    String?        @db.Text
+  quote_uz    String?        @db.Text
+  rating      Int?           @default(5) // 1-5 stars
+  status      FeedbackStatus @default(PENDING)
+  featured    Boolean        @default(false)
+  isVisible   Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  // Optional relation to partner
+  partnerId String?
+  partner   Partner? @relation(fields: [partnerId], references: [id])
+
+  @@schema("public")
+}
+
+enum FeedbackStatus {
+  PENDING // Awaiting admin approval
+  APPROVED // Approved and visible
+  REJECTED // Rejected by admin
+
+  @@schema("public")
+}
+
+// Contact form submissions
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String
+  company   String?
+  service   String?
+  budget    String?
+  message   String   @db.Text
+  source    String   @default("web") // "web" or "telegram"
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@schema("public")
+}
+
+// Site settings (for miscellaneous configurable items)
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  type      String   @default("string") // string, boolean, number, json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("public")
+}
+
+// Blog posts
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title_en    String
+  title_ru    String
+  title_uz    String
+  excerpt_en  String   @default("")
+  excerpt_ru  String   @default("")
+  excerpt_uz  String   @default("")
+  content_en  String   @db.Text
+  content_ru  String   @db.Text
+  content_uz  String   @db.Text
+  thumbnail   String   @default("")
+  category    String   @default("news")
+  author      String   @default("")
+  featured    Boolean  @default(false)
+  isVisible   Boolean  @default(true)
+  order       Int      @default(0)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@schema("public")
+}
+
+// ============================================================================
+// HUB SCHEMA — Internal Business Management Models
+// ============================================================================
+
+// --- Enums ---
+
+enum HubUserRole {
+  ADMIN
+  MANAGER
+  VIEWER
+
+  @@schema("hub")
+}
+
+enum HubProductStatus {
+  ACTIVE
+  PARKED
+  ARCHIVED
+
+  @@schema("hub")
+}
+
+enum HubLeadSource {
+  WALK_IN
+  INSTAGRAM
+  REFERRAL
+  GOOGLE_MAPS
+  TWOGIS
+  OTHER
+
+  @@schema("hub")
+}
+
+enum HubLeadStatus {
+  NOT_CONTACTED
+  CONTACTED
+  DEMO_SCHEDULED
+  DEMO_DONE
+  TRIAL
+  NEGOTIATING
+  SIGNED
+  LOST
+
+  @@schema("hub")
+}
+
+enum HubClientPaymentStatus {
+  ACTIVE
+  OVERDUE
+  CHURNED
+
+  @@schema("hub")
+}
+
+enum HubProjectStatus {
+  LEAD
+  PROPOSAL
+  NEGOTIATING
+  IN_PROGRESS
+  FROZEN
+  DELIVERED
+  PAID
+  LOST
+
+  @@schema("hub")
+}
+
+enum HubMilestoneStatus {
+  PENDING
+  INVOICED
+  PAID
+
+  @@schema("hub")
+}
+
+enum HubPaymentType {
+  INCOME
+  EXPENSE
+
+  @@schema("hub")
+}
+
+enum HubPaymentCategory {
+  PROJECT_REVENUE
+  PRODUCT_REVENUE
+  HOSTING
+  DOMAINS
+  OFFICE
+  SMS_API
+  MARKETING
+  SALARY
+  TRANSPORT
+  TOOLS
+  OTHER
+
+  @@schema("hub")
+}
+
+enum HubCurrency {
+  USD
+  UZS
+
+  @@schema("hub")
+}
+
+enum HubRecurringInterval {
+  MONTHLY
+  YEARLY
+
+  @@schema("hub")
+}
+
+enum HubContactType {
+  CLIENT
+  REFERRAL_SOURCE
+  POTENTIAL
+  PARTNER
+
+  @@schema("hub")
+}
+
+enum HubContactSource {
+  PERSONAL
+  IT_PARK
+  TELEGRAM_GROUP
+  INSTAGRAM
+  REFERRAL
+  OTHER
+
+  @@schema("hub")
+}
+
+enum HubQuoteStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+
+  @@schema("hub")
+}
+
+enum HubContractStatus {
+  DRAFT
+  SENT
+  SIGNED
+
+  @@schema("hub")
+}
+
+// --- Models ---
+
+model HubUser {
+  id           String      @id @default(cuid())
+  email        String      @unique
+  name         String
+  passwordHash String      @map("password_hash")
+  role         HubUserRole @default(VIEWER)
+  createdAt    DateTime    @default(now()) @map("created_at")
+
+  @@map("hub_users")
+  @@schema("hub")
+}
+
+model HubProduct {
+  id          String           @id @default(cuid())
+  name        String
+  slug        String           @unique
+  status      HubProductStatus @default(ACTIVE)
+  description String?          @db.Text
+  url         String?
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  leads    HubLead[]
+  clients  HubClient[]
+  payments HubPayment[]
+
+  @@map("hub_products")
+  @@schema("hub")
+}
+
+model HubLead {
+  id            String        @id @default(cuid())
+  productId     String        @map("product_id")
+  name          String
+  contactPerson String?       @map("contact_person")
+  phone         String?
+  telegram      String?
+  instagram     String?
+  address       String?
+  district      String?
+  source        HubLeadSource @default(OTHER)
+  currentSystem String?       @map("current_system")
+  status        HubLeadStatus @default(NOT_CONTACTED)
+  lostReason    String?       @map("lost_reason")
+  notes         String?       @db.Text
+  firstContact  DateTime?     @map("first_contact")
+  lastContact   DateTime?     @map("last_contact")
+  followUp      DateTime?     @map("follow_up")
+  createdAt     DateTime      @default(now()) @map("created_at")
+
+  product HubProduct @relation(fields: [productId], references: [id])
+  client  HubClient?
+
+  @@map("hub_leads")
+  @@schema("hub")
+}
+
+model HubClient {
+  id            String                 @id @default(cuid())
+  productId     String                 @map("product_id")
+  leadId        String?                @unique @map("lead_id")
+  name          String
+  contactPerson String?                @map("contact_person")
+  phone         String?
+  plan          String?
+  monthlyFee    Float?                 @map("monthly_fee")
+  currency      HubCurrency            @default(USD)
+  paymentStatus HubClientPaymentStatus @default(ACTIVE)
+  startDate     DateTime?              @map("start_date")
+  lastPayment   DateTime?              @map("last_payment")
+  notes         String?                @db.Text
+  createdAt     DateTime               @default(now()) @map("created_at")
+
+  product  HubProduct   @relation(fields: [productId], references: [id])
+  lead     HubLead?     @relation(fields: [leadId], references: [id])
+  payments HubPayment[]
+
+  @@map("hub_clients")
+  @@schema("hub")
+}
+
+model HubProject {
+  id                 String           @id @default(cuid())
+  name               String
+  type               String?
+  status             HubProjectStatus @default(LEAD)
+  clientContact      String?          @map("client_contact")
+  clientPhone        String?          @map("client_phone")
+  totalPrice         Float?           @map("total_price")
+  currency           HubCurrency      @default(USD)
+  upfrontPercent     Float?           @map("upfront_percent")
+  referralSource     String?          @map("referral_source")
+  referralFeePercent Float?           @map("referral_fee_percent")
+  startDate          DateTime?        @map("start_date")
+  deadline           DateTime?
+  notes              String?          @db.Text
+  createdAt          DateTime         @default(now()) @map("created_at")
+
+  milestones HubProjectMilestone[]
+  payments   HubPayment[]
+  quotes     HubQuote[]
+  contract   HubContract?
+
+  @@map("hub_projects")
+  @@schema("hub")
+}
+
+model HubProjectMilestone {
+  id        String             @id @default(cuid())
+  projectId String             @map("project_id")
+  title     String
+  amount    Float
+  currency  HubCurrency        @default(USD)
+  status    HubMilestoneStatus @default(PENDING)
+  dueDate   DateTime?          @map("due_date")
+  paidDate  DateTime?          @map("paid_date")
+  notes     String?            @db.Text
+
+  project  HubProject   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  payments HubPayment[]
+
+  @@map("hub_project_milestones")
+  @@schema("hub")
+}
+
+model HubPayment {
+  id                String                @id @default(cuid())
+  type              HubPaymentType
+  amount            Float
+  currency          HubCurrency           @default(USD)
+  category          HubPaymentCategory    @default(OTHER)
+  projectId         String?               @map("project_id")
+  productId         String?               @map("product_id")
+  clientId          String?               @map("client_id")
+  milestoneId       String?               @map("milestone_id")
+  description       String
+  date              DateTime              @default(now())
+  recurring         Boolean               @default(false)
+  recurringInterval HubRecurringInterval? @map("recurring_interval")
+  notes             String?               @db.Text
+  createdAt         DateTime              @default(now()) @map("created_at")
+
+  project   HubProject?          @relation(fields: [projectId], references: [id])
+  product   HubProduct?          @relation(fields: [productId], references: [id])
+  client    HubClient?           @relation(fields: [clientId], references: [id])
+  milestone HubProjectMilestone? @relation(fields: [milestoneId], references: [id])
+
+  @@map("hub_payments")
+  @@schema("hub")
+}
+
+model HubContact {
+  id        String           @id @default(cuid())
+  name      String
+  company   String?
+  role      String?
+  phone     String?
+  email     String?
+  telegram  String?
+  type      HubContactType   @default(POTENTIAL)
+  source    HubContactSource @default(OTHER)
+  notes     String?          @db.Text
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  quotes HubQuote[]
+
+  @@map("hub_contacts")
+  @@schema("hub")
+}
+
+model HubQuote {
+  id              String         @id @default(cuid())
+  projectId       String?        @map("project_id")
+  contactId       String?        @map("contact_id")
+  clientName      String         @map("client_name")
+  clientPhone     String?        @map("client_phone")
+  items           Json           @default("[]")
+  basePrice       Float          @map("base_price")
+  totalPrice      Float          @map("total_price")
+  currency        HubCurrency    @default(USD)
+  rushFeeApplied  Boolean        @default(false) @map("rush_fee_applied")
+  rushFeePercent  Float?         @map("rush_fee_percent")
+  discountPercent Float?         @map("discount_percent")
+  status          HubQuoteStatus @default(DRAFT)
+  validUntil      DateTime?      @map("valid_until")
+  notes           String?        @db.Text
+  createdAt       DateTime       @default(now()) @map("created_at")
+
+  project HubProject? @relation(fields: [projectId], references: [id])
+  contact HubContact? @relation(fields: [contactId], references: [id])
+
+  @@map("hub_quotes")
+  @@schema("hub")
+}
+
+model HubContract {
+  id               String            @id @default(cuid())
+  projectId        String            @unique @map("project_id")
+  clientName       String            @map("client_name")
+  clientContact    String?           @map("client_contact")
+  scopeDescription String?           @map("scope_description") @db.Text
+  totalPrice       Float             @map("total_price")
+  currency         HubCurrency       @default(USD)
+  paymentTerms     String?           @map("payment_terms") @db.Text
+  startDate        DateTime?         @map("start_date")
+  deadline         DateTime?
+  status           HubContractStatus @default(DRAFT)
+  signedDate       DateTime?         @map("signed_date")
+  notes            String?           @db.Text
+  createdAt        DateTime          @default(now()) @map("created_at")
+
+  project HubProject @relation(fields: [projectId], references: [id])
+
+  @@map("hub_contracts")
+  @@schema("hub")
+}
+
+model HubActivityLog {
+  id         String   @id @default(cuid())
+  userId     String   @map("user_id")
+  userName   String   @map("user_name")
+  action     String // e.g., "created", "updated", "deleted"
+  entityType String   @map("entity_type") // e.g., "project", "lead", "payment"
+  entityId   String?  @map("entity_id")
+  entityName String?  @map("entity_name")
+  details    String?  @db.Text
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("hub_activity_logs")
+  @@schema("hub")
+}

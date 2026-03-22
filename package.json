@@ -1,36 +1,21 @@
 {
-  "name": "necto-automations",
+  "name": "necto",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@prisma/client": "^5.22.0",
-    "@vercel/analytics": "^1.6.1",
-    "bcryptjs": "^3.0.3",
-    "framer-motion": "^12.35.1",
-    "grammy": "^1.41.1",
-    "jose": "^6.1.3",
-    "next": "14.2.35",
-    "prisma": "^5.22.0",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-markdown": "^10.1.0",
-    "remark-gfm": "^4.0.1"
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "dev:web": "turbo dev --filter=@necto/web",
+    "dev:hub": "turbo dev --filter=@necto/hub",
+    "dev:api": "turbo dev --filter=@necto/api",
+    "db:generate": "pnpm --filter @necto/db db:generate",
+    "db:push": "pnpm --filter @necto/db db:push",
+    "db:migrate": "pnpm --filter @necto/db db:migrate",
+    "db:studio": "pnpm --filter @necto/db db:studio"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.35",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
-  }
+    "turbo": "^2.3.0"
+  },
+  "packageManager": "pnpm@9.15.0"
 }
