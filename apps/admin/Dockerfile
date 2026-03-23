@@ -38,14 +38,25 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+RUN apk add --no-cache openssl
+RUN npm install -g prisma@5
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
+# Copy standalone output
 COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/standalone ./
+
+# Copy static assets to both root and app-relative paths
+COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/static ./apps/admin/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/static ./.next/static
+
+# Prisma schema for db push on startup
+COPY --from=builder /app/packages/db/prisma ./prisma
+
+# Start script
+COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/start.sh ./start.sh
+RUN chmod +x start.sh
 
 USER nextjs
 
@@ -54,4 +65,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["./start.sh"]
