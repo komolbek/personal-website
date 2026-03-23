@@ -52,8 +52,8 @@ COPY --from=builder /app/pruned/node_modules ./node_modules
 COPY --from=builder /app/apps/api/dist ./dist
 COPY --from=builder /app/packages/db/prisma ./prisma
 
-# Copy Prisma engine binaries
-COPY --from=builder /app/pruned/node_modules/.prisma ./node_modules/.prisma
+# Copy generated Prisma client from the builder's node_modules (where prisma generate ran)
+COPY --from=builder /app/node_modules/.pnpm/@prisma+client@*/node_modules/.prisma ./node_modules/.prisma
 
 COPY --from=builder --chown=appuser:nodejs /app/apps/api/start.sh ./start.sh
 RUN chmod +x start.sh
