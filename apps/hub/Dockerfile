@@ -44,10 +44,14 @@ RUN npm install -g prisma@5
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+# Copy standalone output
 COPY --from=builder --chown=nextjs:nodejs /app/apps/hub/.next/standalone ./
 
-# Static assets must be relative to where server.js lives (apps/hub/)
+# Copy static assets to both root and app-relative paths
 COPY --from=builder --chown=nextjs:nodejs /app/apps/hub/.next/static ./apps/hub/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/hub/.next/static ./.next/static
+
+# Prisma schema for db push on startup
 COPY --from=builder /app/packages/db/prisma ./prisma
 
 COPY --from=builder --chown=nextjs:nodejs /app/apps/hub/start.sh ./start.sh

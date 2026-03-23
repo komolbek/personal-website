@@ -40,6 +40,11 @@ RUN pnpm --filter @necto/db db:generate
 # Build
 RUN pnpm --filter @necto/web build
 
+# Debug: show standalone structure
+RUN echo "=== Standalone structure ===" && \
+    find apps/web/.next/standalone -name "server.js" -o -name "package.json" | head -20 && \
+    echo "=== End ==="
+
 # Production image
 FROM base AS runner
 WORKDIR /app
@@ -52,11 +57,19 @@ RUN npm install -g prisma@5
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+# Copy standalone output (contains server.js at apps/web/server.js)
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 
-# Static assets and public must be relative to where server.js lives (apps/web/)
+# Copy static assets to BOTH root and app-relative paths
+# (Next.js standalone may look in either location depending on version)
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
+
+# Copy public to both locations
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
+
+# Prisma schema for db push on startup
 COPY --from=builder /app/packages/db/prisma ./prisma
 
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/start.sh ./start.sh
