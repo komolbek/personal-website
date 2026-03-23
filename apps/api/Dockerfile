@@ -33,6 +33,9 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json ./
 RUN pnpm --filter @necto/db db:generate
 RUN pnpm --filter @necto/api build
 
+# Use pnpm deploy to create a self-contained production bundle
+RUN pnpm --filter @necto/api deploy --prod /app/pruned
+
 FROM base AS runner
 WORKDIR /app
 
@@ -44,13 +47,14 @@ RUN npm install -g prisma@5
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 appuser
 
-# Copy built app
-COPY --from=builder --chown=appuser:nodejs /app/apps/api/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/apps/api/node_modules ./apps/api/node_modules
+# Copy the self-contained production bundle
+COPY --from=builder /app/pruned/node_modules ./node_modules
+COPY --from=builder /app/apps/api/dist ./dist
 COPY --from=builder /app/packages/db/prisma ./prisma
 
-# Copy startup script
+# Copy Prisma engine binaries
+COPY --from=builder /app/pruned/node_modules/.prisma ./node_modules/.prisma
+
 COPY --from=builder --chown=appuser:nodejs /app/apps/api/start.sh ./start.sh
 RUN chmod +x start.sh
 
