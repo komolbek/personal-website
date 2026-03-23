@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
-    "build": "next build",
-    "start": "next start",
+    "build": "prisma generate --schema=../../packages/db/prisma/schema.prisma && next build",
+    "start": "prisma db push --schema=../../packages/db/prisma/schema.prisma --skip-generate --accept-data-loss && next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@necto/db": "workspace:*",
+    "@prisma/client": "^5.22.0",
+    "prisma": "^5.22.0",
     "@vercel/analytics": "^1.6.1",
     "bcryptjs": "^3.0.3",
     "framer-motion": "^12.35.1",
