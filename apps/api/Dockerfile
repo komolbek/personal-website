@@ -51,7 +51,7 @@ COPY --from=builder /app/apps/api/node_modules ./apps/api/node_modules
 COPY --from=builder /app/packages/db/prisma ./prisma
 
 # Copy startup script
-COPY --chown=appuser:nodejs apps/api/start.sh ./start.sh
+COPY --from=builder --chown=appuser:nodejs /app/apps/api/start.sh ./start.sh
 RUN chmod +x start.sh
 
 USER appuser

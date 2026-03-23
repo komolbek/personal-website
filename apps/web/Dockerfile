@@ -61,7 +61,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/packages/db/prisma ./prisma
 
-COPY --chown=nextjs:nodejs apps/web/start.sh ./start.sh
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/start.sh ./start.sh
 RUN chmod +x start.sh
 
 USER nextjs
