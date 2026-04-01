@@ -12,9 +12,9 @@ export const en = {
   },
   home: {
     hero: {
-      badge: 'IT Solutions & Software Development',
-      title: 'Automate Your Business. Scale Without Limits.',
-      subtitle: 'We help Uzbek companies streamline operations with custom CRM, ERP, and AI-powered solutions — from legal firms to education centers.',
+      badge: 'Custom Software Development Studio',
+      title: 'We Build Software That Runs Your Business.',
+      subtitle: 'From CRM and ERP systems to AI-powered platforms and mobile apps — we deliver production-ready solutions for companies across Uzbekistan.',
       cta: 'View Our Work',
       contact: 'Get a Free Consultation',
     },
@@ -114,6 +114,7 @@ export const en = {
       crm: 'CRM Systems',
       ai: 'AI Solutions',
       ecommerce: 'E-commerce',
+      saas: 'SaaS Platforms',
     },
     links: {
       appStore: 'App Store',
@@ -210,7 +211,7 @@ export const en = {
   footer: {
     rights: 'All rights reserved.',
     createdBy: 'Created by Necto Automations',
-    aboutBlurb: 'We build custom software that solves real business problems — from legal management systems to education platforms. Creators of Yuridix, Ordo & TalimX.',
+    aboutBlurb: 'A software development studio in Tashkent. We build CRM/ERP systems, marketplaces, AI platforms, and mobile apps — with 15+ products delivered across legal, education, e-commerce, and more.',
     company: 'Company',
     services: 'Products',
     resources: 'Resources',
@@ -219,7 +220,7 @@ export const en = {
     privacy: 'Privacy Policy',
     terms: 'Terms of Service',
     blog: 'Blog',
-    description: 'Custom software development in Tashkent. Creators of Yuridix, Ordo & TalimX.',
+    description: 'Custom software development in Tashkent. 15+ products delivered — CRM, ERP, AI, marketplaces, and mobile apps.',
   },
   language: {
     en: 'English',

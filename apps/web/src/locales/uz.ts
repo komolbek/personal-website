@@ -12,9 +12,9 @@ export const uz = {
   },
   home: {
     hero: {
-      badge: 'IT Yechimlar va Dasturiy Ta\'minot',
-      title: 'Biznesingizni avtomatlashtiring. Chegarasiz rivojlaning.',
-      subtitle: 'O\'zbek kompaniyalariga CRM, ERP va AI yechimlar bilan operatsiyalarni optimallashtrishga yordam beramiz — yuridik firmalardan ta\'lim markazlarigacha.',
+      badge: 'Dasturiy ta\'minot ishlab chiqish studiyasi',
+      title: 'Biznesingizni boshqaradigan dasturiy ta\'minot yaratamiz.',
+      subtitle: 'CRM va ERP tizimlar, AI platformalar, mobil ilovalar va marketplace\'lar — O\'zbekiston bo\'ylab kompaniyalar uchun ishga tayyor yechimlar.',
       cta: 'Bizning ishlarimiz',
       contact: 'Bepul maslahat',
     },
@@ -114,6 +114,7 @@ export const uz = {
       crm: 'CRM tizimlar',
       ai: 'AI yechimlar',
       ecommerce: 'Elektron tijorat',
+      saas: 'SaaS platformalar',
     },
     links: {
       appStore: 'App Store',
@@ -210,7 +211,7 @@ export const uz = {
   footer: {
     rights: 'Barcha huquqlar himoyalangan.',
     createdBy: 'Necto Automations tomonidan yaratilgan',
-    aboutBlurb: 'Biz haqiqiy biznes muammolarini hal qiladigan maxsus dasturiy ta\'minot yaratamiz — yuridik boshqaruv tizimlaridan ta\'lim platformalarigacha. Yuridix, Ordo va TalimX yaratuvchilari.',
+    aboutBlurb: 'Toshkentdagi dasturiy ta\'minot ishlab chiqish studiyasi. CRM/ERP tizimlar, marketplace\'lar, AI platformalar va mobil ilovalar yaratamiz — yuridik, ta\'lim, e-tijorat va boshqa sohalarda 15+ mahsulot.',
     company: 'Kompaniya',
     services: 'Mahsulotlar',
     resources: 'Resurslar',
@@ -219,7 +220,7 @@ export const uz = {
     privacy: 'Maxfiylik siyosati',
     terms: 'Foydalanish shartlari',
     blog: 'Blog',
-    description: 'Toshkentda dasturiy ta\'minot ishlab chiqish. Yuridix, Ordo va TalimX yaratuvchilari.',
+    description: 'Toshkentda dasturiy ta\'minot ishlab chiqish. 15+ mahsulot — CRM, ERP, AI, marketplace va mobil ilovalar.',
   },
   language: {
     en: 'English',

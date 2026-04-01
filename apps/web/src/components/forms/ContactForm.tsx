@@ -1,8 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocale } from '@/hooks/useLocale';
 import { Button } from '@/components/ui/Button';
+
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
+/** Read UTM params from the current URL (set by Instagram ads, etc.) */
+function getUtmParams() {
+  if (typeof window === 'undefined') return {};
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utmSource: params.get('utm_source') || '',
+    utmMedium: params.get('utm_medium') || '',
+    utmCampaign: params.get('utm_campaign') || '',
+    utmContent: params.get('utm_content') || '',
+    utmTerm: params.get('utm_term') || '',
+    referrer: document.referrer || '',
+  };
+}
 
 interface FormData {
   name: string;
@@ -84,6 +105,11 @@ export function ContactForm() {
     message: '',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [utmData, setUtmData] = useState<ReturnType<typeof getUtmParams>>({});
+
+  useEffect(() => {
+    setUtmData(getUtmParams());
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -108,11 +134,29 @@ export function ContactForm() {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, ...utmData }),
       });
 
       if (response.ok) {
         setStatus('success');
+
+        // Fire Meta Pixel Lead event (for Instagram ad conversion tracking)
+        if (window.fbq) {
+          window.fbq('track', 'Lead', {
+            content_name: formData.service || 'general',
+            currency: 'USD',
+            value: formData.budget || undefined,
+          });
+        }
+        // Fire GA4 conversion event
+        if (window.gtag) {
+          window.gtag('event', 'generate_lead', {
+            event_category: 'contact',
+            event_label: formData.service || 'general',
+            value: formData.budget || undefined,
+          });
+        }
+
         setFormData({
           name: '',
           email: '',

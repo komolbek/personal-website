@@ -1,11 +1,31 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocale } from '@/hooks/useLocale';
 import { BudgetSlider } from '@/components/ui/BudgetSlider';
 import { FadeIn } from '@/components/ui/AnimatedSection';
+
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
+function getUtmParams() {
+  if (typeof window === 'undefined') return {};
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utmSource: params.get('utm_source') || '',
+    utmMedium: params.get('utm_medium') || '',
+    utmCampaign: params.get('utm_campaign') || '',
+    utmContent: params.get('utm_content') || '',
+    utmTerm: params.get('utm_term') || '',
+    referrer: document.referrer || '',
+  };
+}
 
 const TOTAL_STEPS = 4;
 
@@ -62,6 +82,11 @@ export default function ContactPage() {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [utmData, setUtmData] = useState<ReturnType<typeof getUtmParams>>({});
+
+  useEffect(() => {
+    setUtmData(getUtmParams());
+  }, []);
 
   const [formData, setFormData] = useState({
     service: '',
@@ -136,10 +161,28 @@ export default function ContactPage() {
           service: formData.service,
           budget: formatBudgetForAPI(formData.budget),
           message: formData.message || `${serviceLabels[formData.service]?.[locale] || formData.service} — ${Math.round(formData.budget / 12_500).toLocaleString('en-US')} USD`,
+          ...utmData,
         }),
       });
 
       if (response.ok) {
+        // Fire Meta Pixel Lead event (Instagram ad conversion tracking)
+        if (window.fbq) {
+          window.fbq('track', 'Lead', {
+            content_name: formData.service || 'general',
+            currency: 'USD',
+            value: Math.round(formData.budget / 12_500),
+          });
+        }
+        // Fire GA4 conversion event
+        if (window.gtag) {
+          window.gtag('event', 'generate_lead', {
+            event_category: 'contact',
+            event_label: formData.service || 'general',
+            value: Math.round(formData.budget / 12_500),
+          });
+        }
+
         setStatus('success');
         setDirection(1);
         setStep(TOTAL_STEPS);

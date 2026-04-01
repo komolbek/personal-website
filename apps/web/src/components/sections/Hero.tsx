@@ -29,9 +29,9 @@ const fadeUpVariants = {
 };
 
 const statsData = [
-  { value: '6+', labelKey: 'products' },
-  { value: '20+', labelKey: 'clients' },
-  { value: '3+', labelKey: 'years' },
+  { value: '15+', labelKey: 'products' },
+  { value: '30+', labelKey: 'clients' },
+  { value: '4+', labelKey: 'years' },
   { value: '99%', labelKey: 'uptime' },
 ];
 

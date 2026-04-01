@@ -7,29 +7,29 @@ import { FadeIn } from '@/components/ui/AnimatedSection';
 const aboutContent = {
   en: {
     title: 'About Necto',
-    description: 'Necto Automations is a focused software studio based in Tashkent, Uzbekistan. We design, build, and ship full-stack products — from legal management systems to education platforms — with a focus on real business problems and clean, modern technology.',
+    description: 'Necto Automations is a software development studio in Tashkent with 15+ shipped products across legal tech, education, e-commerce, fintech, and logistics. We handle the full cycle — from architecture and design to deployment and ongoing support.',
     highlights: [
-      { label: 'Full-Stack Development', desc: 'React, Next.js, Node.js, PostgreSQL, React Native' },
-      { label: 'Product-Focused', desc: 'Building in-house SaaS products for the Uzbek market' },
-      { label: 'End-to-End Delivery', desc: 'From design to deployment, we handle the entire process' },
+      { label: 'Full-Stack Expertise', desc: 'React, Next.js, NestJS, PostgreSQL, React Native, AI/ML integrations' },
+      { label: '15+ Products Delivered', desc: 'CRM/ERP systems, marketplaces, SaaS platforms, and mobile apps' },
+      { label: 'End-to-End Delivery', desc: 'Architecture, design, development, deployment, and long-term support' },
     ],
   },
   ru: {
     title: 'О Necto',
-    description: 'Necto Automations — студия разработки ПО в Ташкенте. Мы проектируем, разрабатываем и запускаем full-stack продукты — от систем управления юридической практикой до образовательных платформ — с фокусом на реальные бизнес-задачи и современные технологии.',
+    description: 'Necto Automations — студия разработки ПО в Ташкенте с 15+ реализованными продуктами в сферах юриспруденции, образования, e-commerce, финтеха и логистики. Мы закрываем полный цикл — от архитектуры и дизайна до запуска и постоянной поддержки.',
     highlights: [
-      { label: 'Full-Stack разработка', desc: 'React, Next.js, Node.js, PostgreSQL, React Native' },
-      { label: 'Продуктовый подход', desc: 'Создание SaaS-продуктов для рынка Узбекистана' },
-      { label: 'Полный цикл', desc: 'От дизайна до деплоя — весь процесс в наших руках' },
+      { label: 'Full-Stack экспертиза', desc: 'React, Next.js, NestJS, PostgreSQL, React Native, AI/ML интеграции' },
+      { label: '15+ продуктов', desc: 'CRM/ERP системы, маркетплейсы, SaaS-платформы и мобильные приложения' },
+      { label: 'Полный цикл', desc: 'Архитектура, дизайн, разработка, деплой и долгосрочная поддержка' },
     ],
   },
   uz: {
     title: 'Necto haqida',
-    description: "Necto Automations — Toshkentdagi dasturiy ta'minot studiyasi. Biz to'liq stack mahsulotlar — yuridik boshqaruv tizimlaridan ta'lim platformalarigacha — loyihalash, ishlab chiqish va ishga tushirish bilan shug'ullanamiz.",
+    description: "Necto Automations — Toshkentdagi dasturiy ta'minot studiyasi. Yuridik texnologiyalar, ta'lim, e-tijorat, fintech va logistika sohalarida 15+ mahsulot ishlab chiqilgan. Arxitektura va dizayndan tortib ishga tushirish va doimiy qo'llab-quvvatlashgacha to'liq tsiklni yopamiz.",
     highlights: [
-      { label: 'Full-Stack dasturlash', desc: 'React, Next.js, Node.js, PostgreSQL, React Native' },
-      { label: 'Mahsulotga yo\'naltirilgan', desc: "O'zbek bozori uchun SaaS mahsulotlar yaratish" },
-      { label: "To'liq tsikl", desc: "Dizayndan deployga qadar — butun jarayon bizning qo'limizda" },
+      { label: 'Full-Stack tajriba', desc: 'React, Next.js, NestJS, PostgreSQL, React Native, AI/ML integratsiyalari' },
+      { label: '15+ mahsulot', desc: "CRM/ERP tizimlar, marketplace'lar, SaaS platformalar va mobil ilovalar" },
+      { label: "To'liq tsikl", desc: "Arxitektura, dizayn, ishlab chiqish, deploy va uzoq muddatli qo'llab-quvvatlash" },
     ],
   },
 };
