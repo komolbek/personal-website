@@ -51,6 +51,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/static ./apps/admin/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/static ./.next/static
 
+# Ensure Prisma generated client + engine are present (Next standalone
+# tracing sometimes misses the native .node engine). Copy the whole
+# .prisma/client directory from the builder's pnpm store.
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/.prisma/client ./node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/.prisma/client
+
 # Prisma schema for db push on startup
 COPY --from=builder /app/packages/db/prisma ./prisma
 
