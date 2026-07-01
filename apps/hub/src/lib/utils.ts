@@ -36,6 +36,10 @@ export function daysUntil(date: Date | string | null): number | null {
 
 export function getStatusColor(status: string): string {
   const colors: Record<string, string> = {
+    // User roles
+    ADMIN: 'bg-purple-100 text-purple-700',
+    MANAGER: 'bg-blue-100 text-blue-700',
+    VIEWER: 'bg-gray-100 text-gray-700',
     // Project statuses
     LEAD: 'bg-gray-100 text-gray-700',
     PROPOSAL: 'bg-blue-100 text-blue-700',

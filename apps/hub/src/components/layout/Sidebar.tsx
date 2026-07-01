@@ -9,6 +9,7 @@ import {
   Package,
   DollarSign,
   Users,
+  UserCog,
   Settings,
   X,
   Menu,
@@ -22,6 +23,7 @@ const navItems = [
   { href: '/products', label: 'Products', icon: Package },
   { href: '/finances', label: 'Finances', icon: DollarSign },
   { href: '/contacts', label: 'Contacts', icon: Users },
+  { href: '/users', label: 'Users & Roles', icon: UserCog },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
