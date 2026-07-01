@@ -15,6 +15,7 @@ import { AmountInput } from '@/components/ui/amount-input';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { ArrowLeft, DollarSign, Trash2 } from 'lucide-react';
+import { getServerT } from '@/lib/i18n/server';
 
 async function updateClient(formData: FormData) {
   'use server';
@@ -106,6 +107,7 @@ async function deletePayment(formData: FormData) {
 export default async function ClientDetailPage({ params }: { params: { slug: string; id: string } }) {
   const session = await getSession();
   if (!session) redirect('/login');
+  const t = getServerT();
 
   const client = await prisma.hubClient.findUnique({
     where: { id: params.id },
@@ -146,34 +148,34 @@ export default async function ClientDetailPage({ params }: { params: { slug: str
         {/* Client Details Form */}
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Client Details</CardTitle>
+            <CardTitle>{t('clients.details')}</CardTitle>
           </CardHeader>
           <CardContent>
             <form action={updateClient} className="grid gap-4 sm:grid-cols-2">
               <input type="hidden" name="id" value={client.id} />
               <input type="hidden" name="slug" value={params.slug} />
               <div className="space-y-2">
-                <Label>Business Name</Label>
+                <Label>{t('clients.businessName')}</Label>
                 <Input name="name" defaultValue={client.name} required />
               </div>
               <div className="space-y-2">
-                <Label>Contact Person</Label>
+                <Label>{t('clients.contactPerson')}</Label>
                 <Input name="contactPerson" defaultValue={client.contactPerson || ''} />
               </div>
               <div className="space-y-2">
-                <Label>Phone</Label>
+                <Label>{t('common.phone')}</Label>
                 <PhoneInput name="phone" defaultValue={client.phone || ''} />
               </div>
               <div className="space-y-2">
-                <Label>Plan</Label>
+                <Label>{t('clients.plan')}</Label>
                 <Input name="plan" defaultValue={client.plan || ''} />
               </div>
               <div className="space-y-2">
-                <Label>Monthly Fee</Label>
+                <Label>{t('clients.monthlyFee')}</Label>
                 <AmountInput name="monthlyFee" defaultValue={client.monthlyFee} />
               </div>
               <div className="space-y-2">
-                <Label>Currency</Label>
+                <Label>{t('common.currency')}</Label>
                 <Select
                   name="currency"
                   defaultValue={client.currency}
@@ -184,32 +186,32 @@ export default async function ClientDetailPage({ params }: { params: { slug: str
                 />
               </div>
               <div className="space-y-2">
-                <Label>Payment Status</Label>
+                <Label>{t('clients.paymentStatus')}</Label>
                 <Select
                   name="paymentStatus"
                   defaultValue={client.paymentStatus}
                   options={[
-                    { value: 'ACTIVE', label: 'Active' },
-                    { value: 'OVERDUE', label: 'Overdue' },
-                    { value: 'CHURNED', label: 'Churned' },
+                    { value: 'ACTIVE', label: t('enum.ACTIVE') },
+                    { value: 'OVERDUE', label: t('enum.OVERDUE') },
+                    { value: 'CHURNED', label: t('enum.CHURNED') },
                   ]}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Start Date</Label>
+                <Label>{t('clients.startDate')}</Label>
                 <Input type="date" disabled defaultValue={client.startDate ? new Date(client.startDate).toISOString().split('T')[0] : ''} />
               </div>
               <div className="space-y-2 sm:col-span-2">
-                <Label>Notes</Label>
+                <Label>{t('common.notes')}</Label>
                 <Textarea name="notes" defaultValue={client.notes || ''} rows={3} />
               </div>
               <div className="sm:col-span-2 flex items-center gap-2">
-                {isEditor && <Button type="submit" size="sm">Save Changes</Button>}
+                {isEditor && <Button type="submit" size="sm">{t('common.saveChanges')}</Button>}
                 {session.role === 'ADMIN' && (
                   <form action={deleteClient}>
                     <input type="hidden" name="id" value={client.id} />
                     <input type="hidden" name="slug" value={params.slug} />
-                    <Button type="submit" variant="destructive" size="sm">Delete Client</Button>
+                    <Button type="submit" variant="destructive" size="sm">{t('clients.deleteClient')}</Button>
                   </form>
                 )}
               </div>
@@ -220,28 +222,28 @@ export default async function ClientDetailPage({ params }: { params: { slug: str
         {/* Summary */}
         <Card>
           <CardHeader>
-            <CardTitle>Summary</CardTitle>
+            <CardTitle>{t('clients.summaryTitle')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex justify-between">
-              <span className="text-sm text-muted-foreground">Monthly Fee</span>
+              <span className="text-sm text-muted-foreground">{t('clients.monthlyFee')}</span>
               <span className="font-medium">{client.monthlyFee ? formatCurrency(client.monthlyFee, client.currency) : '—'}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-muted-foreground">Total Paid</span>
+              <span className="text-sm text-muted-foreground">{t('clients.totalPaid')}</span>
               <span className="font-medium text-green-600">{formatCurrency(totalPaid, client.currency)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-muted-foreground">Last Payment</span>
+              <span className="text-sm text-muted-foreground">{t('clients.table.lastPayment')}</span>
               <span className="text-sm">{formatDate(client.lastPayment)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-muted-foreground">Client Since</span>
+              <span className="text-sm text-muted-foreground">{t('clients.clientSince')}</span>
               <span className="text-sm">{formatDate(client.startDate)}</span>
             </div>
             {client.lead && (
               <div className="flex justify-between border-t pt-4">
-                <span className="text-sm text-muted-foreground">Converted from lead</span>
+                <span className="text-sm text-muted-foreground">{t('clients.convertedFromLead')}</span>
                 <span className="text-sm">{formatDate(client.lead.createdAt)}</span>
               </div>
             )}
@@ -253,26 +255,26 @@ export default async function ClientDetailPage({ params }: { params: { slug: str
       {isEditor && (
         <Card>
           <CardHeader>
-            <CardTitle>Record Payment</CardTitle>
+            <CardTitle>{t('clients.recordPayment')}</CardTitle>
           </CardHeader>
           <CardContent>
             <form action={recordPayment} className="flex items-end gap-3 flex-wrap">
               <input type="hidden" name="clientId" value={client.id} />
               <input type="hidden" name="slug" value={params.slug} />
               <div className="space-y-1">
-                <Label className="text-xs">Amount</Label>
+                <Label className="text-xs">{t('common.amount')}</Label>
                 <AmountInput name="amount" defaultValue={client.monthlyFee} required placeholder="0" className="h-9 w-32" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">Description</Label>
-                <Input name="description" placeholder="Subscription payment" className="h-9 w-48" />
+                <Label className="text-xs">{t('clients.payment.description')}</Label>
+                <Input name="description" placeholder={t('clients.payment.descriptionPlaceholder')} className="h-9 w-48" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">Date</Label>
+                <Label className="text-xs">{t('common.date')}</Label>
                 <Input name="date" type="date" defaultValue={new Date().toISOString().split('T')[0]} className="h-9 w-36" />
               </div>
               <Button type="submit" size="sm" variant="outline" className="h-9">
-                <DollarSign className="h-3 w-3 mr-1" /> Record Payment
+                <DollarSign className="h-3 w-3 mr-1" /> {t('clients.recordPayment')}
               </Button>
             </form>
           </CardContent>
@@ -282,24 +284,24 @@ export default async function ClientDetailPage({ params }: { params: { slug: str
       {/* Payment History */}
       <Card>
         <CardHeader>
-          <CardTitle>Payment History ({client.payments.length})</CardTitle>
+          <CardTitle>{t('clients.paymentHistory', { count: client.payments.length })}</CardTitle>
         </CardHeader>
         <CardContent>
           {client.payments.length === 0 ? (
             <EmptyState
               icon={<DollarSign className="h-8 w-8" />}
-              title="No payments yet"
-              description="Record the first payment for this client."
+              title={t('clients.payment.empty.title')}
+              description={t('clients.payment.empty.description')}
             />
           ) : (
             <div className="border rounded-lg overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b bg-muted/50">
-                    <th className="text-left p-3 font-medium">Date</th>
-                    <th className="text-left p-3 font-medium">Description</th>
-                    <th className="text-left p-3 font-medium">Type</th>
-                    <th className="text-right p-3 font-medium">Amount</th>
+                    <th className="text-left p-3 font-medium">{t('common.date')}</th>
+                    <th className="text-left p-3 font-medium">{t('common.description')}</th>
+                    <th className="text-left p-3 font-medium">{t('common.type')}</th>
+                    <th className="text-right p-3 font-medium">{t('common.amount')}</th>
                     {session.role === 'ADMIN' && <th className="p-3 w-12"></th>}
                   </tr>
                 </thead>

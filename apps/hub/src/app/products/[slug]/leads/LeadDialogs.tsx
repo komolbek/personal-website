@@ -9,15 +9,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { PhoneInput } from '@/components/ui/phone-input';
 import { Plus } from 'lucide-react';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
-const LEAD_SOURCES = [
-  { value: 'WALK_IN', label: 'Walk-in' },
-  { value: 'INSTAGRAM', label: 'Instagram' },
-  { value: 'REFERRAL', label: 'Referral' },
-  { value: 'GOOGLE_MAPS', label: 'Google Maps' },
-  { value: 'TWOGIS', label: '2GIS' },
-  { value: 'OTHER', label: 'Other' },
-];
+const LEAD_SOURCE_VALUES = ['WALK_IN', 'INSTAGRAM', 'REFERRAL', 'GOOGLE_MAPS', 'TWOGIS', 'OTHER'];
 
 export function AddLeadDialog({
   productId,
@@ -28,14 +22,16 @@ export function AddLeadDialog({
   slug: string;
   action: (formData: FormData) => Promise<void>;
 }) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
+  const sourceOptions = LEAD_SOURCE_VALUES.map((value) => ({ value, label: t(`enum.${value}`) }));
 
   return (
     <>
       <DialogTriggerButton onClick={() => setOpen(true)}>
-        <Plus className="h-4 w-4 mr-2" /> Add Lead
+        <Plus className="h-4 w-4 mr-2" /> {t('leads.add')}
       </DialogTriggerButton>
-      <Dialog open={open} onOpenChange={setOpen} title="Add Lead">
+      <Dialog open={open} onOpenChange={setOpen} title={t('leads.add')}>
         <form
           action={async (formData) => {
             await action(formData);
@@ -46,35 +42,35 @@ export function AddLeadDialog({
           <input type="hidden" name="productId" value={productId} />
           <input type="hidden" name="slug" value={slug} />
           <div className="space-y-2">
-            <Label>Business Name</Label>
-            <Input name="name" placeholder="e.g., Salon Bella" required />
+            <Label>{t('leads.businessName')}</Label>
+            <Input name="name" placeholder={t('leads.businessNamePlaceholder')} required />
           </div>
           <div className="space-y-2">
-            <Label>Contact Person</Label>
-            <Input name="contactPerson" placeholder="Name" />
+            <Label>{t('leads.contactPerson')}</Label>
+            <Input name="contactPerson" placeholder={t('leads.contactPersonPlaceholder')} />
           </div>
           <div className="space-y-2">
-            <Label>Phone</Label>
+            <Label>{t('common.phone')}</Label>
             <PhoneInput name="phone" />
           </div>
           <div className="space-y-2">
-            <Label>Telegram</Label>
-            <Input name="telegram" placeholder="@username" />
+            <Label>{t('common.telegram')}</Label>
+            <Input name="telegram" placeholder={t('leads.telegramPlaceholder')} />
           </div>
           <div className="space-y-2">
-            <Label>Source</Label>
-            <Select name="source" defaultValue="OTHER" options={LEAD_SOURCES} />
+            <Label>{t('common.source')}</Label>
+            <Select name="source" defaultValue="OTHER" options={sourceOptions} />
           </div>
           <div className="space-y-2">
-            <Label>Follow-up Date</Label>
+            <Label>{t('leads.followUpDate')}</Label>
             <Input name="followUp" type="date" />
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label>Notes</Label>
-            <Textarea name="notes" placeholder="Initial observations..." rows={2} />
+            <Label>{t('common.notes')}</Label>
+            <Textarea name="notes" placeholder={t('leads.notesPlaceholder')} rows={2} />
           </div>
           <div className="sm:col-span-2">
-            <Button type="submit" size="sm">Add Lead</Button>
+            <Button type="submit" size="sm">{t('leads.add')}</Button>
           </div>
         </form>
       </Dialog>
@@ -105,14 +101,16 @@ export function EditLeadDialog({
   editAction: (formData: FormData) => Promise<void>;
   deleteAction: (formData: FormData) => Promise<void>;
 }) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
+  const sourceOptions = LEAD_SOURCE_VALUES.map((value) => ({ value, label: t(`enum.${value}`) }));
 
   return (
     <>
       <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setOpen(true)}>
-        Edit
+        {t('common.edit')}
       </Button>
-      <Dialog open={open} onOpenChange={setOpen} title={`Edit: ${lead.name}`}>
+      <Dialog open={open} onOpenChange={setOpen} title={t('leads.editTitle', { name: lead.name })}>
         <form
           action={async (formData) => {
             await editAction(formData);
@@ -123,43 +121,43 @@ export function EditLeadDialog({
           <input type="hidden" name="id" value={lead.id} />
           <input type="hidden" name="slug" value={slug} />
           <div className="space-y-2">
-            <Label>Business Name</Label>
+            <Label>{t('leads.businessName')}</Label>
             <Input name="name" defaultValue={lead.name} required />
           </div>
           <div className="space-y-2">
-            <Label>Contact Person</Label>
+            <Label>{t('leads.contactPerson')}</Label>
             <Input name="contactPerson" defaultValue={lead.contactPerson || ''} />
           </div>
           <div className="space-y-2">
-            <Label>Phone</Label>
+            <Label>{t('common.phone')}</Label>
             <PhoneInput name="phone" defaultValue={lead.phone || ''} />
           </div>
           <div className="space-y-2">
-            <Label>Telegram</Label>
-            <Input name="telegram" defaultValue={lead.telegram || ''} placeholder="@username" />
+            <Label>{t('common.telegram')}</Label>
+            <Input name="telegram" defaultValue={lead.telegram || ''} placeholder={t('leads.telegramPlaceholder')} />
           </div>
           <div className="space-y-2">
-            <Label>Instagram</Label>
-            <Input name="instagram" defaultValue={lead.instagram || ''} placeholder="@handle" />
+            <Label>{t('common.instagram')}</Label>
+            <Input name="instagram" defaultValue={lead.instagram || ''} placeholder={t('leads.instagramPlaceholder')} />
           </div>
           <div className="space-y-2">
-            <Label>Source</Label>
-            <Select name="source" defaultValue={lead.source} options={LEAD_SOURCES} />
+            <Label>{t('common.source')}</Label>
+            <Select name="source" defaultValue={lead.source} options={sourceOptions} />
           </div>
           <div className="space-y-2">
-            <Label>Follow-up Date</Label>
+            <Label>{t('leads.followUpDate')}</Label>
             <Input name="followUp" type="date" defaultValue={lead.followUp ? lead.followUp.split('T')[0] : ''} />
           </div>
           <div className="space-y-2">
-            <Label>Notes</Label>
+            <Label>{t('common.notes')}</Label>
             <Textarea name="notes" defaultValue={lead.notes || ''} rows={2} />
           </div>
           <div className="sm:col-span-2 flex items-center gap-2">
-            <Button type="submit" size="sm">Save Changes</Button>
+            <Button type="submit" size="sm">{t('common.saveChanges')}</Button>
             <form action={deleteAction}>
               <input type="hidden" name="id" value={lead.id} />
               <input type="hidden" name="slug" value={slug} />
-              <Button type="submit" variant="destructive" size="sm">Delete</Button>
+              <Button type="submit" variant="destructive" size="sm">{t('common.delete')}</Button>
             </form>
           </div>
         </form>

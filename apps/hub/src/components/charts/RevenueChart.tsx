@@ -1,6 +1,7 @@
 'use client';
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
 type MonthlyData = {
   month: string;
@@ -9,6 +10,7 @@ type MonthlyData = {
 };
 
 export function RevenueChart({ data }: { data: MonthlyData[] }) {
+  const { t } = useI18n();
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
@@ -20,8 +22,8 @@ export function RevenueChart({ data }: { data: MonthlyData[] }) {
           labelStyle={{ fontWeight: 600 }}
         />
         <Legend />
-        <Bar dataKey="income" name="Income" fill="#22c55e" radius={[4, 4, 0, 0]} />
-        <Bar dataKey="expenses" name="Expenses" fill="#ef4444" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="income" name={t('charts.income')} fill="#22c55e" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="expenses" name={t('charts.expenses')} fill="#ef4444" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );

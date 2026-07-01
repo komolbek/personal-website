@@ -16,19 +16,22 @@ import {
   LogOut,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useI18n } from '@/components/i18n/I18nProvider';
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 
 const navItems = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/projects', label: 'Projects', icon: FolderKanban },
-  { href: '/products', label: 'Products', icon: Package },
-  { href: '/finances', label: 'Finances', icon: DollarSign },
-  { href: '/contacts', label: 'Contacts', icon: Users },
-  { href: '/users', label: 'Users & Roles', icon: UserCog },
-  { href: '/settings', label: 'Settings', icon: Settings },
+  { href: '/', labelKey: 'nav.dashboard', icon: LayoutDashboard },
+  { href: '/projects', labelKey: 'nav.projects', icon: FolderKanban },
+  { href: '/products', labelKey: 'nav.products', icon: Package },
+  { href: '/finances', labelKey: 'nav.finances', icon: DollarSign },
+  { href: '/contacts', labelKey: 'nav.contacts', icon: Users },
+  { href: '/users', labelKey: 'nav.users', icon: UserCog },
+  { href: '/settings', labelKey: 'nav.settings', icon: Settings },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { t } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActive = (href: string) => {
@@ -39,8 +42,11 @@ export function Sidebar() {
   const nav = (
     <nav className="flex flex-col h-full">
       <div className="p-6 border-b">
-        <h1 className="text-xl font-bold">Necto Hub</h1>
-        <p className="text-xs text-muted-foreground mt-1">Business Management</p>
+        <div className="flex items-center justify-between gap-2">
+          <h1 className="text-xl font-bold">{t('brand.title')}</h1>
+          <LanguageSwitcher />
+        </div>
+        <p className="text-xs text-muted-foreground mt-1">{t('brand.subtitle')}</p>
       </div>
 
       <div className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
@@ -57,7 +63,7 @@ export function Sidebar() {
             )}
           >
             <item.icon className="h-4 w-4" />
-            {item.label}
+            {t(item.labelKey)}
           </Link>
         ))}
       </div>
@@ -69,7 +75,7 @@ export function Sidebar() {
             className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground w-full transition-colors"
           >
             <LogOut className="h-4 w-4" />
-            Logout
+            {t('nav.logout')}
           </button>
         </form>
       </div>

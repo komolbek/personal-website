@@ -12,6 +12,7 @@ import { logActivity } from '@/lib/activity';
 import { formatDate } from '@/lib/utils';
 import { ShieldCheck, UserPlus, Users as UsersIcon } from 'lucide-react';
 import { RoleSelect } from './RoleSelect';
+import { getServerT } from '@/lib/i18n/server';
 import type { HubUserRole } from '@necto/db';
 
 const VALID_ROLES: HubUserRole[] = ['ADMIN', 'MANAGER', 'VIEWER'];
@@ -79,54 +80,55 @@ export default async function UsersPage() {
   }
 
   const users = await prisma.hubUser.findMany({ orderBy: { createdAt: 'asc' } });
+  const t = getServerT();
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <UsersIcon className="h-6 w-6" /> Users & Roles
+          <UsersIcon className="h-6 w-6" /> {t('users.title')}
         </h1>
-        <p className="text-muted-foreground">Create teammate accounts and manage their access</p>
+        <p className="text-muted-foreground">{t('users.subtitle')}</p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
-            <UserPlus className="h-4 w-4" /> Add user
+            <UserPlus className="h-4 w-4" /> {t('users.addUser')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form action={createUser} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="space-y-2">
-              <Label>Name</Label>
-              <Input name="name" required placeholder="Full name" />
+              <Label>{t('common.name')}</Label>
+              <Input name="name" required placeholder={t('users.fullNamePlaceholder')} />
             </div>
             <div className="space-y-2">
-              <Label>Email</Label>
-              <Input name="email" type="email" required placeholder="user@necto.uz" />
+              <Label>{t('common.email')}</Label>
+              <Input name="email" type="email" required placeholder={t('users.emailPlaceholder')} />
             </div>
             <div className="space-y-2">
-              <Label>Password</Label>
+              <Label>{t('common.password')}</Label>
               <Input name="password" type="password" required minLength={6} />
             </div>
             <div className="space-y-2">
-              <Label>Role</Label>
+              <Label>{t('common.role')}</Label>
               <Select
                 name="role"
                 defaultValue="MANAGER"
                 options={[
-                  { value: 'ADMIN', label: 'Admin' },
-                  { value: 'MANAGER', label: 'Manager' },
-                  { value: 'VIEWER', label: 'Viewer' },
+                  { value: 'ADMIN', label: t('enum.ADMIN') },
+                  { value: 'MANAGER', label: t('enum.MANAGER') },
+                  { value: 'VIEWER', label: t('enum.VIEWER') },
                 ]}
               />
             </div>
             <div className="sm:col-span-2 lg:col-span-4">
-              <Button type="submit" size="sm">Add user</Button>
+              <Button type="submit" size="sm">{t('users.addUser')}</Button>
             </div>
           </form>
           <p className="text-xs text-muted-foreground mt-3">
-            Share the email and password with the user; they sign in on the login page.
+            {t('users.shareHint')}
           </p>
         </CardContent>
       </Card>
@@ -134,7 +136,7 @@ export default async function UsersPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4" /> Team members ({users.length})
+            <ShieldCheck className="h-4 w-4" /> {t('users.teamMembers')} ({users.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -142,10 +144,10 @@ export default async function UsersPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left p-3 font-medium">Name</th>
-                  <th className="text-left p-3 font-medium">Email</th>
-                  <th className="text-left p-3 font-medium">Role</th>
-                  <th className="text-left p-3 font-medium">Joined</th>
+                  <th className="text-left p-3 font-medium">{t('common.name')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.email')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.role')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.joined')}</th>
                   <th className="p-3 w-16"></th>
                 </tr>
               </thead>
@@ -155,7 +157,7 @@ export default async function UsersPage() {
                     <td className="p-3 font-medium">
                       {user.name}
                       {user.id === session.id && (
-                        <span className="ml-2 text-xs text-muted-foreground">(you)</span>
+                        <span className="ml-2 text-xs text-muted-foreground">{t('common.you')}</span>
                       )}
                     </td>
                     <td className="p-3">{user.email}</td>
@@ -172,7 +174,7 @@ export default async function UsersPage() {
                         <form action={removeUser}>
                           <input type="hidden" name="id" value={user.id} />
                           <Button type="submit" variant="ghost" size="sm" className="text-destructive h-7 text-xs">
-                            Remove
+                            {t('users.remove')}
                           </Button>
                         </form>
                       )}

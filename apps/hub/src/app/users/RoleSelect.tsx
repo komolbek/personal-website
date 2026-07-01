@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { Select } from '@/components/ui/select';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
 export function RoleSelect({
   userId,
@@ -13,6 +14,7 @@ export function RoleSelect({
   action: (formData: FormData) => void;
 }) {
   const formRef = useRef<HTMLFormElement>(null);
+  const { t } = useI18n();
 
   return (
     <form ref={formRef} action={action}>
@@ -23,9 +25,9 @@ export function RoleSelect({
         className="h-8 w-32 text-xs"
         onChange={() => formRef.current?.requestSubmit()}
         options={[
-          { value: 'ADMIN', label: 'Admin' },
-          { value: 'MANAGER', label: 'Manager' },
-          { value: 'VIEWER', label: 'Viewer' },
+          { value: 'ADMIN', label: t('enum.ADMIN') },
+          { value: 'MANAGER', label: t('enum.MANAGER') },
+          { value: 'VIEWER', label: t('enum.VIEWER') },
         ]}
       />
     </form>

@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { ArrowLeft, UserCheck, DollarSign } from 'lucide-react';
 import { AddClientDialog } from './ClientDialogs';
+import { getServerT } from '@/lib/i18n/server';
 
 async function createClient(formData: FormData) {
   'use server';
@@ -76,6 +77,7 @@ async function recordPayment(formData: FormData) {
 export default async function ClientsPage({ params }: { params: { slug: string } }) {
   const session = await getSession();
   if (!session) redirect('/login');
+  const t = getServerT();
 
   const product = await prisma.hubProduct.findUnique({
     where: { slug: params.slug },
@@ -102,9 +104,9 @@ export default async function ClientsPage({ params }: { params: { slug: string }
           </Button>
         </Link>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold">{product.name} - Clients</h1>
+          <h1 className="text-2xl font-bold">{t('clients.title', { product: product.name })}</h1>
           <p className="text-muted-foreground">
-            {product.clients.length} clients | MRR: {formatCurrency(totalMRR)}
+            {t('clients.summary', { count: product.clients.length, mrr: formatCurrency(totalMRR) })}
           </p>
         </div>
         {session.role !== 'VIEWER' && (
@@ -116,8 +118,8 @@ export default async function ClientsPage({ params }: { params: { slug: string }
       {product.clients.length === 0 ? (
         <EmptyState
           icon={<UserCheck className="h-12 w-12" />}
-          title="No clients yet"
-          description={`${product.name} doesn't have any paying clients yet.`}
+          title={t('clients.empty.title')}
+          description={t('clients.empty.description', { product: product.name })}
         />
       ) : (
         <div className="border rounded-lg overflow-hidden">
@@ -125,12 +127,12 @@ export default async function ClientsPage({ params }: { params: { slug: string }
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left p-3 font-medium">Name</th>
-                  <th className="text-left p-3 font-medium">Plan</th>
-                  <th className="text-left p-3 font-medium">Monthly Fee</th>
-                  <th className="text-left p-3 font-medium">Status</th>
-                  <th className="text-left p-3 font-medium">Last Payment</th>
-                  <th className="text-left p-3 font-medium">Action</th>
+                  <th className="text-left p-3 font-medium">{t('clients.table.name')}</th>
+                  <th className="text-left p-3 font-medium">{t('clients.table.plan')}</th>
+                  <th className="text-left p-3 font-medium">{t('clients.table.monthlyFee')}</th>
+                  <th className="text-left p-3 font-medium">{t('clients.table.status')}</th>
+                  <th className="text-left p-3 font-medium">{t('clients.table.lastPayment')}</th>
+                  <th className="text-left p-3 font-medium">{t('clients.table.action')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -162,7 +164,7 @@ export default async function ClientsPage({ params }: { params: { slug: string }
                             required
                           />
                           <Button type="submit" size="sm" variant="outline" className="h-7 text-xs">
-                            <DollarSign className="h-3 w-3 mr-1" /> Pay
+                            <DollarSign className="h-3 w-3 mr-1" /> {t('clients.pay')}
                           </Button>
                         </form>
                       )}

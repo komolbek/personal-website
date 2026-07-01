@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { FolderKanban } from 'lucide-react';
 import { logActivity } from '@/lib/activity';
+import { getServerT } from '@/lib/i18n/server';
 import { ProjectFormDialog } from './ProjectFormDialog';
 
 async function createProject(formData: FormData) {
@@ -53,6 +54,7 @@ async function createProject(formData: FormData) {
 export default async function ProjectsPage() {
   const session = await getSession();
   if (!session) redirect('/login');
+  const t = getServerT();
 
   const projects = await prisma.hubProject.findMany({
     include: {
@@ -67,8 +69,8 @@ export default async function ProjectsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Projects</h1>
-          <p className="text-muted-foreground">Client projects and engagements</p>
+          <h1 className="text-2xl font-bold">{t('projects.title')}</h1>
+          <p className="text-muted-foreground">{t('projects.subtitle')}</p>
         </div>
         {['ADMIN', 'MANAGER'].includes(session.role) && (
           <ProjectFormDialog action={createProject} />
@@ -79,8 +81,8 @@ export default async function ProjectsPage() {
       {projects.length === 0 ? (
         <EmptyState
           icon={<FolderKanban className="h-12 w-12" />}
-          title="No projects yet"
-          description="Create your first project to start tracking work."
+          title={t('projects.emptyTitle')}
+          description={t('projects.emptyDescription')}
         />
       ) : (
         <div className="border rounded-lg overflow-hidden">
@@ -88,12 +90,12 @@ export default async function ProjectsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left p-3 font-medium">Name</th>
-                  <th className="text-left p-3 font-medium">Status</th>
-                  <th className="text-left p-3 font-medium">Total</th>
-                  <th className="text-left p-3 font-medium">Received</th>
-                  <th className="text-left p-3 font-medium">Outstanding</th>
-                  <th className="text-left p-3 font-medium">Deadline</th>
+                  <th className="text-left p-3 font-medium">{t('common.name')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.status')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.total')}</th>
+                  <th className="text-left p-3 font-medium">{t('projects.received')}</th>
+                  <th className="text-left p-3 font-medium">{t('projects.outstanding')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.deadline')}</th>
                 </tr>
               </thead>
               <tbody>

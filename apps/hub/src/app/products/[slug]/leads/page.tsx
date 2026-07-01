@@ -8,16 +8,17 @@ import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { ArrowLeft, Users } from 'lucide-react';
 import { AddLeadDialog } from './LeadDialogs';
+import { getServerT } from '@/lib/i18n/server';
 
-const LEAD_STATUSES = [
-  { value: 'NOT_CONTACTED', label: 'Not Contacted' },
-  { value: 'CONTACTED', label: 'Contacted' },
-  { value: 'DEMO_SCHEDULED', label: 'Demo Scheduled' },
-  { value: 'DEMO_DONE', label: 'Demo Done' },
-  { value: 'TRIAL', label: 'Trial' },
-  { value: 'NEGOTIATING', label: 'Negotiating' },
-  { value: 'SIGNED', label: 'Signed' },
-  { value: 'LOST', label: 'Lost' },
+const LEAD_STATUS_VALUES = [
+  'NOT_CONTACTED',
+  'CONTACTED',
+  'DEMO_SCHEDULED',
+  'DEMO_DONE',
+  'TRIAL',
+  'NEGOTIATING',
+  'SIGNED',
+  'LOST',
 ];
 
 async function createLead(formData: FormData) {
@@ -49,6 +50,7 @@ async function createLead(formData: FormData) {
 export default async function LeadsPage({ params }: { params: { slug: string } }) {
   const session = await getSession();
   if (!session) redirect('/login');
+  const t = getServerT();
 
   const product = await prisma.hubProduct.findUnique({
     where: { slug: params.slug },
@@ -59,10 +61,11 @@ export default async function LeadsPage({ params }: { params: { slug: string } }
 
   if (!product) notFound();
 
-  const kanbanColumns = LEAD_STATUSES.map((s) => ({
-    ...s,
+  const kanbanColumns = LEAD_STATUS_VALUES.map((value) => ({
+    value,
+    label: t(`enum.${value}`),
     leads: product.leads
-      .filter((l) => l.status === s.value)
+      .filter((l) => l.status === value)
       .map((l) => ({
         id: l.id,
         name: l.name,
@@ -85,8 +88,8 @@ export default async function LeadsPage({ params }: { params: { slug: string } }
           </Button>
         </Link>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold">{product.name} - Leads</h1>
-          <p className="text-muted-foreground">{product.leads.length} total leads</p>
+          <h1 className="text-2xl font-bold">{t('leads.title', { product: product.name })}</h1>
+          <p className="text-muted-foreground">{t('leads.totalCount', { count: product.leads.length })}</p>
         </div>
         {session.role !== 'VIEWER' && (
           <AddLeadDialog productId={product.id} slug={params.slug} action={createLead} />
@@ -96,8 +99,8 @@ export default async function LeadsPage({ params }: { params: { slug: string } }
       {product.leads.length === 0 ? (
         <EmptyState
           icon={<Users className="h-12 w-12" />}
-          title="No leads yet"
-          description={`Start adding potential ${product.name} customers.`}
+          title={t('leads.empty.title')}
+          description={t('leads.empty.description', { product: product.name })}
         />
       ) : (
         <KanbanBoard columns={kanbanColumns} slug={params.slug} />

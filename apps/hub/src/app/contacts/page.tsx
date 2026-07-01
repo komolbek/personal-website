@@ -7,6 +7,7 @@ import { StatusBadge } from '@/components/shared/StatusBadge';
 import { revalidatePath } from 'next/cache';
 import { Users } from 'lucide-react';
 import { ContactFormDialog } from './ContactFormDialog';
+import { getServerT } from '@/lib/i18n/server';
 
 async function createContact(formData: FormData) {
   'use server';
@@ -43,6 +44,8 @@ export default async function ContactsPage() {
   const session = await getSession();
   if (!session) redirect('/login');
 
+  const t = getServerT();
+
   const contacts = await prisma.hubContact.findMany({
     orderBy: { createdAt: 'desc' },
   });
@@ -51,8 +54,8 @@ export default async function ContactsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Contacts</h1>
-          <p className="text-muted-foreground">Universal contact book</p>
+          <h1 className="text-2xl font-bold">{t('contacts.title')}</h1>
+          <p className="text-muted-foreground">{t('contacts.subtitle')}</p>
         </div>
         {session.role !== 'VIEWER' && (
           <ContactFormDialog action={createContact} />
@@ -62,8 +65,8 @@ export default async function ContactsPage() {
       {contacts.length === 0 ? (
         <EmptyState
           icon={<Users className="h-12 w-12" />}
-          title="No contacts yet"
-          description="Build your network by adding contacts."
+          title={t('contacts.empty.title')}
+          description={t('contacts.empty.description')}
         />
       ) : (
         <div className="border rounded-lg overflow-hidden">
@@ -71,12 +74,12 @@ export default async function ContactsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left p-3 font-medium">Name</th>
-                  <th className="text-left p-3 font-medium">Company</th>
-                  <th className="text-left p-3 font-medium">Type</th>
-                  <th className="text-left p-3 font-medium">Phone</th>
-                  <th className="text-left p-3 font-medium">Telegram</th>
-                  <th className="text-left p-3 font-medium">Source</th>
+                  <th className="text-left p-3 font-medium">{t('common.name')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.company')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.type')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.phone')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.telegram')}</th>
+                  <th className="text-left p-3 font-medium">{t('common.source')}</th>
                   {session.role === 'ADMIN' && <th className="p-3 w-16"></th>}
                 </tr>
               </thead>
@@ -88,12 +91,12 @@ export default async function ContactsPage() {
                     <td className="p-3"><StatusBadge status={c.type} /></td>
                     <td className="p-3">{c.phone || '—'}</td>
                     <td className="p-3">{c.telegram || '—'}</td>
-                    <td className="p-3 text-xs">{c.source.replace(/_/g, ' ')}</td>
+                    <td className="p-3 text-xs">{t(`enum.${c.source}`)}</td>
                     {session.role === 'ADMIN' && (
                       <td className="p-3">
                         <form action={deleteContact}>
                           <input type="hidden" name="id" value={c.id} />
-                          <Button type="submit" variant="ghost" size="sm" className="text-destructive h-7 text-xs">Del</Button>
+                          <Button type="submit" variant="ghost" size="sm" className="text-destructive h-7 text-xs">{t('contacts.delete')}</Button>
                         </form>
                       </td>
                     )}

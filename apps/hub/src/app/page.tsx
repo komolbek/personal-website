@@ -8,6 +8,8 @@ import { DollarSign, FolderKanban, TrendingUp, AlertTriangle, Activity } from 'l
 import Link from 'next/link';
 import { RevenueChart } from '@/components/charts/RevenueChart';
 import { ProjectPipelineChart } from '@/components/charts/ProjectPipelineChart';
+import { getServerT } from '@/lib/i18n/server';
+import type { TFunction } from '@/lib/i18n/translate';
 
 function getMonthlyData(payments: { type: string; amount: number; currency: string; date: Date }[]) {
   const months: Record<string, { income: number; expenses: number }> = {};
@@ -33,16 +35,14 @@ function getMonthlyData(payments: { type: string; amount: number; currency: stri
   return Object.entries(months).map(([month, data]) => ({ month, ...data }));
 }
 
-function getProjectPipeline(projects: { status: string; totalPrice: number | null }[]) {
-  const statusLabels: Record<string, string> = {
-    LEAD: 'Lead',
-    PROPOSAL: 'Proposal',
-    NEGOTIATING: 'Negotiating',
-    IN_PROGRESS: 'In Progress',
-    FROZEN: 'Frozen',
-    DELIVERED: 'Delivered',
-    PAID: 'Paid',
-  };
+function getProjectPipeline(
+  projects: { status: string; totalPrice: number | null }[],
+  t: TFunction,
+) {
+  const statusKeys = ['LEAD', 'PROPOSAL', 'NEGOTIATING', 'IN_PROGRESS', 'FROZEN', 'DELIVERED', 'PAID'];
+  const statusLabels: Record<string, string> = Object.fromEntries(
+    statusKeys.map((k) => [k, t(`enum.${k}`)]),
+  );
 
   const pipeline: Record<string, { count: number; value: number }> = {};
   projects.forEach((p) => {
@@ -62,6 +62,8 @@ function getProjectPipeline(projects: { status: string; totalPrice: number | nul
 export default async function DashboardPage() {
   const session = await getSession();
   if (!session) redirect('/login');
+
+  const t = getServerT();
 
   const [
     incomeUSD,
@@ -169,20 +171,20 @@ export default async function DashboardPage() {
   const alertCount = upcomingDeadlines.length + overdueClients.length + pendingFollowUps.length;
 
   const monthlyData = getMonthlyData(recentPayments);
-  const pipelineData = getProjectPipeline(allProjects);
+  const pipelineData = getProjectPipeline(allProjects, t);
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">Welcome back, {session.name}</p>
+        <h1 className="text-2xl font-bold">{t('dashboard.title')}</h1>
+        <p className="text-muted-foreground">{t('dashboard.welcome')}, {session.name}</p>
       </div>
 
       {/* Financial Summary */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Earned</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('dashboard.totalEarned')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -195,7 +197,7 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Outstanding</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('dashboard.outstanding')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -205,7 +207,7 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Active Projects</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('dashboard.activeProjects')}</CardTitle>
             <FolderKanban className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -215,7 +217,7 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Alerts</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('dashboard.alerts')}</CardTitle>
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -230,7 +232,7 @@ export default async function DashboardPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Revenue (Last 6 Months)</CardTitle>
+            <CardTitle>{t('dashboard.revenue6mo')}</CardTitle>
           </CardHeader>
           <CardContent>
             <RevenueChart data={monthlyData} />
@@ -239,7 +241,7 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Project Pipeline</CardTitle>
+            <CardTitle>{t('dashboard.projectPipeline')}</CardTitle>
           </CardHeader>
           <CardContent>
             <ProjectPipelineChart data={pipelineData} />
@@ -252,13 +254,13 @@ export default async function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              Active Projects
-              <Link href="/projects" className="text-sm font-normal text-primary hover:underline">View all</Link>
+              {t('dashboard.activeProjects')}
+              <Link href="/projects" className="text-sm font-normal text-primary hover:underline">{t('common.viewAll')}</Link>
             </CardTitle>
           </CardHeader>
           <CardContent>
             {activeProjects.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No active projects</p>
+              <p className="text-sm text-muted-foreground">{t('dashboard.noActiveProjects')}</p>
             ) : (
               <div className="space-y-4">
                 {activeProjects.map((project) => {
@@ -283,9 +285,9 @@ export default async function DashboardPage() {
                         {project.deadline && (
                           <span className={isUrgent ? 'text-red-600 font-medium' : ''}>
                             {days !== null && days >= 0
-                              ? `${days} days left`
+                              ? t('dashboard.daysLeft', { days })
                               : days !== null
-                                ? `${Math.abs(days)} days overdue`
+                                ? t('dashboard.daysOverdue', { days: Math.abs(days) })
                                 : ''}
                           </span>
                         )}
@@ -302,13 +304,13 @@ export default async function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              Product Metrics
-              <Link href="/products" className="text-sm font-normal text-primary hover:underline">View all</Link>
+              {t('dashboard.productMetrics')}
+              <Link href="/products" className="text-sm font-normal text-primary hover:underline">{t('common.viewAll')}</Link>
             </CardTitle>
           </CardHeader>
           <CardContent>
             {products.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No active products</p>
+              <p className="text-sm text-muted-foreground">{t('dashboard.noActiveProducts')}</p>
             ) : (
               <div className="space-y-4">
                 {products.map((product) => {
@@ -326,19 +328,19 @@ export default async function DashboardPage() {
                       <div className="grid grid-cols-4 gap-2 text-center">
                         <div>
                           <div className="text-lg font-semibold">{leadsCount}</div>
-                          <div className="text-xs text-muted-foreground">Leads</div>
+                          <div className="text-xs text-muted-foreground">{t('dashboard.metric.leads')}</div>
                         </div>
                         <div>
                           <div className="text-lg font-semibold">{clientsCount}</div>
-                          <div className="text-xs text-muted-foreground">Clients</div>
+                          <div className="text-xs text-muted-foreground">{t('dashboard.metric.clients')}</div>
                         </div>
                         <div>
                           <div className="text-lg font-semibold">{convRate}%</div>
-                          <div className="text-xs text-muted-foreground">Conv.</div>
+                          <div className="text-xs text-muted-foreground">{t('dashboard.metric.conversion')}</div>
                         </div>
                         <div>
                           <div className="text-lg font-semibold">{formatCurrency(mrr)}</div>
-                          <div className="text-xs text-muted-foreground">MRR</div>
+                          <div className="text-xs text-muted-foreground">{t('dashboard.metric.mrr')}</div>
                         </div>
                       </div>
                     </div>
@@ -354,7 +356,7 @@ export default async function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Activity className="h-4 w-4" /> Recent Activity
+                <Activity className="h-4 w-4" /> {t('dashboard.recentActivity')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -386,7 +388,7 @@ export default async function DashboardPage() {
         {alertCount > 0 && (
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Alerts</CardTitle>
+              <CardTitle>{t('dashboard.alerts')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -394,7 +396,7 @@ export default async function DashboardPage() {
                   <div key={p.id} className="flex items-center gap-3 text-sm p-2 rounded bg-amber-50 text-amber-800">
                     <AlertTriangle className="h-4 w-4 flex-shrink-0" />
                     <span>
-                      <strong>{p.name}</strong> deadline in {daysUntil(p.deadline)} days
+                      {t('dashboard.alert.deadlineIn', { name: p.name, days: daysUntil(p.deadline) ?? 0 })}
                     </span>
                   </div>
                 ))}
@@ -402,7 +404,7 @@ export default async function DashboardPage() {
                   <div key={c.id} className="flex items-center gap-3 text-sm p-2 rounded bg-red-50 text-red-800">
                     <DollarSign className="h-4 w-4 flex-shrink-0" />
                     <span>
-                      <strong>{c.name}</strong> ({c.product.name}) payment overdue
+                      {t('dashboard.alert.paymentOverdue', { name: c.name, product: c.product.name })}
                     </span>
                   </div>
                 ))}
@@ -410,7 +412,7 @@ export default async function DashboardPage() {
                   <div key={l.id} className="flex items-center gap-3 text-sm p-2 rounded bg-blue-50 text-blue-800">
                     <FolderKanban className="h-4 w-4 flex-shrink-0" />
                     <span>
-                      Follow up with <strong>{l.name}</strong> ({l.product.name})
+                      {t('dashboard.alert.followUp', { name: l.name, product: l.product.name })}
                     </span>
                   </div>
                 ))}

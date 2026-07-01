@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { Package, Users, UserCheck } from 'lucide-react';
 import { ProductFormDialog } from './ProductFormDialog';
+import { getServerT } from '@/lib/i18n/server';
 
 async function createProduct(formData: FormData) {
   'use server';
@@ -42,6 +43,8 @@ export default async function ProductsPage() {
   const session = await getSession();
   if (!session) redirect('/login');
 
+  const t = getServerT();
+
   const products = await prisma.hubProduct.findMany({
     include: {
       _count: { select: { leads: true, clients: true } },
@@ -53,8 +56,8 @@ export default async function ProductsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Products</h1>
-          <p className="text-muted-foreground">In-house products and services</p>
+          <h1 className="text-2xl font-bold">{t('products.title')}</h1>
+          <p className="text-muted-foreground">{t('products.subtitle')}</p>
         </div>
         {session.role === 'ADMIN' && (
           <ProductFormDialog action={createProduct} />
@@ -65,8 +68,8 @@ export default async function ProductsPage() {
       {products.length === 0 ? (
         <EmptyState
           icon={<Package className="h-12 w-12" />}
-          title="No products yet"
-          description="Add your first product to start tracking leads and clients."
+          title={t('products.empty.title')}
+          description={t('products.empty.description')}
         />
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -86,11 +89,11 @@ export default async function ProductsPage() {
                   <div className="flex items-center gap-6 text-sm">
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-muted-foreground" />
-                      <span>{product._count.leads} leads</span>
+                      <span>{t('products.leadsCount', { count: product._count.leads })}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <UserCheck className="h-4 w-4 text-muted-foreground" />
-                      <span>{product._count.clients} clients</span>
+                      <span>{t('products.clientsCount', { count: product._count.clients })}</span>
                     </div>
                   </div>
                 </CardContent>

@@ -3,7 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { getSession } from '@/lib/auth';
-import { redirect } from 'next/navigation';
+import { I18nProvider } from '@/components/i18n/I18nProvider';
+import { getLocale, getDictionary } from '@/lib/i18n/server';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,10 +14,15 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = getLocale();
+  const dict = getDictionary(locale);
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={inter.className}>
-        <AppShell>{children}</AppShell>
+        <I18nProvider locale={locale} dict={dict}>
+          <AppShell>{children}</AppShell>
+        </I18nProvider>
       </body>
     </html>
   );

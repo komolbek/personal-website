@@ -5,6 +5,7 @@ import { useState, useTransition } from 'react';
 import { Card } from '@/components/ui/card';
 import { StatusBadge } from '@/components/shared/StatusBadge';
 import { formatDate } from '@/lib/utils';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
 type Lead = {
   id: string;
@@ -31,6 +32,7 @@ export function KanbanBoard({
   columns: Column[];
   slug: string;
 }) {
+  const { t } = useI18n();
   const [columns, setColumns] = useState(initialColumns);
   const [isPending, startTransition] = useTransition();
 
@@ -120,7 +122,7 @@ export function KanbanBoard({
                             </div>
                             {lead.followUp && (
                               <div className="text-xs mt-2 text-amber-600">
-                                Follow-up: {formatDate(lead.followUp)}
+                                {t('kanban.followUp', { date: formatDate(lead.followUp) })}
                               </div>
                             )}
                           </Card>
@@ -136,7 +138,7 @@ export function KanbanBoard({
         ))}
       </div>
       {isPending && (
-        <div className="text-xs text-muted-foreground text-center">Updating...</div>
+        <div className="text-xs text-muted-foreground text-center">{t('kanban.updating')}</div>
       )}
     </DragDropContext>
   );

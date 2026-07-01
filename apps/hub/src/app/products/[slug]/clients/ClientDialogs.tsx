@@ -10,6 +10,7 @@ import { Select } from '@/components/ui/select';
 import { PhoneInput } from '@/components/ui/phone-input';
 import { AmountInput } from '@/components/ui/amount-input';
 import { Plus } from 'lucide-react';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
 export function AddClientDialog({
   productId,
@@ -20,14 +21,15 @@ export function AddClientDialog({
   slug: string;
   action: (formData: FormData) => Promise<void>;
 }) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <DialogTriggerButton onClick={() => setOpen(true)}>
-        <Plus className="h-4 w-4 mr-2" /> Add Client
+        <Plus className="h-4 w-4 mr-2" /> {t('clients.add')}
       </DialogTriggerButton>
-      <Dialog open={open} onOpenChange={setOpen} title="Add Client">
+      <Dialog open={open} onOpenChange={setOpen} title={t('clients.add')}>
         <form
           action={async (formData) => {
             await action(formData);
@@ -38,27 +40,27 @@ export function AddClientDialog({
           <input type="hidden" name="productId" value={productId} />
           <input type="hidden" name="slug" value={slug} />
           <div className="space-y-2">
-            <Label>Business Name</Label>
-            <Input name="name" placeholder="e.g., Seven Salon" required />
+            <Label>{t('clients.businessName')}</Label>
+            <Input name="name" placeholder={t('clients.businessNamePlaceholder')} required />
           </div>
           <div className="space-y-2">
-            <Label>Contact Person</Label>
-            <Input name="contactPerson" placeholder="Name" />
+            <Label>{t('clients.contactPerson')}</Label>
+            <Input name="contactPerson" placeholder={t('clients.contactPersonPlaceholder')} />
           </div>
           <div className="space-y-2">
-            <Label>Phone</Label>
+            <Label>{t('common.phone')}</Label>
             <PhoneInput name="phone" />
           </div>
           <div className="space-y-2">
-            <Label>Plan</Label>
-            <Input name="plan" placeholder="e.g., Basic, Pro" />
+            <Label>{t('clients.plan')}</Label>
+            <Input name="plan" placeholder={t('clients.planPlaceholder')} />
           </div>
           <div className="space-y-2">
-            <Label>Monthly Fee</Label>
+            <Label>{t('clients.monthlyFee')}</Label>
             <AmountInput name="monthlyFee" placeholder="0" />
           </div>
           <div className="space-y-2">
-            <Label>Currency</Label>
+            <Label>{t('common.currency')}</Label>
             <Select
               name="currency"
               defaultValue="UZS"
@@ -69,11 +71,11 @@ export function AddClientDialog({
             />
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label>Notes</Label>
+            <Label>{t('common.notes')}</Label>
             <Textarea name="notes" rows={2} />
           </div>
           <div className="sm:col-span-2">
-            <Button type="submit" size="sm">Add Client</Button>
+            <Button type="submit" size="sm">{t('clients.add')}</Button>
           </div>
         </form>
       </Dialog>

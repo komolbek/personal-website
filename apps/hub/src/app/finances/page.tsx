@@ -10,6 +10,7 @@ import { DollarSign, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-reac
 import { RevenueChart } from '@/components/charts/RevenueChart';
 import { CategoryPieChart } from '@/components/charts/CategoryPieChart';
 import { TransactionDialog } from './TransactionDialog';
+import { getServerT } from '@/lib/i18n/server';
 
 async function addPayment(formData: FormData) {
   'use server';
@@ -107,11 +108,13 @@ export default async function FinancesPage() {
   const session = await getSession();
   if (!session) redirect('/login');
 
+  const t = getServerT();
+
   if (session.role === 'VIEWER') {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Finances</h1>
-        <p className="text-muted-foreground">You do not have permission to view financial data.</p>
+        <h1 className="text-2xl font-bold">{t('finances.title')}</h1>
+        <p className="text-muted-foreground">{t('finances.noPermission')}</p>
       </div>
     );
   }
@@ -150,8 +153,8 @@ export default async function FinancesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Finances</h1>
-          <p className="text-muted-foreground">Income, expenses, and financial overview</p>
+          <h1 className="text-2xl font-bold">{t('finances.title')}</h1>
+          <p className="text-muted-foreground">{t('finances.subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           {session.role === 'ADMIN' && (
@@ -159,7 +162,7 @@ export default async function FinancesPage() {
               <TransactionDialog action={addPayment} projects={projects} products={products} />
               <form action={runOverdueCheck}>
                 <Button type="submit" variant="outline" size="sm">
-                  <AlertTriangle className="h-4 w-4 mr-2" /> Check Overdue
+                  <AlertTriangle className="h-4 w-4 mr-2" /> {t('finances.checkOverdue')}
                 </Button>
               </form>
             </>
@@ -171,7 +174,7 @@ export default async function FinancesPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Income</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('finances.card.totalIncome')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
@@ -180,7 +183,7 @@ export default async function FinancesPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Expenses</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('finances.card.totalExpenses')}</CardTitle>
             <TrendingDown className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
@@ -189,7 +192,7 @@ export default async function FinancesPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Net Profit</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('finances.card.netProfit')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -200,7 +203,7 @@ export default async function FinancesPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">This Month P&L</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('finances.card.monthPL')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -215,7 +218,7 @@ export default async function FinancesPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Monthly Revenue (Last 12 Months)</CardTitle>
+            <CardTitle>{t('finances.chart.monthlyRevenue')}</CardTitle>
           </CardHeader>
           <CardContent>
             <RevenueChart data={monthlyData} />
@@ -224,7 +227,7 @@ export default async function FinancesPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Expense Breakdown</CardTitle>
+            <CardTitle>{t('finances.chart.expenseBreakdown')}</CardTitle>
           </CardHeader>
           <CardContent>
             <CategoryPieChart data={expenseCategories} />
@@ -236,13 +239,13 @@ export default async function FinancesPage() {
       {payments.length === 0 ? (
         <EmptyState
           icon={<DollarSign className="h-12 w-12" />}
-          title="No transactions yet"
-          description="Record your first income or expense to start tracking finances."
+          title={t('finances.empty.title')}
+          description={t('finances.empty.description')}
         />
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>All Transactions ({payments.length})</CardTitle>
+            <CardTitle>{t('finances.allTransactions', { count: payments.length })}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="border rounded-lg overflow-hidden">
@@ -250,11 +253,11 @@ export default async function FinancesPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b bg-muted/50">
-                      <th className="text-left p-3 font-medium">Date</th>
-                      <th className="text-left p-3 font-medium">Description</th>
-                      <th className="text-left p-3 font-medium">Category</th>
-                      <th className="text-left p-3 font-medium">Linked To</th>
-                      <th className="text-right p-3 font-medium">Amount</th>
+                      <th className="text-left p-3 font-medium">{t('common.date')}</th>
+                      <th className="text-left p-3 font-medium">{t('common.description')}</th>
+                      <th className="text-left p-3 font-medium">{t('common.category')}</th>
+                      <th className="text-left p-3 font-medium">{t('finances.table.linkedTo')}</th>
+                      <th className="text-right p-3 font-medium">{t('common.amount')}</th>
                       {session.role === 'ADMIN' && <th className="p-3 w-16"></th>}
                     </tr>
                   </thead>
@@ -265,11 +268,11 @@ export default async function FinancesPage() {
                         <td className="p-3">
                           {payment.description}
                           {payment.recurring && (
-                            <span className="ml-1 text-xs text-muted-foreground">(recurring)</span>
+                            <span className="ml-1 text-xs text-muted-foreground">{t('finances.recurring')}</span>
                           )}
                         </td>
                         <td className="p-3">
-                          <span className="text-xs">{payment.category.replace(/_/g, ' ')}</span>
+                          <span className="text-xs">{t(`enum.${payment.category}`)}</span>
                         </td>
                         <td className="p-3 text-xs text-muted-foreground">
                           {payment.project?.name || payment.product?.name || payment.client?.name || '—'}
@@ -282,7 +285,7 @@ export default async function FinancesPage() {
                             <form action={deletePayment}>
                               <input type="hidden" name="id" value={payment.id} />
                               <Button type="submit" variant="ghost" size="sm" className="text-destructive h-7 text-xs">
-                                Del
+                                {t('finances.delete')}
                               </Button>
                             </form>
                           </td>

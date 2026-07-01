@@ -1,4 +1,7 @@
+'use client';
+
 import { cn, getStatusColor } from '@/lib/utils';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
 interface StatusBadgeProps {
   status: string;
@@ -6,7 +9,13 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
-  const label = status.replace(/_/g, ' ');
+  const { t } = useI18n();
+  // enum.* keys map raw enum values to localized labels; fall back to a
+  // readable form if a value isn't in the dictionary.
+  const key = `enum.${status}`;
+  const translated = t(key);
+  const label = translated === key ? status.replace(/_/g, ' ') : translated;
+
   return (
     <span
       className={cn(

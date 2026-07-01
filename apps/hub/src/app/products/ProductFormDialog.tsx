@@ -8,16 +8,18 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { Plus } from 'lucide-react';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
 export function ProductFormDialog({ action }: { action: (formData: FormData) => Promise<void> }) {
   const [open, setOpen] = useState(false);
+  const { t } = useI18n();
 
   return (
     <>
       <DialogTriggerButton onClick={() => setOpen(true)}>
-        <Plus className="h-4 w-4 mr-2" /> Add Product
+        <Plus className="h-4 w-4 mr-2" /> {t('products.add')}
       </DialogTriggerButton>
-      <Dialog open={open} onOpenChange={setOpen} title="Add Product">
+      <Dialog open={open} onOpenChange={setOpen} title={t('products.add')}>
         <form
           action={async (formData) => {
             await action(formData);
@@ -26,32 +28,32 @@ export function ProductFormDialog({ action }: { action: (formData: FormData) => 
           className="grid gap-4 sm:grid-cols-2"
         >
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input id="name" name="name" placeholder="e.g., Wabi" required />
+            <Label htmlFor="name">{t('common.name')}</Label>
+            <Input id="name" name="name" placeholder={t('products.namePlaceholder')} required />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
+            <Label htmlFor="status">{t('common.status')}</Label>
             <Select
               id="status"
               name="status"
               defaultValue="ACTIVE"
               options={[
-                { value: 'ACTIVE', label: 'Active' },
-                { value: 'PARKED', label: 'Parked' },
-                { value: 'ARCHIVED', label: 'Archived' },
+                { value: 'ACTIVE', label: t('enum.ACTIVE') },
+                { value: 'PARKED', label: t('enum.PARKED') },
+                { value: 'ARCHIVED', label: t('enum.ARCHIVED') },
               ]}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="url">URL</Label>
-            <Input id="url" name="url" placeholder="https://..." />
+            <Label htmlFor="url">{t('products.url')}</Label>
+            <Input id="url" name="url" placeholder={t('products.urlPlaceholder')} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea id="description" name="description" placeholder="Brief description..." rows={1} />
+            <Label htmlFor="description">{t('common.description')}</Label>
+            <Textarea id="description" name="description" placeholder={t('products.descriptionPlaceholder')} rows={1} />
           </div>
           <div className="sm:col-span-2">
-            <Button type="submit" size="sm">Add Product</Button>
+            <Button type="submit" size="sm">{t('products.add')}</Button>
           </div>
         </form>
       </Dialog>

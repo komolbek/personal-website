@@ -12,6 +12,7 @@ import { formatCurrency, formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { ArrowLeft, Users, UserCheck, DollarSign } from 'lucide-react';
+import { getServerT } from '@/lib/i18n/server';
 
 async function updateProduct(formData: FormData) {
   'use server';
@@ -47,6 +48,8 @@ async function deleteProduct(formData: FormData) {
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
   const session = await getSession();
   if (!session) redirect('/login');
+
+  const t = getServerT();
 
   const product = await prisma.hubProduct.findUnique({
     where: { slug: params.slug },
@@ -93,7 +96,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Leads</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('products.metric.leads')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -102,17 +105,17 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Clients</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('products.metric.clients')}</CardTitle>
             <UserCheck className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{product._count.clients}</div>
-            <p className="text-xs text-muted-foreground">MRR: {formatCurrency(activeMRR)}</p>
+            <p className="text-xs text-muted-foreground">{t('products.metric.mrr', { amount: formatCurrency(activeMRR) })}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('products.metric.totalRevenue')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -126,41 +129,41 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
         {session.role === 'ADMIN' && (
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Product Details</CardTitle>
+              <CardTitle>{t('products.details')}</CardTitle>
             </CardHeader>
             <CardContent>
               <form action={updateProduct} className="grid gap-4 sm:grid-cols-2">
                 <input type="hidden" name="id" value={product.id} />
                 <input type="hidden" name="slug" value={product.slug} />
                 <div className="space-y-2">
-                  <Label>Name</Label>
+                  <Label>{t('common.name')}</Label>
                   <Input name="name" defaultValue={product.name} required />
                 </div>
                 <div className="space-y-2">
-                  <Label>Status</Label>
+                  <Label>{t('common.status')}</Label>
                   <Select
                     name="status"
                     defaultValue={product.status}
                     options={[
-                      { value: 'ACTIVE', label: 'Active' },
-                      { value: 'PARKED', label: 'Parked' },
-                      { value: 'ARCHIVED', label: 'Archived' },
+                      { value: 'ACTIVE', label: t('enum.ACTIVE') },
+                      { value: 'PARKED', label: t('enum.PARKED') },
+                      { value: 'ARCHIVED', label: t('enum.ARCHIVED') },
                     ]}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>URL</Label>
-                  <Input name="url" defaultValue={product.url || ''} placeholder="https://..." />
+                  <Label>{t('products.url')}</Label>
+                  <Input name="url" defaultValue={product.url || ''} placeholder={t('products.urlPlaceholder')} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Description</Label>
+                  <Label>{t('common.description')}</Label>
                   <Textarea name="description" defaultValue={product.description || ''} rows={1} />
                 </div>
                 <div className="sm:col-span-2 flex items-center gap-2">
-                  <Button type="submit" size="sm">Save Changes</Button>
+                  <Button type="submit" size="sm">{t('common.saveChanges')}</Button>
                   <form action={deleteProduct}>
                     <input type="hidden" name="id" value={product.id} />
-                    <Button type="submit" variant="destructive" size="sm">Delete Product</Button>
+                    <Button type="submit" variant="destructive" size="sm">{t('products.deleteProduct')}</Button>
                   </form>
                 </div>
               </form>
@@ -171,17 +174,17 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
         {/* Quick Links */}
         <Card>
           <CardHeader>
-            <CardTitle>Manage</CardTitle>
+            <CardTitle>{t('products.manage')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <Link href={`/products/${product.slug}/leads`} className="block">
               <Button variant="outline" className="w-full justify-start">
-                <Users className="h-4 w-4 mr-2" /> Leads ({product._count.leads})
+                <Users className="h-4 w-4 mr-2" /> {t('products.manageLeads', { count: product._count.leads })}
               </Button>
             </Link>
             <Link href={`/products/${product.slug}/clients`} className="block">
               <Button variant="outline" className="w-full justify-start">
-                <UserCheck className="h-4 w-4 mr-2" /> Clients ({product._count.clients})
+                <UserCheck className="h-4 w-4 mr-2" /> {t('products.manageClients', { count: product._count.clients })}
               </Button>
             </Link>
           </CardContent>
@@ -192,9 +195,9 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
       {product.clients.length > 0 && (
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Recent Clients</CardTitle>
+            <CardTitle>{t('products.recentClients')}</CardTitle>
             <Link href={`/products/${product.slug}/clients`}>
-              <Button variant="outline" size="sm">View All</Button>
+              <Button variant="outline" size="sm">{t('common.viewAll')}</Button>
             </Link>
           </CardHeader>
           <CardContent>
@@ -202,10 +205,10 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b bg-muted/50">
-                    <th className="text-left p-3 font-medium">Name</th>
-                    <th className="text-left p-3 font-medium">Plan</th>
-                    <th className="text-left p-3 font-medium">Status</th>
-                    <th className="text-left p-3 font-medium">Last Payment</th>
+                    <th className="text-left p-3 font-medium">{t('common.name')}</th>
+                    <th className="text-left p-3 font-medium">{t('products.table.plan')}</th>
+                    <th className="text-left p-3 font-medium">{t('common.status')}</th>
+                    <th className="text-left p-3 font-medium">{t('products.table.lastPayment')}</th>
                   </tr>
                 </thead>
                 <tbody>
