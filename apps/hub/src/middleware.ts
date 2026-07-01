@@ -5,7 +5,7 @@ const SECRET = new TextEncoder().encode(
   process.env.HUB_ADMIN_SECRET || 'fallback-hub-secret'
 );
 
-const publicPaths = ['/login', '/api/auth/login', '/signup', '/api/auth/signup'];
+const publicPaths = ['/login', '/api/auth/login'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

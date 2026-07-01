@@ -1,6 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
-import { randomBytes } from 'crypto';
 import bcrypt from 'bcryptjs';
 import type { HubUserRole } from '@necto/db';
 
@@ -15,10 +14,6 @@ export interface HubSession {
   email: string;
   name: string;
   role: HubUserRole;
-}
-
-export function generateInviteToken(): string {
-  return randomBytes(32).toString('hex');
 }
 
 export async function hashPassword(password: string): Promise<string> {
