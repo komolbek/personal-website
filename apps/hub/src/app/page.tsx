@@ -3,29 +3,30 @@ import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { StatusBadge } from '@/components/shared/StatusBadge';
-import { formatCurrency, formatDate, daysUntil } from '@/lib/utils';
+import { formatCurrency, formatDate, daysUntil, intlLocale } from '@/lib/utils';
 import { DollarSign, FolderKanban, TrendingUp, AlertTriangle, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { RevenueChart } from '@/components/charts/RevenueChart';
 import { ProjectPipelineChart } from '@/components/charts/ProjectPipelineChart';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerT, getLocale } from '@/lib/i18n/server';
 import type { TFunction } from '@/lib/i18n/translate';
+import type { Locale } from '@/lib/i18n/config';
 
-function getMonthlyData(payments: { type: string; amount: number; currency: string; date: Date }[]) {
+function getMonthlyData(payments: { type: string; amount: number; currency: string; date: Date }[], locale: Locale) {
   const months: Record<string, { income: number; expenses: number }> = {};
   const now = new Date();
 
   // Last 6 months
   for (let i = 5; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const key = d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+    const key = d.toLocaleDateString(intlLocale(locale), { month: 'short', year: '2-digit' });
     months[key] = { income: 0, expenses: 0 };
   }
 
   // Only include USD payments in the chart to avoid mixing currencies
   payments.filter((p) => p.currency === 'USD').forEach((p) => {
     const d = new Date(p.date);
-    const key = d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+    const key = d.toLocaleDateString(intlLocale(locale), { month: 'short', year: '2-digit' });
     if (months[key]) {
       if (p.type === 'INCOME') months[key].income += p.amount;
       else months[key].expenses += p.amount;
@@ -64,6 +65,7 @@ export default async function DashboardPage() {
   if (!session) redirect('/login');
 
   const t = getServerT();
+  const locale = getLocale();
 
   const [
     incomeUSD,
@@ -170,7 +172,7 @@ export default async function DashboardPage() {
   const totalOutstanding = outstandingMilestones + outstandingProjects;
   const alertCount = upcomingDeadlines.length + overdueClients.length + pendingFollowUps.length;
 
-  const monthlyData = getMonthlyData(recentPayments);
+  const monthlyData = getMonthlyData(recentPayments, locale);
   const pipelineData = getProjectPipeline(allProjects, t);
 
   return (
@@ -375,7 +377,7 @@ export default async function DashboardPage() {
                       {activity.details && (
                         <p className="text-xs text-muted-foreground">{activity.details}</p>
                       )}
-                      <p className="text-xs text-muted-foreground">{formatDate(activity.createdAt)}</p>
+                      <p className="text-xs text-muted-foreground">{formatDate(activity.createdAt, locale)}</p>
                     </div>
                   </div>
                 ))}

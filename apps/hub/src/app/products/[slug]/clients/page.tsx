@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { ArrowLeft, UserCheck, DollarSign } from 'lucide-react';
 import { AddClientDialog } from './ClientDialogs';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerT, getLocale } from '@/lib/i18n/server';
 
 async function createClient(formData: FormData) {
   'use server';
@@ -78,6 +78,7 @@ export default async function ClientsPage({ params }: { params: { slug: string }
   const session = await getSession();
   if (!session) redirect('/login');
   const t = getServerT();
+  const locale = getLocale();
 
   const product = await prisma.hubProduct.findUnique({
     where: { slug: params.slug },
@@ -149,7 +150,7 @@ export default async function ClientsPage({ params }: { params: { slug: string }
                     <td className="p-3">{client.plan || '—'}</td>
                     <td className="p-3">{client.monthlyFee ? formatCurrency(client.monthlyFee, client.currency) : '—'}</td>
                     <td className="p-3"><StatusBadge status={client.paymentStatus} /></td>
-                    <td className="p-3">{formatDate(client.lastPayment)}</td>
+                    <td className="p-3">{formatDate(client.lastPayment, locale)}</td>
                     <td className="p-3">
                       {session.role !== 'VIEWER' && (
                         <form action={recordPayment} className="flex items-center gap-1">

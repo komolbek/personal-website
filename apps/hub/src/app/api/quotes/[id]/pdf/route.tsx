@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { renderToBuffer } from '@react-pdf/renderer';
 import { QuotePDF } from '@/components/pdf/QuotePDF';
+import { getServerT, getLocale } from '@/lib/i18n/server';
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const session = await getSession();
@@ -20,9 +21,13 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   }
 
   const items = (quote.items as any[]) || [];
+  const locale = getLocale();
+  const t = getServerT(locale);
 
   const buffer = await renderToBuffer(
     <QuotePDF
+      t={t}
+      locale={locale}
       quote={{
         clientName: quote.clientName,
         clientPhone: quote.clientPhone,

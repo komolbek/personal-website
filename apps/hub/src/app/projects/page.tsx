@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { FolderKanban } from 'lucide-react';
 import { logActivity } from '@/lib/activity';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerT, getLocale } from '@/lib/i18n/server';
 import { ProjectFormDialog } from './ProjectFormDialog';
 
 async function createProject(formData: FormData) {
@@ -55,6 +55,7 @@ export default async function ProjectsPage() {
   const session = await getSession();
   if (!session) redirect('/login');
   const t = getServerT();
+  const locale = getLocale();
 
   const projects = await prisma.hubProject.findMany({
     include: {
@@ -123,7 +124,7 @@ export default async function ProjectsPage() {
                       <td className="p-3">
                         {project.deadline ? (
                           <span className={days !== null && days < 7 && days >= 0 ? 'text-red-600 font-medium' : ''}>
-                            {formatDate(project.deadline)}
+                            {formatDate(project.deadline, locale)}
                             {days !== null && days >= 0 && ` (${days}d)`}
                           </span>
                         ) : (

@@ -1,4 +1,7 @@
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import type { Locale } from '@/lib/i18n/config';
+import { intlLocale } from '@/lib/utils';
+import type { TFunction } from '@/lib/i18n/translate';
 
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 11, fontFamily: 'Helvetica' },
@@ -31,9 +34,9 @@ function formatCurrency(amount: number, currency: string = 'USD') {
   return `$${amount.toLocaleString()}`;
 }
 
-function formatDate(date: Date | string | null) {
+function formatDate(date: Date | string | null, locale: Locale) {
   if (!date) return '-';
-  return new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  return new Date(date).toLocaleDateString(intlLocale(locale), { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
 type QuoteData = {
@@ -51,7 +54,7 @@ type QuoteData = {
   createdAt: Date;
 };
 
-export function QuotePDF({ quote }: { quote: QuoteData }) {
+export function QuotePDF({ quote, t, locale }: { quote: QuoteData; t: TFunction; locale: Locale }) {
   const rushAmount = quote.rushFeeApplied ? quote.basePrice * ((quote.rushFeePercent || 0) / 100) : 0;
 
   return (
@@ -59,39 +62,39 @@ export function QuotePDF({ quote }: { quote: QuoteData }) {
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={styles.companyName}>Necto Automations</Text>
-          <Text style={styles.title}>Project Quote</Text>
-          <Text style={styles.subtitle}>Generated {formatDate(quote.createdAt)}</Text>
+          <Text style={styles.title}>{t('pdf.quote.title')}</Text>
+          <Text style={styles.subtitle}>{t('pdf.generated', { date: formatDate(quote.createdAt, locale) })}</Text>
         </View>
 
         <View style={{ marginBottom: 20 }}>
-          <Text style={styles.sectionTitle}>Client Information</Text>
+          <Text style={styles.sectionTitle}>{t('pdf.quote.clientInfo')}</Text>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Client:</Text>
+            <Text style={styles.infoLabel}>{t('pdf.quote.client')}:</Text>
             <Text style={styles.infoValue}>{quote.clientName}</Text>
           </View>
           {quote.clientPhone && (
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Phone:</Text>
+              <Text style={styles.infoLabel}>{t('pdf.quote.phone')}:</Text>
               <Text style={styles.infoValue}>{quote.clientPhone}</Text>
             </View>
           )}
           {quote.projectName && (
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Project:</Text>
+              <Text style={styles.infoLabel}>{t('pdf.quote.project')}:</Text>
               <Text style={styles.infoValue}>{quote.projectName}</Text>
             </View>
           )}
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Valid Until:</Text>
-            <Text style={styles.infoValue}>{formatDate(quote.validUntil)}</Text>
+            <Text style={styles.infoLabel}>{t('pdf.quote.validUntil')}:</Text>
+            <Text style={styles.infoValue}>{formatDate(quote.validUntil, locale)}</Text>
           </View>
         </View>
 
-        <Text style={styles.sectionTitle}>Itemized Quote</Text>
+        <Text style={styles.sectionTitle}>{t('pdf.quote.itemized')}</Text>
         <View style={styles.table}>
           <View style={styles.tableHeader}>
-            <Text style={[styles.headerText, styles.colFeature]}>Feature</Text>
-            <Text style={[styles.headerText, styles.colPrice]}>Price</Text>
+            <Text style={[styles.headerText, styles.colFeature]}>{t('pdf.quote.feature')}</Text>
+            <Text style={[styles.headerText, styles.colPrice]}>{t('pdf.quote.price')}</Text>
           </View>
           {quote.items.map((item, i) => (
             <View key={i} style={styles.tableRow}>
@@ -104,20 +107,20 @@ export function QuotePDF({ quote }: { quote: QuoteData }) {
           ))}
 
           <View style={styles.feeRow}>
-            <Text style={styles.feeLabel}>Subtotal</Text>
+            <Text style={styles.feeLabel}>{t('pdf.quote.subtotal')}</Text>
             <Text style={styles.feeValue}>{formatCurrency(quote.basePrice, quote.currency)}</Text>
           </View>
 
           {quote.rushFeeApplied && (
             <View style={styles.feeRow}>
-              <Text style={[styles.feeLabel, { color: '#d97706' }]}>Rush Fee ({quote.rushFeePercent}%)</Text>
+              <Text style={[styles.feeLabel, { color: '#d97706' }]}>{t('pdf.quote.rushFee')} ({quote.rushFeePercent}%)</Text>
               <Text style={[styles.feeValue, { color: '#d97706' }]}>+{formatCurrency(rushAmount, quote.currency)}</Text>
             </View>
           )}
 
           {quote.discountPercent && quote.discountPercent > 0 && (
             <View style={styles.feeRow}>
-              <Text style={[styles.feeLabel, { color: '#16a34a' }]}>Discount ({quote.discountPercent}%)</Text>
+              <Text style={[styles.feeLabel, { color: '#16a34a' }]}>{t('pdf.quote.discount')} ({quote.discountPercent}%)</Text>
               <Text style={[styles.feeValue, { color: '#16a34a' }]}>
                 -{formatCurrency(quote.totalPrice * (quote.discountPercent / (100 - quote.discountPercent)), quote.currency)}
               </Text>
@@ -125,13 +128,13 @@ export function QuotePDF({ quote }: { quote: QuoteData }) {
           )}
 
           <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Total</Text>
+            <Text style={styles.totalLabel}>{t('pdf.quote.total')}</Text>
             <Text style={styles.totalValue}>{formatCurrency(quote.totalPrice, quote.currency)}</Text>
           </View>
         </View>
 
         <View style={styles.footer}>
-          <Text>Necto Automations LLC | necto.uz | This quote is valid until {formatDate(quote.validUntil)}</Text>
+          <Text>{t('pdf.quote.footer', { date: formatDate(quote.validUntil, locale) })}</Text>
         </View>
       </Page>
     </Document>

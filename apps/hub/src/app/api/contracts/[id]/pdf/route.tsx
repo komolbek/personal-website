@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { renderToBuffer } from '@react-pdf/renderer';
 import { ContractPDF } from '@/components/pdf/ContractPDF';
+import { getServerT, getLocale } from '@/lib/i18n/server';
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const session = await getSession();
@@ -19,8 +20,13 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
 
+  const locale = getLocale();
+  const t = getServerT(locale);
+
   const buffer = await renderToBuffer(
     <ContractPDF
+      t={t}
+      locale={locale}
       contract={{
         clientName: contract.clientName,
         clientContact: contract.clientContact,

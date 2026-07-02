@@ -15,7 +15,7 @@ import { AmountInput } from '@/components/ui/amount-input';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { ArrowLeft, DollarSign, Trash2 } from 'lucide-react';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerT, getLocale } from '@/lib/i18n/server';
 
 async function updateClient(formData: FormData) {
   'use server';
@@ -108,6 +108,7 @@ export default async function ClientDetailPage({ params }: { params: { slug: str
   const session = await getSession();
   if (!session) redirect('/login');
   const t = getServerT();
+  const locale = getLocale();
 
   const client = await prisma.hubClient.findUnique({
     where: { id: params.id },
@@ -235,16 +236,16 @@ export default async function ClientDetailPage({ params }: { params: { slug: str
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">{t('clients.table.lastPayment')}</span>
-              <span className="text-sm">{formatDate(client.lastPayment)}</span>
+              <span className="text-sm">{formatDate(client.lastPayment, locale)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">{t('clients.clientSince')}</span>
-              <span className="text-sm">{formatDate(client.startDate)}</span>
+              <span className="text-sm">{formatDate(client.startDate, locale)}</span>
             </div>
             {client.lead && (
               <div className="flex justify-between border-t pt-4">
                 <span className="text-sm text-muted-foreground">{t('clients.convertedFromLead')}</span>
-                <span className="text-sm">{formatDate(client.lead.createdAt)}</span>
+                <span className="text-sm">{formatDate(client.lead.createdAt, locale)}</span>
               </div>
             )}
           </CardContent>
@@ -308,7 +309,7 @@ export default async function ClientDetailPage({ params }: { params: { slug: str
                 <tbody>
                   {client.payments.map((payment) => (
                     <tr key={payment.id} className="border-b">
-                      <td className="p-3">{formatDate(payment.date)}</td>
+                      <td className="p-3">{formatDate(payment.date, locale)}</td>
                       <td className="p-3">{payment.description}</td>
                       <td className="p-3"><StatusBadge status={payment.type} /></td>
                       <td className={`p-3 text-right font-medium ${payment.type === 'INCOME' ? 'text-green-600' : 'text-red-600'}`}>

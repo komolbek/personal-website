@@ -14,7 +14,7 @@ import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { ArrowLeft, Plus, DollarSign, Trash2, FileText, FileCheck, Download } from 'lucide-react';
 import { logActivity } from '@/lib/activity';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerT, getLocale } from '@/lib/i18n/server';
 import { PhoneInput } from '@/components/ui/phone-input';
 import { AmountInput } from '@/components/ui/amount-input';
 import { AddPaymentDialog, AddQuoteDialog, CreateContractDialog } from './ProjectDetailClient';
@@ -251,6 +251,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
   const session = await getSession();
   if (!session) redirect('/login');
   const t = getServerT();
+  const locale = getLocale();
 
   const PROJECT_STATUSES = [
     { value: 'LEAD', label: t('enum.LEAD') },
@@ -479,7 +480,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                 </div>
                 <div>
                   <span className="text-muted-foreground">{t('projects.timeline')}</span>
-                  <p>{formatDate(project.contract.startDate)} — {formatDate(project.contract.deadline)}</p>
+                  <p>{formatDate(project.contract.startDate, locale)} — {formatDate(project.contract.deadline, locale)}</p>
                 </div>
               </div>
               {project.contract.scopeDescription && (
@@ -497,7 +498,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               {project.contract.signedDate && (
                 <div className="text-sm">
                   <span className="text-muted-foreground">{t('projects.signed')}</span>
-                  <p>{formatDate(project.contract.signedDate)}</p>
+                  <p>{formatDate(project.contract.signedDate, locale)}</p>
                 </div>
               )}
               <div className="flex items-center gap-2 pt-2">
@@ -576,8 +577,8 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                       <td className="p-3 font-medium">{quote.clientName}</td>
                       <td className="p-3 font-medium">{formatCurrency(quote.totalPrice, quote.currency)}</td>
                       <td className="p-3"><StatusBadge status={quote.status} /></td>
-                      <td className="p-3">{formatDate(quote.validUntil)}</td>
-                      <td className="p-3">{formatDate(quote.createdAt)}</td>
+                      <td className="p-3">{formatDate(quote.validUntil, locale)}</td>
+                      <td className="p-3">{formatDate(quote.createdAt, locale)}</td>
                       <td className="p-3">
                         <div className="flex items-center gap-2">
                           <a href={`/api/quotes/${quote.id}/pdf`} target="_blank" rel="noopener noreferrer">
@@ -635,7 +636,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                     <tr key={ms.id} className="border-b">
                       <td className="p-3 font-medium">{ms.title}</td>
                       <td className="p-3">{formatCurrency(ms.amount)}</td>
-                      <td className="p-3">{formatDate(ms.dueDate)}</td>
+                      <td className="p-3">{formatDate(ms.dueDate, locale)}</td>
                       <td className="p-3"><StatusBadge status={ms.status} /></td>
                       <td className="p-3">
                         <div className="flex items-center gap-2">
@@ -655,7 +656,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                             </form>
                           )}
                           {ms.status === 'PAID' && (
-                            <span className="text-xs text-muted-foreground">{t('projects.paidOn', { date: formatDate(ms.paidDate) })}</span>
+                            <span className="text-xs text-muted-foreground">{t('projects.paidOn', { date: formatDate(ms.paidDate, locale) })}</span>
                           )}
                           {isEditor && (
                             <form action={deleteMilestone}>
@@ -728,7 +729,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                 <tbody>
                   {project.payments.map((payment) => (
                     <tr key={payment.id} className="border-b">
-                      <td className="p-3">{formatDate(payment.date)}</td>
+                      <td className="p-3">{formatDate(payment.date, locale)}</td>
                       <td className="p-3">{payment.description}</td>
                       <td className="p-3">
                         <StatusBadge status={payment.type} />

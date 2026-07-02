@@ -12,7 +12,7 @@ import { formatCurrency, formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { ArrowLeft, Users, UserCheck, DollarSign } from 'lucide-react';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerT, getLocale } from '@/lib/i18n/server';
 
 async function updateProduct(formData: FormData) {
   'use server';
@@ -50,6 +50,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
   if (!session) redirect('/login');
 
   const t = getServerT();
+  const locale = getLocale();
 
   const product = await prisma.hubProduct.findUnique({
     where: { slug: params.slug },
@@ -221,7 +222,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
                       </td>
                       <td className="p-3">{client.plan || '—'}</td>
                       <td className="p-3"><StatusBadge status={client.paymentStatus} /></td>
-                      <td className="p-3">{formatDate(client.lastPayment)}</td>
+                      <td className="p-3">{formatDate(client.lastPayment, locale)}</td>
                     </tr>
                   ))}
                 </tbody>

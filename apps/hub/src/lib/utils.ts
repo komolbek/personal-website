@@ -1,8 +1,16 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { DEFAULT_LOCALE, type Locale } from './i18n/config';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+// Maps our app locale to a BCP-47 tag for Intl date/number formatting.
+const INTL_LOCALE: Record<Locale, string> = { ru: 'ru-RU', en: 'en-US' };
+
+export function intlLocale(locale: Locale = DEFAULT_LOCALE): string {
+  return INTL_LOCALE[locale];
 }
 
 export function formatCurrency(amount: number, currency: string = 'USD'): string {
@@ -18,9 +26,9 @@ export function formatCurrency(amount: number, currency: string = 'USD'): string
   }).format(amount);
 }
 
-export function formatDate(date: Date | string | null): string {
+export function formatDate(date: Date | string | null, locale: Locale = DEFAULT_LOCALE): string {
   if (!date) return '—';
-  return new Date(date).toLocaleDateString('en-US', {
+  return new Date(date).toLocaleDateString(INTL_LOCALE[locale], {
     month: 'short',
     day: 'numeric',
     year: 'numeric',

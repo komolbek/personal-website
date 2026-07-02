@@ -4,13 +4,14 @@ import prisma from '@/lib/prisma';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/shared/EmptyState';
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { formatCurrency, formatDate, intlLocale } from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
 import { DollarSign, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react';
 import { RevenueChart } from '@/components/charts/RevenueChart';
 import { CategoryPieChart } from '@/components/charts/CategoryPieChart';
 import { TransactionDialog } from './TransactionDialog';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerT, getLocale } from '@/lib/i18n/server';
+import type { Locale } from '@/lib/i18n/config';
 
 async function addPayment(formData: FormData) {
   'use server';
@@ -68,19 +69,19 @@ async function runOverdueCheck() {
   revalidatePath('/finances');
 }
 
-function getMonthlyData(payments: { type: string; amount: number; date: Date }[]) {
+function getMonthlyData(payments: { type: string; amount: number; date: Date }[], locale: Locale) {
   const months: Record<string, { income: number; expenses: number }> = {};
   const now = new Date();
 
   for (let i = 11; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const key = d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+    const key = d.toLocaleDateString(intlLocale(locale), { month: 'short', year: '2-digit' });
     months[key] = { income: 0, expenses: 0 };
   }
 
   payments.forEach((p) => {
     const d = new Date(p.date);
-    const key = d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+    const key = d.toLocaleDateString(intlLocale(locale), { month: 'short', year: '2-digit' });
     if (months[key]) {
       if (p.type === 'INCOME') months[key].income += p.amount;
       else months[key].expenses += p.amount;
@@ -109,6 +110,7 @@ export default async function FinancesPage() {
   if (!session) redirect('/login');
 
   const t = getServerT();
+  const locale = getLocale();
 
   if (session.role === 'VIEWER') {
     return (
@@ -146,7 +148,7 @@ export default async function FinancesPage() {
     .filter((p) => p.type === 'EXPENSE' && new Date(p.date) >= startOfMonth)
     .reduce((s, p) => s + p.amount, 0);
 
-  const monthlyData = getMonthlyData(payments);
+  const monthlyData = getMonthlyData(payments, locale);
   const expenseCategories = getCategoryBreakdown(payments, 'EXPENSE');
 
   return (
@@ -264,7 +266,7 @@ export default async function FinancesPage() {
                   <tbody>
                     {payments.map((payment) => (
                       <tr key={payment.id} className="border-b hover:bg-muted/30">
-                        <td className="p-3 whitespace-nowrap">{formatDate(payment.date)}</td>
+                        <td className="p-3 whitespace-nowrap">{formatDate(payment.date, locale)}</td>
                         <td className="p-3">
                           {payment.description}
                           {payment.recurring && (

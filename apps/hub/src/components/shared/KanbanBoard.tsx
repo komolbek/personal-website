@@ -32,7 +32,7 @@ export function KanbanBoard({
   columns: Column[];
   slug: string;
 }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [columns, setColumns] = useState(initialColumns);
   const [isPending, startTransition] = useTransition();
 
@@ -122,7 +122,7 @@ export function KanbanBoard({
                             </div>
                             {lead.followUp && (
                               <div className="text-xs mt-2 text-amber-600">
-                                {t('kanban.followUp', { date: formatDate(lead.followUp) })}
+                                {t('kanban.followUp', { date: formatDate(lead.followUp, locale) })}
                               </div>
                             )}
                           </Card>

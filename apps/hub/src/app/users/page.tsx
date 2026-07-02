@@ -12,7 +12,7 @@ import { logActivity } from '@/lib/activity';
 import { formatDate } from '@/lib/utils';
 import { ShieldCheck, UserPlus, Users as UsersIcon } from 'lucide-react';
 import { RoleSelect } from './RoleSelect';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerT, getLocale } from '@/lib/i18n/server';
 import type { HubUserRole } from '@necto/db';
 
 const VALID_ROLES: HubUserRole[] = ['ADMIN', 'MANAGER', 'VIEWER'];
@@ -81,6 +81,7 @@ export default async function UsersPage() {
 
   const users = await prisma.hubUser.findMany({ orderBy: { createdAt: 'asc' } });
   const t = getServerT();
+  const locale = getLocale();
 
   return (
     <div className="space-y-6">
@@ -168,7 +169,7 @@ export default async function UsersPage() {
                         <RoleSelect userId={user.id} currentRole={user.role} action={updateUserRole} />
                       )}
                     </td>
-                    <td className="p-3">{formatDate(user.createdAt)}</td>
+                    <td className="p-3">{formatDate(user.createdAt, locale)}</td>
                     <td className="p-3">
                       {user.id !== session.id && (
                         <form action={removeUser}>

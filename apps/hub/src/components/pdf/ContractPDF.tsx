@@ -1,4 +1,7 @@
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import type { Locale } from '@/lib/i18n/config';
+import { intlLocale } from '@/lib/utils';
+import type { TFunction } from '@/lib/i18n/translate';
 
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 11, fontFamily: 'Helvetica' },
@@ -23,9 +26,9 @@ function formatCurrency(amount: number, currency: string = 'USD') {
   return `$${amount.toLocaleString()}`;
 }
 
-function formatDate(date: Date | string | null) {
+function formatDate(date: Date | string | null, locale: Locale) {
   if (!date) return '-';
-  return new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  return new Date(date).toLocaleDateString(intlLocale(locale), { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
 type ContractData = {
@@ -42,102 +45,94 @@ type ContractData = {
   createdAt: Date;
 };
 
-export function ContractPDF({ contract }: { contract: ContractData }) {
+export function ContractPDF({ contract, t, locale }: { contract: ContractData; t: TFunction; locale: Locale }) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={styles.companyName}>Necto Automations</Text>
-          <Text style={styles.title}>Service Agreement</Text>
+          <Text style={styles.title}>{t('pdf.contract.title')}</Text>
           <Text style={styles.subtitle}>{contract.projectName}</Text>
         </View>
 
-        <Text style={styles.sectionTitle}>1. Parties</Text>
+        <Text style={styles.sectionTitle}>{t('pdf.contract.parties')}</Text>
         <Text style={styles.paragraph}>
-          This Service Agreement is entered into between:
+          {t('pdf.contract.partiesIntro')}
         </Text>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>Service Provider:</Text>
+          <Text style={styles.infoLabel}>{t('pdf.contract.serviceProvider')}:</Text>
           <Text style={styles.infoValue}>Necto Automations LLC</Text>
         </View>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>Client:</Text>
+          <Text style={styles.infoLabel}>{t('pdf.contract.client')}:</Text>
           <Text style={styles.infoValue}>{contract.clientName}</Text>
         </View>
         {contract.clientContact && (
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Contact Person:</Text>
+            <Text style={styles.infoLabel}>{t('pdf.contract.contactPerson')}:</Text>
             <Text style={styles.infoValue}>{contract.clientContact}</Text>
           </View>
         )}
 
-        <Text style={styles.sectionTitle}>2. Scope of Work</Text>
+        <Text style={styles.sectionTitle}>{t('pdf.contract.scope')}</Text>
         <Text style={styles.paragraph}>
-          {contract.scopeDescription || 'As discussed and agreed upon between both parties.'}
+          {contract.scopeDescription || t('pdf.contract.scopeDefault')}
         </Text>
 
-        <Text style={styles.sectionTitle}>3. Pricing</Text>
+        <Text style={styles.sectionTitle}>{t('pdf.contract.pricing')}</Text>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>Total Price:</Text>
+          <Text style={styles.infoLabel}>{t('pdf.contract.totalPrice')}:</Text>
           <Text style={[styles.infoValue, { fontFamily: 'Helvetica-Bold' }]}>
             {formatCurrency(contract.totalPrice, contract.currency)}
           </Text>
         </View>
 
-        <Text style={styles.sectionTitle}>4. Payment Terms</Text>
+        <Text style={styles.sectionTitle}>{t('pdf.contract.paymentTerms')}</Text>
         <Text style={styles.paragraph}>
-          {contract.paymentTerms || '50% upfront upon signing, 50% upon project delivery and acceptance.'}
+          {contract.paymentTerms || t('pdf.contract.paymentTermsDefault')}
         </Text>
 
-        <Text style={styles.sectionTitle}>5. Timeline</Text>
+        <Text style={styles.sectionTitle}>{t('pdf.contract.timeline')}</Text>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>Start Date:</Text>
-          <Text style={styles.infoValue}>{formatDate(contract.startDate)}</Text>
+          <Text style={styles.infoLabel}>{t('pdf.contract.startDate')}:</Text>
+          <Text style={styles.infoValue}>{formatDate(contract.startDate, locale)}</Text>
         </View>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>Deadline:</Text>
-          <Text style={styles.infoValue}>{formatDate(contract.deadline)}</Text>
+          <Text style={styles.infoLabel}>{t('pdf.contract.deadline')}:</Text>
+          <Text style={styles.infoValue}>{formatDate(contract.deadline, locale)}</Text>
         </View>
 
-        <Text style={styles.sectionTitle}>6. Terms & Conditions</Text>
-        <Text style={styles.paragraph}>
-          a) The Service Provider will deliver the project as described in the scope of work above.
-        </Text>
-        <Text style={styles.paragraph}>
-          b) The Client agrees to provide all necessary content, assets, and feedback in a timely manner.
-        </Text>
-        <Text style={styles.paragraph}>
-          c) Changes to the scope after signing may result in additional costs and timeline adjustments.
-        </Text>
-        <Text style={styles.paragraph}>
-          d) The Service Provider retains intellectual property rights until full payment is received.
-        </Text>
+        <Text style={styles.sectionTitle}>{t('pdf.contract.terms')}</Text>
+        <Text style={styles.paragraph}>{t('pdf.contract.termA')}</Text>
+        <Text style={styles.paragraph}>{t('pdf.contract.termB')}</Text>
+        <Text style={styles.paragraph}>{t('pdf.contract.termC')}</Text>
+        <Text style={styles.paragraph}>{t('pdf.contract.termD')}</Text>
 
         <View style={styles.signatureBlock}>
           <View style={styles.signatureBox}>
-            <Text style={{ fontFamily: 'Helvetica-Bold', marginBottom: 4 }}>Service Provider</Text>
+            <Text style={{ fontFamily: 'Helvetica-Bold', marginBottom: 4 }}>{t('pdf.contract.serviceProvider')}</Text>
             <Text>Necto Automations LLC</Text>
             <View style={styles.signatureLine} />
-            <Text style={styles.signatureLabel}>Signature & Date</Text>
+            <Text style={styles.signatureLabel}>{t('pdf.contract.signatureDate')}</Text>
           </View>
           <View style={styles.signatureBox}>
-            <Text style={{ fontFamily: 'Helvetica-Bold', marginBottom: 4 }}>Client</Text>
+            <Text style={{ fontFamily: 'Helvetica-Bold', marginBottom: 4 }}>{t('pdf.contract.client')}</Text>
             <Text>{contract.clientName}</Text>
             <View style={styles.signatureLine} />
-            <Text style={styles.signatureLabel}>Signature & Date</Text>
+            <Text style={styles.signatureLabel}>{t('pdf.contract.signatureDate')}</Text>
           </View>
         </View>
 
         {contract.signedDate && (
           <View style={{ marginTop: 20 }}>
             <Text style={{ fontSize: 10, color: '#16a34a' }}>
-              Signed on {formatDate(contract.signedDate)}
+              {t('pdf.contract.signedOn', { date: formatDate(contract.signedDate, locale) })}
             </Text>
           </View>
         )}
 
         <View style={styles.footer}>
-          <Text>Necto Automations LLC | necto.uz | Generated {formatDate(contract.createdAt)}</Text>
+          <Text>{t('pdf.contract.footer', { date: formatDate(contract.createdAt, locale) })}</Text>
         </View>
       </Page>
     </Document>
