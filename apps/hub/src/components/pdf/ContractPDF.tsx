@@ -2,17 +2,20 @@ import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import type { Locale } from '@/lib/i18n/config';
 import { intlLocale } from '@/lib/utils';
 import type { TFunction } from '@/lib/i18n/translate';
+import { registerPdfFonts } from './fonts';
+
+registerPdfFonts();
 
 const styles = StyleSheet.create({
-  page: { padding: 40, fontSize: 11, fontFamily: 'Helvetica' },
+  page: { padding: 40, fontSize: 11, fontFamily: 'Roboto' },
   header: { marginBottom: 30 },
-  companyName: { fontFamily: 'Helvetica-Bold', fontSize: 16, color: '#4f46e5' },
-  title: { fontSize: 22, fontFamily: 'Helvetica-Bold', marginBottom: 4 },
+  companyName: { fontFamily: 'Roboto', fontWeight: 'bold', fontSize: 16, color: '#4f46e5' },
+  title: { fontSize: 22, fontFamily: 'Roboto', fontWeight: 'bold', marginBottom: 4 },
   subtitle: { fontSize: 12, color: '#666' },
-  sectionTitle: { fontSize: 14, fontFamily: 'Helvetica-Bold', marginBottom: 8, marginTop: 24, borderBottomWidth: 1, borderColor: '#e5e7eb', paddingBottom: 4 },
+  sectionTitle: { fontSize: 14, fontFamily: 'Roboto', fontWeight: 'bold', marginBottom: 8, marginTop: 24, borderBottomWidth: 1, borderColor: '#e5e7eb', paddingBottom: 4 },
   paragraph: { lineHeight: 1.6, marginBottom: 8 },
   infoRow: { flexDirection: 'row', marginBottom: 4 },
-  infoLabel: { width: 120, color: '#666', fontFamily: 'Helvetica-Bold' },
+  infoLabel: { width: 120, color: '#666', fontFamily: 'Roboto', fontWeight: 'bold' },
   infoValue: { flex: 1 },
   signatureBlock: { marginTop: 40, flexDirection: 'row', justifyContent: 'space-between' },
   signatureBox: { width: '45%' },
@@ -82,7 +85,7 @@ export function ContractPDF({ contract, t, locale }: { contract: ContractData; t
         <Text style={styles.sectionTitle}>{t('pdf.contract.pricing')}</Text>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>{t('pdf.contract.totalPrice')}:</Text>
-          <Text style={[styles.infoValue, { fontFamily: 'Helvetica-Bold' }]}>
+          <Text style={[styles.infoValue, { fontFamily: 'Roboto', fontWeight: 'bold' }]}>
             {formatCurrency(contract.totalPrice, contract.currency)}
           </Text>
         </View>
@@ -110,13 +113,13 @@ export function ContractPDF({ contract, t, locale }: { contract: ContractData; t
 
         <View style={styles.signatureBlock}>
           <View style={styles.signatureBox}>
-            <Text style={{ fontFamily: 'Helvetica-Bold', marginBottom: 4 }}>{t('pdf.contract.serviceProvider')}</Text>
+            <Text style={{ fontFamily: 'Roboto', fontWeight: 'bold', marginBottom: 4 }}>{t('pdf.contract.serviceProvider')}</Text>
             <Text>Necto Automations LLC</Text>
             <View style={styles.signatureLine} />
             <Text style={styles.signatureLabel}>{t('pdf.contract.signatureDate')}</Text>
           </View>
           <View style={styles.signatureBox}>
-            <Text style={{ fontFamily: 'Helvetica-Bold', marginBottom: 4 }}>{t('pdf.contract.client')}</Text>
+            <Text style={{ fontFamily: 'Roboto', fontWeight: 'bold', marginBottom: 4 }}>{t('pdf.contract.client')}</Text>
             <Text>{contract.clientName}</Text>
             <View style={styles.signatureLine} />
             <Text style={styles.signatureLabel}>{t('pdf.contract.signatureDate')}</Text>

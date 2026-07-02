@@ -2,13 +2,16 @@ import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import type { Locale } from '@/lib/i18n/config';
 import { intlLocale } from '@/lib/utils';
 import type { TFunction } from '@/lib/i18n/translate';
+import { registerPdfFonts } from './fonts';
+
+registerPdfFonts();
 
 const styles = StyleSheet.create({
-  page: { padding: 40, fontSize: 11, fontFamily: 'Helvetica' },
+  page: { padding: 40, fontSize: 11, fontFamily: 'Roboto' },
   header: { marginBottom: 30 },
-  title: { fontSize: 24, fontFamily: 'Helvetica-Bold', marginBottom: 4 },
+  title: { fontSize: 24, fontFamily: 'Roboto', fontWeight: 'bold', marginBottom: 4 },
   subtitle: { fontSize: 12, color: '#666' },
-  sectionTitle: { fontSize: 14, fontFamily: 'Helvetica-Bold', marginBottom: 10, marginTop: 20 },
+  sectionTitle: { fontSize: 14, fontFamily: 'Roboto', fontWeight: 'bold', marginBottom: 10, marginTop: 20 },
   row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 2 },
   infoRow: { flexDirection: 'row', marginBottom: 4 },
   infoLabel: { width: 100, color: '#666' },
@@ -18,15 +21,15 @@ const styles = StyleSheet.create({
   tableRow: { flexDirection: 'row', paddingVertical: 8, paddingHorizontal: 12, borderBottomWidth: 1, borderColor: '#f3f4f6' },
   colFeature: { flex: 1 },
   colPrice: { width: 80, textAlign: 'right' as const },
-  headerText: { fontFamily: 'Helvetica-Bold', fontSize: 10, color: '#374151' },
+  headerText: { fontFamily: 'Roboto', fontWeight: 'bold', fontSize: 10, color: '#374151' },
   totalRow: { flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 12, backgroundColor: '#f9fafb', borderTopWidth: 2, borderColor: '#e5e7eb' },
-  totalLabel: { flex: 1, fontFamily: 'Helvetica-Bold', fontSize: 13 },
-  totalValue: { width: 80, textAlign: 'right' as const, fontFamily: 'Helvetica-Bold', fontSize: 13 },
+  totalLabel: { flex: 1, fontFamily: 'Roboto', fontWeight: 'bold', fontSize: 13 },
+  totalValue: { width: 80, textAlign: 'right' as const, fontFamily: 'Roboto', fontWeight: 'bold', fontSize: 13 },
   feeRow: { flexDirection: 'row', paddingVertical: 6, paddingHorizontal: 12 },
   feeLabel: { flex: 1, color: '#666' },
   feeValue: { width: 80, textAlign: 'right' as const },
   footer: { position: 'absolute' as const, bottom: 40, left: 40, right: 40, textAlign: 'center' as const, fontSize: 9, color: '#999', borderTopWidth: 1, borderColor: '#e5e7eb', paddingTop: 10 },
-  companyName: { fontFamily: 'Helvetica-Bold', fontSize: 16, color: '#4f46e5' },
+  companyName: { fontFamily: 'Roboto', fontWeight: 'bold', fontSize: 16, color: '#4f46e5' },
 });
 
 function formatCurrency(amount: number, currency: string = 'USD') {
