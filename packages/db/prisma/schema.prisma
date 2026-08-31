@@ -170,6 +170,15 @@ model ContactSubmission {
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 
+  // Campaign attribution. Previously appended to `message` as a delimited
+  // string, which made it unqueryable and polluted the text the founder reads.
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
+  referrer    String?
+
   @@schema("public")
 }
 

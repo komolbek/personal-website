@@ -43,21 +43,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Build UTM metadata string for storage
-    const utmParts = [
-      utmSource && `source=${utmSource}`,
-      utmMedium && `medium=${utmMedium}`,
-      utmCampaign && `campaign=${utmCampaign}`,
-      utmContent && `content=${utmContent}`,
-      utmTerm && `term=${utmTerm}`,
-      referrer && `referrer=${referrer}`,
-    ].filter(Boolean).join('|');
-
-    // Save to database — UTM data appended to message for now (no schema migration needed)
-    const messageWithUtm = utmParts
-      ? `${message}\n\n---\nLead source: ${utmParts}`
-      : message;
-
     await prisma.contactSubmission.create({
       data: {
         name,
@@ -66,7 +51,13 @@ export async function POST(request: NextRequest) {
         company: company || null,
         service: service || null,
         budget: budget || null,
-        message: messageWithUtm,
+        message,
+        utmSource: utmSource || null,
+        utmMedium: utmMedium || null,
+        utmCampaign: utmCampaign || null,
+        utmContent: utmContent || null,
+        utmTerm: utmTerm || null,
+        referrer: referrer || null,
       },
     });
 
