@@ -69,6 +69,35 @@ async function runOverdueCheck() {
   revalidatePath('/finances');
 }
 
+// Amounts are stored per payment in their own currency and there is no
+// exchange rate anywhere in the schema. Adding a UZS amount to a USD one
+// produces a number that means nothing, so every total below is kept per
+// currency and rendered separately rather than converted.
+const CURRENCY_ORDER = ['USD', 'UZS'];
+
+type Money = { amount: number; currency: string };
+
+function currenciesPresent(payments: Money[]): string[] {
+  const seen = new Set(payments.map((p) => p.currency));
+  const ordered = CURRENCY_ORDER.filter((c) => seen.has(c));
+  const rest = Array.from(seen).filter((c) => !CURRENCY_ORDER.includes(c)).sort();
+  const all = [...ordered, ...rest];
+  // With no payments at all, still render a single zero figure.
+  return all.length > 0 ? all : ['USD'];
+}
+
+function sumByCurrency(
+  payments: (Money & { type: string })[],
+  type: string
+): Record<string, number> {
+  const totals: Record<string, number> = {};
+  for (const p of payments) {
+    if (p.type !== type) continue;
+    totals[p.currency] = (totals[p.currency] || 0) + p.amount;
+  }
+  return totals;
+}
+
 function getMonthlyData(payments: { type: string; amount: number; date: Date }[], locale: Locale) {
   const months: Record<string, { income: number; expenses: number }> = {};
   const now = new Date();
@@ -121,35 +150,30 @@ export default async function FinancesPage() {
     );
   }
 
-  const [payments, projects, products, incomeAgg, expenseAgg] = await Promise.all([
+  const [payments, projects, products] = await Promise.all([
     prisma.hubPayment.findMany({
       include: { project: true, product: true, client: true },
       orderBy: { date: 'desc' },
     }),
     prisma.hubProject.findMany({ select: { id: true, name: true }, orderBy: { name: 'asc' } }),
     prisma.hubProduct.findMany({ select: { id: true, name: true }, orderBy: { name: 'asc' } }),
-    prisma.hubPayment.aggregate({ where: { type: 'INCOME' }, _sum: { amount: true } }),
-    prisma.hubPayment.aggregate({ where: { type: 'EXPENSE' }, _sum: { amount: true } }),
   ]);
 
-  const totalIncome = incomeAgg._sum.amount || 0;
-  const totalExpenses = expenseAgg._sum.amount || 0;
-  const netProfit = totalIncome - totalExpenses;
+  // Derived from the full payment list rather than a SQL SUM, because the sum
+  // has to be grouped by currency and the rows are already loaded here.
+  const currencies = currenciesPresent(payments);
+  const incomeByCurrency = sumByCurrency(payments, 'INCOME');
+  const expensesByCurrency = sumByCurrency(payments, 'EXPENSE');
 
   const startOfMonth = new Date();
   startOfMonth.setDate(1);
   startOfMonth.setHours(0, 0, 0, 0);
 
-  const thisMonthIncome = payments
-    .filter((p) => p.type === 'INCOME' && new Date(p.date) >= startOfMonth)
-    .reduce((s, p) => s + p.amount, 0);
-
-  const thisMonthExpenses = payments
-    .filter((p) => p.type === 'EXPENSE' && new Date(p.date) >= startOfMonth)
-    .reduce((s, p) => s + p.amount, 0);
-
-  const monthlyData = getMonthlyData(payments, locale);
-  const expenseCategories = getCategoryBreakdown(payments, 'EXPENSE');
+  const thisMonthPayments = payments.filter(
+    (p) => new Date(p.date) >= startOfMonth
+  );
+  const thisMonthIncomeByCurrency = sumByCurrency(thisMonthPayments, 'INCOME');
+  const thisMonthExpensesByCurrency = sumByCurrency(thisMonthPayments, 'EXPENSE');
 
   return (
     <div className="space-y-6">
@@ -180,7 +204,13 @@ export default async function FinancesPage() {
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{formatCurrency(totalIncome)}</div>
+            <div className="space-y-1">
+              {currencies.map((c) => (
+                <div key={c} className="text-2xl font-bold text-green-600">
+                  {formatCurrency(incomeByCurrency[c] || 0, c)}
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -189,7 +219,13 @@ export default async function FinancesPage() {
             <TrendingDown className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{formatCurrency(totalExpenses)}</div>
+            <div className="space-y-1">
+              {currencies.map((c) => (
+                <div key={c} className="text-2xl font-bold text-red-600">
+                  {formatCurrency(expensesByCurrency[c] || 0, c)}
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -198,8 +234,15 @@ export default async function FinancesPage() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {formatCurrency(netProfit)}
+            <div className="space-y-1">
+              {currencies.map((c) => {
+                const net = (incomeByCurrency[c] || 0) - (expensesByCurrency[c] || 0);
+                return (
+                  <div key={c} className={`text-2xl font-bold ${net >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {formatCurrency(net, c)}
+                  </div>
+                );
+              })}
             </div>
           </CardContent>
         </Card>
@@ -209,8 +252,16 @@ export default async function FinancesPage() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${thisMonthIncome - thisMonthExpenses >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {formatCurrency(thisMonthIncome - thisMonthExpenses)}
+            <div className="space-y-1">
+              {currencies.map((c) => {
+                const net =
+                  (thisMonthIncomeByCurrency[c] || 0) - (thisMonthExpensesByCurrency[c] || 0);
+                return (
+                  <div key={c} className={`text-2xl font-bold ${net >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {formatCurrency(net, c)}
+                  </div>
+                );
+              })}
             </div>
           </CardContent>
         </Card>
@@ -218,23 +269,35 @@ export default async function FinancesPage() {
 
       {/* Charts */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('finances.chart.monthlyRevenue')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <RevenueChart data={monthlyData} />
-          </CardContent>
-        </Card>
+        {currencies.map((c) => (
+          <Card key={`revenue-${c}`}>
+            <CardHeader>
+              <CardTitle>
+                {t('finances.chart.monthlyRevenue')} · {c}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <RevenueChart
+                data={getMonthlyData(payments.filter((p) => p.currency === c), locale)}
+              />
+            </CardContent>
+          </Card>
+        ))}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('finances.chart.expenseBreakdown')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CategoryPieChart data={expenseCategories} />
-          </CardContent>
-        </Card>
+        {currencies.map((c) => (
+          <Card key={`expenses-${c}`}>
+            <CardHeader>
+              <CardTitle>
+                {t('finances.chart.expenseBreakdown')} · {c}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CategoryPieChart
+                data={getCategoryBreakdown(payments.filter((p) => p.currency === c), 'EXPENSE')}
+              />
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Transaction List */}
