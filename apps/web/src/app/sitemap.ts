@@ -1,15 +1,36 @@
 import { MetadataRoute } from 'next';
 import { siteConfig } from '@/config/site';
-import { solutions } from '@/config/solutions';
+import { prisma } from '@/lib/prisma';
+import { solutions as staticSolutions } from '@/config/solutions';
 import { projects } from '@/config/projects';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// Rendered per request rather than at build time. The build stage has no
+// DATABASE_URL, so a prerendered sitemap would silently capture the static
+// fallback once and never reflect anything published through the CMS.
+export const dynamic = 'force-dynamic';
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
 
-  // Solution pages
-  const solutionPages = solutions.map((solution) => ({
-    url: `${baseUrl}/solutions/${solution.slug}`,
-    lastModified: new Date(),
+  // Products come from the database, which is what the rest of the site
+  // renders from; the static config was a second list, so a product added in
+  // the CMS never reached the sitemap. The config remains a fallback for when
+  // the database is unreachable or empty, matching the other product pages.
+  const dbProducts = await prisma.product
+    .findMany({
+      where: { isVisible: true },
+      select: { slug: true, updatedAt: true },
+      orderBy: { order: 'asc' },
+    })
+    .catch(() => []);
+
+  const solutionPages = (
+    dbProducts.length > 0
+      ? dbProducts.map((p) => ({ slug: p.slug, lastModified: p.updatedAt }))
+      : staticSolutions.map((s) => ({ slug: s.slug, lastModified: new Date() }))
+  ).map(({ slug, lastModified }) => ({
+    url: `${baseUrl}/solutions/${slug}`,
+    lastModified,
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));

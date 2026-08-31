@@ -29,7 +29,14 @@ model AdminUser {
   @@schema("public")
 }
 
-// Products/Solutions - services the company offers
+// Products/Solutions - services the company offers.
+//
+// Deliberately independent of HubProduct. This table is the public marketing
+// roster shown on necto.uz; HubProduct is the internal roster the founder
+// tracks leads, clients and payments against. They overlap but are not the
+// same list — Hub legitimately holds products that are never marketed — so
+// neither derives from the other and the two are not kept in sync. Keeping
+// them separate is what allows the hub schema to move to its own database.
 model Product {
   id           String   @id @default(cuid())
   slug         String   @unique
@@ -384,6 +391,8 @@ model HubUser {
   @@schema("hub")
 }
 
+// Internal product roster. See the note on Product: this is deliberately a
+// separate list from the public marketing one, not a copy of it.
 model HubProduct {
   id          String           @id @default(cuid())
   name        String
