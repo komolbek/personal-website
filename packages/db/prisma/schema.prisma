@@ -248,6 +248,7 @@ enum HubLeadSource {
   REFERRAL
   GOOGLE_MAPS
   TWOGIS
+  WEBSITE
   OTHER
 
   @@schema("hub")

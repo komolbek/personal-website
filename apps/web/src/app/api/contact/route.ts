@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { createHubLeadFromWebsite } from '@/lib/hub-lead';
 
 export const dynamic = 'force-dynamic';
 
@@ -60,6 +61,29 @@ export async function POST(request: NextRequest) {
         referrer: referrer || null,
       },
     });
+
+    // The enquiry is already durable at this point. Hub is a separate concern:
+    // if it fails, the submission still stands and can be entered by hand, so
+    // the failure is logged rather than surfaced to the visitor.
+    try {
+      await createHubLeadFromWebsite({
+        name,
+        phone,
+        message,
+        email,
+        company,
+        service,
+        budget,
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        utmContent,
+        utmTerm,
+        referrer,
+      });
+    } catch (hubError) {
+      console.error('Contact submission saved but Hub lead creation failed:', hubError);
+    }
 
     // Log for development
     console.log('Contact form submission saved:', {
