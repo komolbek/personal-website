@@ -1,0 +1,28 @@
+# Local secrets. Without this, `COPY apps/<name> ./apps/<name>` copies a
+# developer's .env — DATABASE_URL and session secrets — into an image layer.
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependencies are installed inside the image from the lockfile; copying a
+# host node_modules over that produces a different tree than Railway builds.
+**/node_modules
+
+# Build output. Each image builds its own.
+**/.next
+**/out
+**/dist
+**/build
+
+# Version control and tooling caches
+.git
+.gitignore
+**/.turbo
+.vercel
+.railway
+
+# Editor and OS noise
+**/.DS_Store
+**/*.log
+**/npm-debug.log*
+**/*.tsbuildinfo
