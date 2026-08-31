@@ -47,3 +47,6 @@ next-env.d.ts
 # package manager lock files (only keep pnpm)
 package-lock.json
 yarn.lock
+
+# prisma generated clients
+**/generated/client

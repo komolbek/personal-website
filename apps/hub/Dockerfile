@@ -9,6 +9,7 @@ RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json ./
 COPY apps/hub/package.json ./apps/hub/package.json
 COPY packages/db/package.json ./packages/db/package.json
+COPY packages/db-hub/package.json ./packages/db-hub/package.json
 COPY packages/types/package.json ./packages/types/package.json
 COPY packages/validators/package.json ./packages/validators/package.json
 
@@ -22,15 +23,15 @@ RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/hub/node_modules ./apps/hub/node_modules
-COPY --from=deps /app/packages/db/node_modules ./packages/db/node_modules
+COPY --from=deps /app/packages/db-hub/node_modules ./packages/db-hub/node_modules
 
-COPY packages/db ./packages/db
+COPY packages/db-hub ./packages/db-hub
 COPY packages/types ./packages/types
 COPY packages/validators ./packages/validators
 COPY apps/hub ./apps/hub
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json ./
 
-RUN pnpm --filter @necto/db db:generate
+RUN pnpm --filter @necto/db-hub db:generate
 RUN pnpm --filter @necto/hub build
 
 FROM base AS runner
@@ -52,7 +53,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/hub/.next/static ./apps/hub/
 COPY --from=builder --chown=nextjs:nodejs /app/apps/hub/.next/static ./.next/static
 
 # Prisma schema + migrations for `prisma migrate deploy` on startup
-COPY --from=builder /app/packages/db/prisma ./prisma
+COPY --from=builder /app/packages/db-hub/prisma ./prisma
+
+# The client is generated to a custom path, which Next's output tracing does
+# not reliably carry into the standalone bundle. Copy it explicitly.
+COPY --from=builder --chown=nextjs:nodejs /app/packages/db-hub/generated ./packages/db-hub/generated
 
 COPY --from=builder --chown=nextjs:nodejs /app/apps/hub/start.sh ./start.sh
 RUN chmod +x start.sh

@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@necto/db": "workspace:*",
+    "@necto/db-hub": "workspace:*",
     "@prisma/client": "^5.22.0",
     "prisma": "^5.22.0",
     "@hello-pangea/dnd": "^18.0.1",

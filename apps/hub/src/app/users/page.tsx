@@ -13,7 +13,7 @@ import { formatDate } from '@/lib/utils';
 import { ShieldCheck, UserPlus, Users as UsersIcon } from 'lucide-react';
 import { RoleSelect } from './RoleSelect';
 import { getServerT, getLocale } from '@/lib/i18n/server';
-import type { HubUserRole } from '@necto/db';
+import type { HubUserRole } from '@necto/db-hub';
 
 const VALID_ROLES: HubUserRole[] = ['ADMIN', 'MANAGER', 'VIEWER'];
 

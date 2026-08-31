@@ -24,7 +24,10 @@ if (process.env.NEXT_PHASE !== 'phase-production-build') {
   getSecret();
 }
 
-const publicPaths = ['/login', '/api/auth/login'];
+// /api/leads/intake carries its own shared-secret check and is called by the
+// public site, which has no Hub session; without this the middleware would
+// redirect it to /login and no lead would ever be created.
+const publicPaths = ['/login', '/api/auth/login', '/api/leads/intake'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

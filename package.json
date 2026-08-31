@@ -8,10 +8,12 @@
     "lint": "turbo lint",
     "dev:web": "turbo dev --filter=@necto/web",
     "dev:hub": "turbo dev --filter=@necto/hub",
-    "db:generate": "pnpm --filter @necto/db db:generate",
+    "db:generate": "pnpm --filter @necto/db db:generate && pnpm --filter @necto/db-hub db:generate",
     "db:push": "pnpm --filter @necto/db db:push",
     "db:migrate": "pnpm --filter @necto/db db:migrate",
-    "db:studio": "pnpm --filter @necto/db db:studio"
+    "db:studio": "pnpm --filter @necto/db db:studio",
+    "db:migrate:hub": "pnpm --filter @necto/db-hub db:migrate",
+    "db:studio:hub": "pnpm --filter @necto/db-hub db:studio"
   },
   "devDependencies": {
     "turbo": "^2.3.0"

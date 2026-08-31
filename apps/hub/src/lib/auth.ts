@@ -1,7 +1,7 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
-import type { HubUserRole } from '@necto/db';
+import type { HubUserRole } from '@necto/db-hub';
 
 let secretKey: Uint8Array | null = null;
 

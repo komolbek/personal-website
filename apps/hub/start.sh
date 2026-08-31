@@ -1,8 +1,11 @@
 #!/bin/sh
 set -e
 
-if [ -z "$DATABASE_URL" ]; then
-  echo "ERROR: DATABASE_URL is not set. Refusing to start."
+# Hub has its own database. The name is deliberately not DATABASE_URL so that
+# pointing this service at the website's database fails loudly instead of
+# quietly writing business records into the CMS database.
+if [ -z "$HUB_DATABASE_URL" ]; then
+  echo "ERROR: HUB_DATABASE_URL is not set. Refusing to start."
   exit 1
 fi
 

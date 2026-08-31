@@ -1,9 +1,7 @@
-import { prisma } from './prisma';
-
-// Website enquiries are not about any of the SaaS products in Hub, but
-// HubLead.productId is required and Hub lists leads only underneath a product.
-// This product exists to hold them; it is seeded by migration.
-const WEBSITE_PRODUCT_SLUG = 'necto';
+// Necto Hub runs against its own database, which this app has no access to by
+// design: the public site must not hold write credentials to the internal
+// business records. Leads are handed over across an authenticated HTTP
+// boundary instead. On Railway the call stays on the private network.
 
 export interface WebsiteLeadInput {
   name: string;
@@ -21,30 +19,9 @@ export interface WebsiteLeadInput {
   referrer?: string | null;
 }
 
-// HubLead has no columns for email, service, budget or campaign data, so the
-// detail that does not map to a column is written into notes where the founder
-// reads it. The queryable copy lives on ContactSubmission.
-function buildNotes(input: WebsiteLeadInput): string {
-  const lines = [input.message.trim(), ''];
-
-  const detail: [string, string | null | undefined][] = [
-    ['Email', input.email],
-    ['Service', input.service],
-    ['Budget', input.budget],
-    ['Campaign source', input.utmSource],
-    ['Campaign medium', input.utmMedium],
-    ['Campaign name', input.utmCampaign],
-    ['Campaign content', input.utmContent],
-    ['Campaign term', input.utmTerm],
-    ['Referrer', input.referrer],
-  ];
-
-  for (const [label, value] of detail) {
-    if (value) lines.push(`${label}: ${value}`);
-  }
-
-  return lines.join('\n').trim();
-}
+// A visitor should never wait on Hub. If it is slow the enquiry is already
+// saved, so the request is abandoned rather than held open.
+const REQUEST_TIMEOUT_MS = 5000;
 
 // Returns the created lead id, or null when no lead could be created. Callers
 // must not fail the contact submission on null: a lost Hub lead is recoverable
@@ -52,31 +29,35 @@ function buildNotes(input: WebsiteLeadInput): string {
 export async function createHubLeadFromWebsite(
   input: WebsiteLeadInput
 ): Promise<string | null> {
-  const product = await prisma.hubProduct.findUnique({
-    where: { slug: WEBSITE_PRODUCT_SLUG },
-    select: { id: true },
-  });
+  const url = process.env.HUB_INTAKE_URL;
+  const secret = process.env.HUB_INTAKE_SECRET;
 
-  if (!product) {
+  if (!url || !secret) {
     console.error(
-      `Hub lead not created: no hub product with slug "${WEBSITE_PRODUCT_SLUG}".`
+      'Hub lead not created: HUB_INTAKE_URL or HUB_INTAKE_SECRET is not set.'
     );
     return null;
   }
 
-  const lead = await prisma.hubLead.create({
-    data: {
-      productId: product.id,
-      // HubLead.name identifies the lead itself, which is the company when the
-      // enquiry names one; the person goes in contactPerson.
-      name: input.company?.trim() || input.name,
-      contactPerson: input.name,
-      phone: input.phone,
-      source: 'WEBSITE',
-      notes: buildNotes(input),
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-intake-secret': secret,
     },
-    select: { id: true },
+    body: JSON.stringify(input),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    cache: 'no-store',
   });
 
-  return lead.id;
+  if (!response.ok) {
+    // 404 here means the secret was rejected, not that the route is absent.
+    console.error(
+      `Hub lead not created: intake responded ${response.status} ${response.statusText}.`
+    );
+    return null;
+  }
+
+  const body = (await response.json()) as { id?: unknown };
+  return typeof body.id === 'string' ? body.id : null;
 }
