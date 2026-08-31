@@ -37,6 +37,17 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json ./
 # Generate Prisma client
 RUN pnpm --filter @necto/db db:generate
 
+# Analytics IDs. NEXT_PUBLIC_* values are inlined into the client bundle at
+# build time, so they must be present here — setting them only as runtime
+# service variables leaves the snippets disabled. Railway passes matching
+# service variables as build args for each ARG declared below.
+ARG NEXT_PUBLIC_GA_ID
+ARG NEXT_PUBLIC_YM_ID
+ARG NEXT_PUBLIC_META_PIXEL_ID
+ENV NEXT_PUBLIC_GA_ID=$NEXT_PUBLIC_GA_ID
+ENV NEXT_PUBLIC_YM_ID=$NEXT_PUBLIC_YM_ID
+ENV NEXT_PUBLIC_META_PIXEL_ID=$NEXT_PUBLIC_META_PIXEL_ID
+
 # Build
 RUN pnpm --filter @necto/web build
 

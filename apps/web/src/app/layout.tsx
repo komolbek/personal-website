@@ -9,11 +9,11 @@ import { LayoutContent } from '@/components/layout/LayoutContent';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { HtmlLangSetter } from '@/components/seo/HtmlLangSetter';
 
-// TODO: Replace with your actual GA4 Measurement ID (e.g., G-XXXXXXXXXX)
+// Each snippet renders only when its ID is configured. These are inlined at
+// build time, so they must be set as build args for the deployed image — see
+// the ARG declarations in apps/web/Dockerfile — not only at runtime.
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || '';
-// TODO: Replace with your actual Yandex.Metrica counter ID (e.g., 12345678)
 const YM_COUNTER_ID = process.env.NEXT_PUBLIC_YM_ID || '';
-// Meta Pixel (Facebook/Instagram) — set in .env as NEXT_PUBLIC_META_PIXEL_ID
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '';
 
 const geistSans = localFont({
