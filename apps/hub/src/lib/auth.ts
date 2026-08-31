@@ -3,9 +3,28 @@ import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
 import type { HubUserRole } from '@necto/db';
 
-const SECRET = new TextEncoder().encode(
-  process.env.HUB_ADMIN_SECRET || 'fallback-hub-secret'
-);
+let secretKey: Uint8Array | null = null;
+
+function getSecret(): Uint8Array {
+  if (!secretKey) {
+    const value = process.env.HUB_ADMIN_SECRET;
+    if (!value) {
+      throw new Error(
+        'Missing required environment variable HUB_ADMIN_SECRET. Refusing to run: ' +
+          'session tokens cannot be signed or verified without it.'
+      );
+    }
+    secretKey = new TextEncoder().encode(value);
+  }
+  return secretKey;
+}
+
+// Fail fast at module load rather than at the first login. Skipped during
+// `next build`, which evaluates this module while collecting page data and has
+// no access to deployment secrets.
+if (process.env.NEXT_PHASE !== 'phase-production-build') {
+  getSecret();
+}
 
 const COOKIE_NAME = 'hub_session';
 
@@ -28,7 +47,7 @@ export async function createSession(user: HubSession): Promise<string> {
   return new SignJWT({ ...user })
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('7d')
-    .sign(SECRET);
+    .sign(getSecret());
 }
 
 export async function getSession(): Promise<HubSession | null> {
@@ -37,7 +56,7 @@ export async function getSession(): Promise<HubSession | null> {
   if (!token) return null;
 
   try {
-    const { payload } = await jwtVerify(token, SECRET);
+    const { payload } = await jwtVerify(token, getSecret());
     return payload as unknown as HubSession;
   } catch {
     return null;

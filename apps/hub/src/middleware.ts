@@ -1,9 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const SECRET = new TextEncoder().encode(
-  process.env.HUB_ADMIN_SECRET || 'fallback-hub-secret'
-);
+let secretKey: Uint8Array | null = null;
+
+function getSecret(): Uint8Array {
+  if (!secretKey) {
+    const value = process.env.HUB_ADMIN_SECRET;
+    if (!value) {
+      throw new Error(
+        'Missing required environment variable HUB_ADMIN_SECRET. Refusing to run: ' +
+          'session tokens cannot be signed or verified without it.'
+      );
+    }
+    secretKey = new TextEncoder().encode(value);
+  }
+  return secretKey;
+}
+
+// Fail fast at module load rather than at the first login. Skipped during
+// `next build`, which evaluates this module while collecting page data and has
+// no access to deployment secrets.
+if (process.env.NEXT_PHASE !== 'phase-production-build') {
+  getSecret();
+}
 
 const publicPaths = ['/login', '/api/auth/login'];
 
@@ -27,7 +46,7 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    await jwtVerify(token, SECRET);
+    await jwtVerify(token, getSecret());
     return NextResponse.next();
   } catch {
     return NextResponse.redirect(new URL('/login', request.url));

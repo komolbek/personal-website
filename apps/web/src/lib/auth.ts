@@ -2,9 +2,28 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
 
-const secretKey = new TextEncoder().encode(
-  process.env.ADMIN_SECRET || 'fallback-secret-change-in-production'
-);
+let cachedKey: Uint8Array | null = null;
+
+function getSecretKey(): Uint8Array {
+  if (!cachedKey) {
+    const value = process.env.ADMIN_SECRET;
+    if (!value) {
+      throw new Error(
+        'Missing required environment variable ADMIN_SECRET. Refusing to run: ' +
+          'session tokens cannot be signed or verified without it.'
+      );
+    }
+    cachedKey = new TextEncoder().encode(value);
+  }
+  return cachedKey;
+}
+
+// Fail fast at module load rather than at the first login. Skipped during
+// `next build`, which evaluates this module while collecting page data and has
+// no access to deployment secrets.
+if (process.env.NEXT_PHASE !== 'phase-production-build') {
+  getSecretKey();
+}
 
 export interface AdminSession {
   id: string;
@@ -25,7 +44,7 @@ export async function createSession(user: AdminSession): Promise<string> {
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
-    .sign(secretKey);
+    .sign(getSecretKey());
 
   return token;
 }
@@ -37,7 +56,7 @@ export async function getSession(): Promise<AdminSession | null> {
   if (!token) return null;
 
   try {
-    const { payload } = await jwtVerify(token, secretKey);
+    const { payload } = await jwtVerify(token, getSecretKey());
     return payload as unknown as AdminSession;
   } catch {
     return null;
