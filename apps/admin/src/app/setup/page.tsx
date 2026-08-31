@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function AdminSetupPage() {
@@ -8,26 +8,9 @@ export default function AdminSetupPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [setupToken, setSetupToken] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [checking, setChecking] = useState(true);
-
-  useEffect(() => {
-    async function checkSetup() {
-      try {
-        const res = await fetch('/api/auth/setup');
-        const data = await res.json();
-        if (!data.setupRequired) {
-          router.replace('/login');
-        }
-      } catch {
-        // If check fails, still show form — the POST will handle it
-      } finally {
-        setChecking(false);
-      }
-    }
-    checkSetup();
-  }, [router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -37,14 +20,21 @@ export default function AdminSetupPage() {
     try {
       const res = await fetch('/api/auth/setup', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-setup-token': setupToken,
+        },
         body: JSON.stringify({ email, password, name }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Setup failed');
+        setError(
+          res.status === 404
+            ? 'Setup is disabled or the setup token is incorrect.'
+            : data.error || 'Setup failed'
+        );
         return;
       }
 
@@ -54,14 +44,6 @@ export default function AdminSetupPage() {
     } finally {
       setLoading(false);
     }
-  }
-
-  if (checking) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-        <p className="text-gray-600 dark:text-gray-400">Checking setup status...</p>
-      </div>
-    );
   }
 
   return (
@@ -84,6 +66,24 @@ export default function AdminSetupPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="setupToken" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Setup token
+              </label>
+              <input
+                type="password"
+                id="setupToken"
+                value={setupToken}
+                onChange={(e) => setSetupToken(e.target.value)}
+                required
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                placeholder="ADMIN_SETUP_TOKEN"
+              />
+              <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                The value of ADMIN_SETUP_TOKEN in the deployment environment.
+              </p>
+            </div>
+
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Name
