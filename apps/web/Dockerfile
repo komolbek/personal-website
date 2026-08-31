@@ -69,7 +69,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/sta
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
 
-# Prisma schema for db push on startup
+# Prisma schema + migrations for `prisma migrate deploy` on startup
 COPY --from=builder /app/packages/db/prisma ./prisma
 
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/start.sh ./start.sh

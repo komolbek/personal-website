@@ -1,10 +1,13 @@
 #!/bin/sh
-echo "Starting Necto Admin..."
+set -e
 
-if [ -n "$DATABASE_URL" ]; then
-  echo "Running database sync..."
-  prisma db push --schema=./prisma/schema.prisma --skip-generate --accept-data-loss || echo "Migration failed, continuing..."
+if [ -z "$DATABASE_URL" ]; then
+  echo "ERROR: DATABASE_URL is not set. Refusing to start."
+  exit 1
 fi
+
+echo "Applying database migrations..."
+prisma migrate deploy --schema=./prisma/schema.prisma
 
 echo "Starting server..."
 # In monorepo standalone output, server.js is under apps/<name>/

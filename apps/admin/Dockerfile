@@ -56,7 +56,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/static ./.next/s
 # .prisma/client directory from the builder's pnpm store.
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/.prisma/client ./node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/.prisma/client
 
-# Prisma schema for db push on startup
+# Prisma schema + migrations for `prisma migrate deploy` on startup
 COPY --from=builder /app/packages/db/prisma ./prisma
 
 # Start script
