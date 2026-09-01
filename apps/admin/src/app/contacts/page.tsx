@@ -72,16 +72,16 @@ export default async function ContactsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
           Contact Submissions
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          View and manage contact form submissions
           {unreadCount > 0 && (
-            <span className="ml-2 px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-sm rounded">
+            <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-sm font-medium rounded">
               {unreadCount} unread
             </span>
           )}
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          View and manage contact form submissions
         </p>
       </div>
 
