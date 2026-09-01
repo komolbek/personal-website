@@ -17,8 +17,10 @@ const navItems = [
 
 export default function AdminLayout({
   children,
+  unreadContacts = 0,
 }: {
   children: React.ReactNode;
+  unreadContacts?: number;
 }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -71,6 +73,11 @@ export default function AdminLayout({
               >
                 <span>{item.icon}</span>
                 <span className="font-medium">{item.label}</span>
+                {item.href === '/contacts' && unreadContacts > 0 && (
+                  <span className="ml-auto px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                    {unreadContacts}
+                  </span>
+                )}
               </Link>
             ))}
           </nav>
