@@ -6,10 +6,6 @@ export const dynamic = 'force-dynamic';
 
 const INTAKE_SECRET_HEADER = 'x-intake-secret';
 
-// Enquiries from necto.uz are not tied to any of the SaaS products, but a lead
-// must belong to one and Hub lists leads only underneath a product.
-const WEBSITE_PRODUCT_SLUG = 'necto';
-
 interface IntakePayload {
   name?: unknown;
   phone?: unknown;
@@ -47,15 +43,14 @@ function str(value: unknown): string | null {
   return typeof value === 'string' && value.trim() ? value.trim() : null;
 }
 
-// HubLead has no columns for email, service, budget or campaign data. The
-// queryable copy of all of it stays on the website's ContactSubmission; what
-// lands here is what the founder needs to read when working the lead.
+// HubProject has no columns for email, budget or campaign data, so the detail
+// that does not map to a column is written where the founder reads it when
+// working the enquiry. The queryable copy stays on ContactSubmission.
 function buildNotes(payload: IntakePayload, message: string): string {
   const lines = [message, ''];
 
   const detail: [string, string | null][] = [
     ['Email', str(payload.email)],
-    ['Service', str(payload.service)],
     ['Budget', str(payload.budget)],
     ['Campaign source', str(payload.utmSource)],
     ['Campaign medium', str(payload.utmMedium)],
@@ -91,35 +86,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const product = await prisma.hubProduct.findUnique({
-      where: { slug: WEBSITE_PRODUCT_SLUG },
-      select: { id: true },
-    });
-
-    if (!product) {
-      console.error(
-        `Lead intake failed: no hub product with slug "${WEBSITE_PRODUCT_SLUG}".`
-      );
-      return NextResponse.json(
-        { error: 'Website product missing' },
-        { status: 500 }
-      );
-    }
-
-    const lead = await prisma.hubLead.create({
+    // An enquiry from the website is bespoke work, not a prospect for one of
+    // the SaaS products: HubLead belongs to a product and becomes a subscriber
+    // with a plan and a monthly fee, which is not what these are. HubProject
+    // already models this — it starts at LEAD and carries the enquiry through
+    // proposal, quotes and delivery.
+    const project = await prisma.hubProject.create({
       data: {
-        productId: product.id,
-        // The lead is the company where one is named; the person is the contact.
+        // The company when the enquiry names one; the person otherwise.
         name: str(payload.company) || name,
-        contactPerson: name,
-        phone,
-        source: 'WEBSITE',
+        status: 'LEAD',
+        type: str(payload.service),
+        clientContact: name,
+        clientPhone: phone,
+        referralSource: str(payload.utmSource) || str(payload.referrer) || 'necto.uz',
         notes: buildNotes(payload, message),
       },
       select: { id: true },
     });
 
-    return NextResponse.json({ id: lead.id }, { status: 201 });
+    return NextResponse.json({ id: project.id }, { status: 201 });
   } catch (error) {
     console.error('Lead intake error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

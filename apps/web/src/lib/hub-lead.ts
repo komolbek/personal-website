@@ -23,9 +23,11 @@ export interface WebsiteLeadInput {
 // saved, so the request is abandoned rather than held open.
 const REQUEST_TIMEOUT_MS = 5000;
 
-// Returns the created lead id, or null when no lead could be created. Callers
-// must not fail the contact submission on null: a lost Hub lead is recoverable
-// from ContactSubmission, a lost enquiry is not.
+// Returns the id of the record Hub created, or null when it could not be
+// created. Callers must not fail the contact submission on null: a lost Hub
+// record is recoverable from ContactSubmission, a lost enquiry is not.
+// Hub records these as projects in LEAD status — bespoke work, not a prospect
+// for one of the SaaS products.
 export async function createHubLeadFromWebsite(
   input: WebsiteLeadInput
 ): Promise<string | null> {
