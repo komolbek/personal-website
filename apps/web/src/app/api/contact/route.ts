@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { createHubLeadFromWebsite } from '@/lib/hub-lead';
+import { notifyNewEnquiry } from '@/lib/telegram-notify';
 
 export const dynamic = 'force-dynamic';
 
@@ -65,8 +66,9 @@ export async function POST(request: NextRequest) {
     // The enquiry is already durable at this point. Hub is a separate concern:
     // if it fails, the submission still stands and can be entered by hand, so
     // the failure is logged rather than surfaced to the visitor.
+    let hubProjectId: string | null = null;
     try {
-      await createHubLeadFromWebsite({
+      hubProjectId = await createHubLeadFromWebsite({
         name,
         phone,
         message,
@@ -83,6 +85,27 @@ export async function POST(request: NextRequest) {
       });
     } catch (hubError) {
       console.error('Contact submission saved but Hub lead creation failed:', hubError);
+    }
+
+    // Notify separately from Hub, and never conditionally on it: an enquiry
+    // that failed to reach Hub is the one most likely to be missed, so it is
+    // the one most worth a message. Failing to notify does not fail the
+    // submission either — the enquiry is already durable.
+    try {
+      await notifyNewEnquiry({
+        name,
+        phone,
+        message,
+        email,
+        company,
+        service,
+        budget,
+        utmSource,
+        referrer,
+        hubProjectId,
+      });
+    } catch (telegramError) {
+      console.error('Contact submission saved but Telegram notification failed:', telegramError);
     }
 
     // Log for development
