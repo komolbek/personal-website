@@ -10,8 +10,6 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json ./
 COPY apps/hub/package.json ./apps/hub/package.json
 COPY packages/db/package.json ./packages/db/package.json
 COPY packages/db-hub/package.json ./packages/db-hub/package.json
-COPY packages/types/package.json ./packages/types/package.json
-COPY packages/validators/package.json ./packages/validators/package.json
 
 RUN pnpm install --frozen-lockfile
 
@@ -26,8 +24,6 @@ COPY --from=deps /app/apps/hub/node_modules ./apps/hub/node_modules
 COPY --from=deps /app/packages/db-hub/node_modules ./packages/db-hub/node_modules
 
 COPY packages/db-hub ./packages/db-hub
-COPY packages/types ./packages/types
-COPY packages/validators ./packages/validators
 COPY apps/hub ./apps/hub
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json ./
 

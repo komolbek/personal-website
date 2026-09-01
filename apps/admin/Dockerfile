@@ -9,8 +9,6 @@ RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json ./
 COPY apps/admin/package.json ./apps/admin/package.json
 COPY packages/db/package.json ./packages/db/package.json
-COPY packages/types/package.json ./packages/types/package.json
-COPY packages/validators/package.json ./packages/validators/package.json
 
 RUN pnpm install --frozen-lockfile
 
@@ -25,8 +23,6 @@ COPY --from=deps /app/apps/admin/node_modules ./apps/admin/node_modules
 COPY --from=deps /app/packages/db/node_modules ./packages/db/node_modules
 
 COPY packages/db ./packages/db
-COPY packages/types ./packages/types
-COPY packages/validators ./packages/validators
 COPY apps/admin ./apps/admin
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json ./
 
