@@ -113,7 +113,13 @@ export default async function ProjectsPage() {
               </thead>
               <tbody>
                 {projects.map((project) => {
-                  const received = project.payments.reduce((s, p) => s + p.amount, 0);
+                  // Only payments in the project's own currency count towards
+                  // what it has received. Adding a UZS payment to a USD price
+                  // produces a figure that means nothing, and the row already
+                  // states the price in one currency.
+                  const received = project.payments
+                    .filter((p) => p.currency === project.currency)
+                    .reduce((s, p) => s + p.amount, 0);
                   const outstanding = (project.totalPrice || 0) - received;
                   const days = daysUntil(project.deadline);
 
@@ -135,9 +141,15 @@ export default async function ProjectsPage() {
                       <td className="p-3">
                         <StatusBadge status={project.status} />
                       </td>
-                      <td className="p-3">{formatCurrency(project.totalPrice || 0)}</td>
-                      <td className="p-3 text-green-600">{formatCurrency(received)}</td>
-                      <td className="p-3 text-amber-600">{formatCurrency(outstanding > 0 ? outstanding : 0)}</td>
+                      <td className="p-3">
+                        {formatCurrency(project.totalPrice || 0, project.currency)}
+                      </td>
+                      <td className="p-3 text-green-600">
+                        {formatCurrency(received, project.currency)}
+                      </td>
+                      <td className="p-3 text-amber-600">
+                        {formatCurrency(outstanding > 0 ? outstanding : 0, project.currency)}
+                      </td>
                       <td className="p-3">
                         {project.deadline ? (
                           <span className={days !== null && days < 7 && days >= 0 ? 'text-red-600 font-medium' : ''}>
