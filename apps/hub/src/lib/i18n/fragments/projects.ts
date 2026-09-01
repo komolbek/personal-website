@@ -4,6 +4,7 @@ export const en: Dictionary = {
   // Projects list & page
   'projects.title': 'Projects',
   'projects.subtitle': 'Client projects and engagements',
+  'projects.newEnquiries': '{count} new',
   'projects.newProject': 'New Project',
   'projects.emptyTitle': 'No projects yet',
   'projects.emptyDescription': 'Create your first project to start tracking work.',
@@ -112,6 +113,7 @@ export const ru: Dictionary = {
   // Projects list & page
   'projects.title': 'Проекты',
   'projects.subtitle': 'Клиентские проекты и работы',
+  'projects.newEnquiries': '{count} новых',
   'projects.newProject': 'Новый проект',
   'projects.emptyTitle': 'Пока нет проектов',
   'projects.emptyDescription': 'Создайте первый проект, чтобы начать вести учёт работ.',

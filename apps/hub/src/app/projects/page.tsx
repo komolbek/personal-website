@@ -66,11 +66,23 @@ export default async function ProjectsPage() {
     orderBy: { createdAt: 'desc' },
   });
 
+  // Enquiries from the website arrive as projects in LEAD status. They are the
+  // ones nobody has worked yet, so they are counted in the heading and tinted
+  // in the table rather than being left to blend into finished work.
+  const newEnquiries = projects.filter((p) => p.status === 'LEAD').length;
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">{t('projects.title')}</h1>
+          <h1 className="text-2xl font-bold flex items-center gap-3">
+            {t('projects.title')}
+            {newEnquiries > 0 && (
+              <span className="px-2 py-0.5 rounded text-sm font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                {t('projects.newEnquiries', { count: newEnquiries })}
+              </span>
+            )}
+          </h1>
           <p className="text-muted-foreground">{t('projects.subtitle')}</p>
         </div>
         {['ADMIN', 'MANAGER'].includes(session.role) && (
@@ -106,7 +118,12 @@ export default async function ProjectsPage() {
                   const days = daysUntil(project.deadline);
 
                   return (
-                    <tr key={project.id} className="border-b hover:bg-muted/30">
+                    <tr
+                      key={project.id}
+                      className={`border-b hover:bg-muted/30 ${
+                        project.status === 'LEAD' ? 'bg-amber-50/50 dark:bg-amber-900/10' : ''
+                      }`}
+                    >
                       <td className="p-3">
                         <Link href={`/projects/${project.id}`} className="font-medium text-primary hover:underline">
                           {project.name}
