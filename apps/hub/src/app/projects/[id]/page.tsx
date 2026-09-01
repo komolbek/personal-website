@@ -162,7 +162,17 @@ async function deleteProject(formData: FormData) {
   if (!session || session.role !== 'ADMIN') return;
 
   const id = formData.get('id') as string;
-  await prisma.hubProject.delete({ where: { id } });
+
+  // Milestones cascade. The contract does not — its projectId is required, so
+  // the delete would fail on the foreign key — and it means nothing without
+  // its project, so it goes too. Quotes and payments hold their project
+  // optionally and are detached rather than destroyed: money records outlive
+  // the project they were raised against.
+  await prisma.$transaction([
+    prisma.hubContract.deleteMany({ where: { projectId: id } }),
+    prisma.hubProject.delete({ where: { id } }),
+  ]);
+
   redirect('/projects');
 }
 
@@ -397,14 +407,20 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               </div>
               <div className="sm:col-span-2 flex items-center gap-2">
                 <Button type="submit" size="sm">{t('common.saveChanges')}</Button>
-                {session.role === 'ADMIN' && (
-                  <form action={deleteProject}>
-                    <input type="hidden" name="id" value={project.id} />
-                    <Button type="submit" variant="destructive" size="sm">{t('projects.deleteProject')}</Button>
-                  </form>
-                )}
               </div>
             </form>
+
+            {/* Kept outside the edit form: a form nested inside another is
+                invalid HTML, so the browser dropped it and this button
+                submitted the edit action instead of deleting anything. */}
+            {session.role === 'ADMIN' && (
+              <form action={deleteProject} className="mt-6 pt-4 border-t">
+                <input type="hidden" name="id" value={project.id} />
+                <Button type="submit" variant="destructive" size="sm">
+                  {t('projects.deleteProject')}
+                </Button>
+              </form>
+            )}
           </CardContent>
         </Card>
 
