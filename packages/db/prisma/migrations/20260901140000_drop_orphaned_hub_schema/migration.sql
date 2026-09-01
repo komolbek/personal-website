@@ -1,0 +1,11 @@
+-- Necto Hub moved to its own database. Its tables were left in place here as
+-- the rollback for that cutover: nothing has read or written them since, and
+-- their contents were verified row-for-row against the new database before and
+-- after the move.
+--
+-- The website's schema.prisma has not described these tables since the split,
+-- so Prisma would never have generated this itself. Dropping them is
+-- deliberate rather than inferred from the schema.
+--
+-- IF EXISTS because a database created after the split never had them.
+DROP SCHEMA IF EXISTS "hub" CASCADE;
