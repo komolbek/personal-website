@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/layout/Sidebar';
 import { getSession } from '@/lib/auth';
 import { I18nProvider } from '@/components/i18n/I18nProvider';
 import { getLocale, getDictionary } from '@/lib/i18n/server';
+import prisma from '@/lib/prisma';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -39,9 +40,20 @@ async function AppShell({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
+  // Website enquiries arrive as projects in LEAD status. Counting them here
+  // lets the sidebar show how many are waiting from anywhere in Hub; the
+  // sidebar is a client component and cannot read this itself. A failure to
+  // read it falls back to zero rather than taking the whole shell down.
+  let newEnquiries = 0;
+  try {
+    newEnquiries = await prisma.hubProject.count({ where: { status: 'LEAD' } });
+  } catch {
+    newEnquiries = 0;
+  }
+
   return (
     <div className="min-h-screen">
-      <Sidebar />
+      <Sidebar newEnquiries={newEnquiries} />
       <main className="lg:pl-64">
         <div className="p-6 lg:p-8 pt-16 lg:pt-8">{children}</div>
       </main>

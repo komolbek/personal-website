@@ -29,7 +29,7 @@ const navItems = [
   { href: '/settings', labelKey: 'nav.settings', icon: Settings },
 ];
 
-export function Sidebar() {
+export function Sidebar({ newEnquiries = 0 }: { newEnquiries?: number }) {
   const pathname = usePathname();
   const { t } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -64,6 +64,18 @@ export function Sidebar() {
           >
             <item.icon className="h-4 w-4" />
             {t(item.labelKey)}
+            {item.href === '/projects' && newEnquiries > 0 && (
+              <span
+                className={cn(
+                  'ml-auto rounded-full px-2 py-0.5 text-xs font-semibold',
+                  isActive(item.href)
+                    ? 'bg-primary-foreground/20 text-primary-foreground'
+                    : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
+                )}
+              >
+                {newEnquiries}
+              </span>
+            )}
           </Link>
         ))}
       </div>
