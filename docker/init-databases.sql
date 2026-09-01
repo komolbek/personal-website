@@ -1,0 +1,12 @@
+-- The public site and Necto Hub use separate databases on the same local
+-- Postgres, matching DATABASE_URL and HUB_DATABASE_URL in .env.example.
+--
+-- POSTGRES_DB creates `necto`; a second database has to be created by hand,
+-- as the image only takes one. This runs once, when the data directory is
+-- first initialised — an existing postgres_data volume will not pick it up,
+-- so an older local volume needs `docker compose down -v` to be recreated.
+--
+-- The `hub` schema inside necto_hub is deliberately NOT created here.
+-- packages/db-hub's 0_init migration creates it, which keeps it owned by the
+-- migration history rather than split between here and Prisma.
+CREATE DATABASE necto_hub;
