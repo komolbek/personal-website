@@ -1,4 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+// Hub's client is generated to ../generated/client so it cannot collide with
+// the public site's client. Importing '@prisma/client' here would silently
+// resolve to the website's client, where none of these models exist.
+import { PrismaClient } from '../generated/client';
 import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
