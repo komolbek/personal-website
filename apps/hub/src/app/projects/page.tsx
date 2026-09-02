@@ -5,51 +5,10 @@ import { StatusBadge } from '@/components/shared/StatusBadge';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { formatCurrency, formatDate, daysUntil } from '@/lib/utils';
 import Link from 'next/link';
-import { revalidatePath } from 'next/cache';
 import { FolderKanban } from 'lucide-react';
-import { logActivity } from '@/lib/activity';
 import { getServerT, getLocale } from '@/lib/i18n/server';
 import { ProjectFormDialog } from './ProjectFormDialog';
-
-async function createProject(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || !['ADMIN', 'MANAGER'].includes(session.role)) return;
-
-  const name = formData.get('name') as string;
-  const clientContact = (formData.get('clientContact') as string)?.trim() || null;
-  const clientPhone = (formData.get('clientPhone') as string)?.trim() || null;
-
-  const project = await prisma.hubProject.create({
-    data: {
-      name,
-      type: (formData.get('type') as string) || null,
-      status: (formData.get('status') as any) || 'LEAD',
-      clientContact,
-      clientPhone,
-      totalPrice: formData.get('totalPrice') ? parseFloat(formData.get('totalPrice') as string) : null,
-      currency: (formData.get('currency') as any) || 'USD',
-      notes: (formData.get('notes') as string) || null,
-    },
-  });
-
-  // Auto-create contact from project client info
-  if (clientContact) {
-    const existing = await prisma.hubContact.findFirst({ where: { name: clientContact } });
-    if (!existing) {
-      await prisma.hubContact.create({
-        data: {
-          name: clientContact,
-          phone: clientPhone,
-          type: 'CLIENT',
-        },
-      });
-    }
-  }
-
-  await logActivity('created', 'project', project.id, name);
-  revalidatePath('/projects');
-}
+import { createProject } from '@/lib/project-actions';
 
 export default async function ProjectsPage() {
   const session = await getSession();

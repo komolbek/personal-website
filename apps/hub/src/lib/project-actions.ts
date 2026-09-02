@@ -251,3 +251,44 @@ export async function updateContractStatus(formData: FormData) {
   await prisma.hubContract.update({ where: { id }, data: updateData });
   revalidatePath(`/projects/${projectId}`);
 }
+
+// --- Action for the projects list page ---
+
+export async function createProject(formData: FormData) {
+  const session = await getSession();
+  requireRole(session, EDITORS);
+
+  const name = formData.get('name') as string;
+  const clientContact = (formData.get('clientContact') as string)?.trim() || null;
+  const clientPhone = (formData.get('clientPhone') as string)?.trim() || null;
+
+  const project = await prisma.hubProject.create({
+    data: {
+      name,
+      type: (formData.get('type') as string) || null,
+      status: (formData.get('status') as any) || 'LEAD',
+      clientContact,
+      clientPhone,
+      totalPrice: formData.get('totalPrice') ? parseFloat(formData.get('totalPrice') as string) : null,
+      currency: (formData.get('currency') as any) || 'USD',
+      notes: (formData.get('notes') as string) || null,
+    },
+  });
+
+  // Auto-create contact from project client info
+  if (clientContact) {
+    const existing = await prisma.hubContact.findFirst({ where: { name: clientContact } });
+    if (!existing) {
+      await prisma.hubContact.create({
+        data: {
+          name: clientContact,
+          phone: clientPhone,
+          type: 'CLIENT',
+        },
+      });
+    }
+  }
+
+  await logActivity('created', 'project', project.id, name);
+  revalidatePath('/projects');
+}
