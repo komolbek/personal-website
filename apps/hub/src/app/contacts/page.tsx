@@ -4,41 +4,10 @@ import prisma from '@/lib/prisma';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { StatusBadge } from '@/components/shared/StatusBadge';
-import { revalidatePath } from 'next/cache';
 import { Users } from 'lucide-react';
 import { ContactFormDialog } from './ContactFormDialog';
 import { getServerT } from '@/lib/i18n/server';
-
-async function createContact(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role === 'VIEWER') return;
-
-  await prisma.hubContact.create({
-    data: {
-      name: formData.get('name') as string,
-      company: (formData.get('company') as string) || null,
-      role: (formData.get('role') as string) || null,
-      phone: (formData.get('phone') as string) || null,
-      email: (formData.get('email') as string) || null,
-      telegram: (formData.get('telegram') as string) || null,
-      type: (formData.get('type') as any) || 'POTENTIAL',
-      source: (formData.get('source') as any) || 'OTHER',
-      notes: (formData.get('notes') as string) || null,
-    },
-  });
-
-  revalidatePath('/contacts');
-}
-
-async function deleteContact(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  await prisma.hubContact.delete({ where: { id: formData.get('id') as string } });
-  revalidatePath('/contacts');
-}
+import { createContact, deleteContact } from '@/lib/contact-actions';
 
 export default async function ContactsPage() {
   const session = await getSession();
