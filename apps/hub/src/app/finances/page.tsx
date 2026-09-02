@@ -5,69 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { formatCurrency, formatDate, intlLocale } from '@/lib/utils';
-import { revalidatePath } from 'next/cache';
 import { DollarSign, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react';
 import { RevenueChart } from '@/components/charts/RevenueChart';
 import { CategoryPieChart } from '@/components/charts/CategoryPieChart';
 import { TransactionDialog } from './TransactionDialog';
+import { addPayment, deletePayment, runOverdueCheck } from '@/lib/finance-actions';
 import { getServerT, getLocale } from '@/lib/i18n/server';
 import type { Locale } from '@/lib/i18n/config';
-
-async function addPayment(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  await prisma.hubPayment.create({
-    data: {
-      type: formData.get('type') as any,
-      amount: parseFloat(formData.get('amount') as string),
-      currency: (formData.get('currency') as any) || 'USD',
-      category: formData.get('category') as any,
-      description: formData.get('description') as string,
-      date: formData.get('date') ? new Date(formData.get('date') as string) : new Date(),
-      recurring: formData.get('recurring') === 'on',
-      recurringInterval: formData.get('recurringInterval') as any || null,
-      projectId: (formData.get('projectId') as string) || null,
-      productId: (formData.get('productId') as string) || null,
-      notes: (formData.get('notes') as string) || null,
-    },
-  });
-
-  revalidatePath('/finances');
-}
-
-async function deletePayment(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  await prisma.hubPayment.delete({ where: { id: formData.get('id') as string } });
-  revalidatePath('/finances');
-}
-
-async function runOverdueCheck() {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-  await prisma.hubClient.updateMany({
-    where: {
-      paymentStatus: 'ACTIVE',
-      monthlyFee: { gt: 0 },
-      OR: [
-        { lastPayment: { lt: thirtyDaysAgo } },
-        { lastPayment: null, startDate: { lt: thirtyDaysAgo } },
-      ],
-    },
-    data: { paymentStatus: 'OVERDUE' },
-  });
-
-  revalidatePath('/finances');
-}
 
 // Amounts are stored per payment in their own currency and there is no
 // exchange rate anywhere in the schema. Adding a UZS amount to a USD one
