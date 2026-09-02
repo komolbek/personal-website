@@ -375,22 +375,26 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                               <Download className="h-3 w-3 mr-1" /> PDF
                             </Button>
                           </a>
-                          <form action={updateQuoteStatus} className="flex items-center gap-1">
-                            <input type="hidden" name="id" value={quote.id} />
-                            <input type="hidden" name="projectId" value={project.id} />
-                            <Select
-                              name="status"
-                              defaultValue={quote.status}
-                              options={[
-                                { value: 'DRAFT', label: t('enum.DRAFT') },
-                                { value: 'SENT', label: t('enum.SENT') },
-                                { value: 'ACCEPTED', label: t('enum.ACCEPTED') },
-                                { value: 'REJECTED', label: t('enum.REJECTED') },
-                              ]}
-                              className="h-7 text-xs w-24"
-                            />
-                            <Button type="submit" size="sm" variant="ghost" className="h-7 text-xs">{t('projects.update')}</Button>
-                          </form>
+                          {/* Viewers still see the quote's status in its own
+                              column; they just cannot change it. */}
+                          {isEditor && (
+                            <form action={updateQuoteStatus} className="flex items-center gap-1">
+                              <input type="hidden" name="id" value={quote.id} />
+                              <input type="hidden" name="projectId" value={project.id} />
+                              <Select
+                                name="status"
+                                defaultValue={quote.status}
+                                options={[
+                                  { value: 'DRAFT', label: t('enum.DRAFT') },
+                                  { value: 'SENT', label: t('enum.SENT') },
+                                  { value: 'ACCEPTED', label: t('enum.ACCEPTED') },
+                                  { value: 'REJECTED', label: t('enum.REJECTED') },
+                                ]}
+                                className="h-7 text-xs w-24"
+                              />
+                              <Button type="submit" size="sm" variant="ghost" className="h-7 text-xs">{t('projects.update')}</Button>
+                            </form>
+                          )}
                         </div>
                       </td>
                     </tr>

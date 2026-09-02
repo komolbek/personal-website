@@ -21,11 +21,6 @@ import { logActivity } from '@/lib/activity';
 const EDITORS: HubUserRole[] = ['ADMIN', 'MANAGER'];
 // Destructive or contractual changes.
 const ADMINS: HubUserRole[] = ['ADMIN'];
-// Any signed-in user. Preserves updateQuoteStatus's existing behaviour, which
-// is the odd one out: every other mutation here requires an editor. Left as
-// found deliberately — tightening it also means hiding the control, which is
-// a separate change.
-const ANY_ROLE: HubUserRole[] = ['ADMIN', 'MANAGER', 'VIEWER'];
 
 export async function updateProject(formData: FormData) {
   const session = await getSession();
@@ -205,9 +200,12 @@ export async function createQuote(formData: FormData) {
   revalidatePath(`/projects/${projectId}`);
 }
 
+// Accepting or rejecting a quote is a commercial decision, so it takes an
+// editor like every other mutation here. It previously checked only for a
+// session, which let a viewer move a quote to ACCEPTED.
 export async function updateQuoteStatus(formData: FormData) {
   const session = await getSession();
-  requireRole(session, ANY_ROLE);
+  requireRole(session, EDITORS);
 
   const id = formData.get('id') as string;
   const projectId = formData.get('projectId') as string;
