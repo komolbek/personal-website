@@ -11,7 +11,7 @@ export default defineRailway(() => {
   const postgresVolumeV8bM = volume("postgres-volume-v8bM", { alerts: { usage: { "100": {}, "80": {}, "95": {} } }, allowOnlineResize: true, region: "us-west2", sizeMB: 50000 });
   const Necto = service("Necto", {
     source: personalWebsite,
-    build: { buildEnvironment: "V3", builder: "DOCKERFILE", dockerfilePath: "/apps/web/Dockerfile" },
+    build: { buildEnvironment: "V3", builder: "DOCKERFILE", dockerfilePath: "/apps/web/Dockerfile", watchPatterns: ["apps/web/**", "packages/db/**", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "turbo.json"] },
     replicas: { "us-west2": 1 },
     deploy: { sleepApplication: true },
     domains: ["necto.uz"],
@@ -20,7 +20,7 @@ export default defineRailway(() => {
   });
   const NectoAdmin = service("Necto Admin", {
     source: personalWebsite,
-    build: { buildEnvironment: "V3", builder: "DOCKERFILE", dockerfilePath: "/apps/admin/Dockerfile" },
+    build: { buildEnvironment: "V3", builder: "DOCKERFILE", dockerfilePath: "/apps/admin/Dockerfile", watchPatterns: ["apps/admin/**", "packages/db/**", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "turbo.json"] },
     replicas: { "us-west2": 1 },
     deploy: { sleepApplication: true },
     domains: ["admin.necto.uz"],
@@ -29,7 +29,7 @@ export default defineRailway(() => {
   });
   const NectoHub = service("Necto Hub", {
     source: personalWebsite,
-    build: { buildEnvironment: "V3", builder: "DOCKERFILE", dockerfilePath: "/apps/hub/Dockerfile" },
+    build: { buildEnvironment: "V3", builder: "DOCKERFILE", dockerfilePath: "/apps/hub/Dockerfile", watchPatterns: ["apps/hub/**", "packages/db-hub/**", "packages/db/**", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "turbo.json"] },
     replicas: { "us-west2": 1 },
     deploy: { sleepApplication: true },
     domains: ["hub.necto.uz"],
