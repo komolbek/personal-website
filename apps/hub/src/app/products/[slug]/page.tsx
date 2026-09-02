@@ -10,40 +10,9 @@ import { Select } from '@/components/ui/select';
 import { StatusBadge } from '@/components/shared/StatusBadge';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import Link from 'next/link';
-import { revalidatePath } from 'next/cache';
 import { ArrowLeft, Users, UserCheck, DollarSign } from 'lucide-react';
 import { getServerT, getLocale } from '@/lib/i18n/server';
-
-async function updateProduct(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  const id = formData.get('id') as string;
-  const slug = formData.get('slug') as string;
-
-  await prisma.hubProduct.update({
-    where: { id },
-    data: {
-      name: formData.get('name') as string,
-      status: formData.get('status') as any,
-      description: (formData.get('description') as string) || null,
-      url: (formData.get('url') as string) || null,
-    },
-  });
-
-  revalidatePath(`/products/${slug}`);
-}
-
-async function deleteProduct(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  const id = formData.get('id') as string;
-  await prisma.hubProduct.delete({ where: { id } });
-  redirect('/products');
-}
+import { updateProduct, deleteProduct } from '@/lib/product-actions';
 
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
   const session = await getSession();
