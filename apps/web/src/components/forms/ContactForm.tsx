@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useLocale } from '@/hooks/useLocale';
+import { getAttribution, type Attribution } from '@/lib/attribution';
 import { Button } from '@/components/ui/Button';
 
 declare global {
@@ -9,20 +10,6 @@ declare global {
     fbq?: (...args: unknown[]) => void;
     gtag?: (...args: unknown[]) => void;
   }
-}
-
-/** Read UTM params from the current URL (set by Instagram ads, etc.) */
-function getUtmParams() {
-  if (typeof window === 'undefined') return {};
-  const params = new URLSearchParams(window.location.search);
-  return {
-    utmSource: params.get('utm_source') || '',
-    utmMedium: params.get('utm_medium') || '',
-    utmCampaign: params.get('utm_campaign') || '',
-    utmContent: params.get('utm_content') || '',
-    utmTerm: params.get('utm_term') || '',
-    referrer: document.referrer || '',
-  };
 }
 
 interface FormData {
@@ -105,10 +92,10 @@ export function ContactForm() {
     message: '',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [utmData, setUtmData] = useState<ReturnType<typeof getUtmParams>>({});
+  const [utmData, setUtmData] = useState<Partial<Attribution>>({});
 
   useEffect(() => {
-    setUtmData(getUtmParams());
+    setUtmData(getAttribution());
   }, []);
 
   const handleChange = (

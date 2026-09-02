@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocale } from '@/hooks/useLocale';
+import { getAttribution, type Attribution } from '@/lib/attribution';
 import { BudgetSlider } from '@/components/ui/BudgetSlider';
 import { FadeIn } from '@/components/ui/AnimatedSection';
 
@@ -12,19 +13,6 @@ declare global {
     fbq?: (...args: unknown[]) => void;
     gtag?: (...args: unknown[]) => void;
   }
-}
-
-function getUtmParams() {
-  if (typeof window === 'undefined') return {};
-  const params = new URLSearchParams(window.location.search);
-  return {
-    utmSource: params.get('utm_source') || '',
-    utmMedium: params.get('utm_medium') || '',
-    utmCampaign: params.get('utm_campaign') || '',
-    utmContent: params.get('utm_content') || '',
-    utmTerm: params.get('utm_term') || '',
-    referrer: document.referrer || '',
-  };
 }
 
 const TOTAL_STEPS = 4;
@@ -82,10 +70,10 @@ export default function ContactPage() {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [utmData, setUtmData] = useState<ReturnType<typeof getUtmParams>>({});
+  const [utmData, setUtmData] = useState<Partial<Attribution>>({});
 
   useEffect(() => {
-    setUtmData(getUtmParams());
+    setUtmData(getAttribution());
   }, []);
 
   const [formData, setFormData] = useState({

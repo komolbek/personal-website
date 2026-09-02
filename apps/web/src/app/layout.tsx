@@ -8,6 +8,7 @@ import { siteConfig } from '@/config/site';
 import { LayoutContent } from '@/components/layout/LayoutContent';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { HtmlLangSetter } from '@/components/seo/HtmlLangSetter';
+import { AttributionCapture } from '@/components/AttributionCapture';
 
 // Each snippet renders only when its ID is configured. These are inlined at
 // build time, so they must be set as build args for the deployed image — see
@@ -171,6 +172,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
       >
         <JsonLd />
+        <AttributionCapture />
         <LocaleProvider>
           <HtmlLangSetter />
           <LayoutContent>{children}</LayoutContent>
