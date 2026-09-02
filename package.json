@@ -16,6 +16,7 @@
     "db:studio:hub": "pnpm --filter @necto/db-hub db:studio"
   },
   "devDependencies": {
+    "railway": "^3.11.0",
     "turbo": "^2.3.0"
   },
   "packageManager": "pnpm@9.15.0"

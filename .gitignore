@@ -31,8 +31,10 @@ yarn-error.log*
 # vercel
 .vercel
 
-# railway
-.railway
+# railway — CLI state stays local, the infrastructure-as-code file is tracked
+.railway/*
+!.railway/railway.ts
+!.railway/README.md
 
 # typescript
 *.tsbuildinfo
