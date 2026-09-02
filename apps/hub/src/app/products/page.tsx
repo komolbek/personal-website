@@ -6,38 +6,10 @@ import { Button } from '@/components/ui/button';
 import { StatusBadge } from '@/components/shared/StatusBadge';
 import { EmptyState } from '@/components/shared/EmptyState';
 import Link from 'next/link';
-import { revalidatePath } from 'next/cache';
 import { Package, Users, UserCheck } from 'lucide-react';
 import { ProductFormDialog } from './ProductFormDialog';
 import { getServerT } from '@/lib/i18n/server';
-
-async function createProduct(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  const name = formData.get('name') as string;
-  const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-  const status = formData.get('status') as 'ACTIVE' | 'PARKED' | 'ARCHIVED';
-  const description = formData.get('description') as string;
-  const url = formData.get('url') as string;
-
-  await prisma.hubProduct.create({
-    data: { name, slug, status, description: description || null, url: url || null },
-  });
-
-  revalidatePath('/products');
-}
-
-async function deleteProduct(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  const id = formData.get('id') as string;
-  await prisma.hubProduct.delete({ where: { id } });
-  revalidatePath('/products');
-}
+import { createProduct } from '@/lib/product-actions';
 
 export default async function ProductsPage() {
   const session = await getSession();
