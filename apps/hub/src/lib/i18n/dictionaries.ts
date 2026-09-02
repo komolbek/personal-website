@@ -346,8 +346,9 @@ import * as leadsClients from './fragments/leads-clients';
 import * as financesContacts from './fragments/finances-contacts';
 import * as dashboardShared from './fragments/dashboard-shared';
 import * as pdf from './fragments/pdf';
+import * as errors from './fragments/errors';
 
-const fragments = [projects, products, leadsClients, financesContacts, dashboardShared, pdf];
+const fragments = [projects, products, leadsClients, financesContacts, dashboardShared, pdf, errors];
 
 export const dictionaries: Record<Locale, Dictionary> = {
   ru: Object.assign({}, ru, ...fragments.map((f) => f.ru)),
