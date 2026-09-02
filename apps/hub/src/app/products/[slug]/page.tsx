@@ -131,12 +131,25 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
                 </div>
                 <div className="sm:col-span-2 flex items-center gap-2">
                   <Button type="submit" size="sm">{t('common.saveChanges')}</Button>
-                  <form action={deleteProduct}>
-                    <input type="hidden" name="id" value={product.id} />
-                    <Button type="submit" variant="destructive" size="sm">{t('products.deleteProduct')}</Button>
-                  </form>
                 </div>
               </form>
+
+              {/* Deliberately outside the form above. A form cannot be nested
+                  inside another — the browser drops the inner one, which made
+                  this button submit the update instead of deleting.
+                  Hidden while the product still has leads or clients: those
+                  require a product, so deleting it would have to destroy them
+                  (payments detach instead and survive). */}
+              {product._count.leads === 0 && product._count.clients === 0 ? (
+                <form action={deleteProduct} className="mt-4 pt-4 border-t">
+                  <input type="hidden" name="id" value={product.id} />
+                  <Button type="submit" variant="destructive" size="sm">{t('products.deleteProduct')}</Button>
+                </form>
+              ) : (
+                <p className="mt-4 pt-4 border-t text-xs text-muted-foreground">
+                  {t('products.deleteBlocked')}
+                </p>
+              )}
             </CardContent>
           </Card>
         )}

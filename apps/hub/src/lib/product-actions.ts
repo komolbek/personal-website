@@ -63,6 +63,26 @@ export async function deleteProduct(formData: FormData) {
   requireRole(session, ADMINS);
 
   const id = formData.get('id') as string;
+
+  // Leads and clients hold their product as a required field, so they cannot
+  // be detached the way payments are: deleting the product would have to
+  // destroy them, and CRM history should not disappear as a side effect of
+  // tidying the roster. Refuse instead. The page hides the control while
+  // either count is above zero, so this is a backstop — and until now the
+  // delete failed here anyway, on the foreign key, with nothing to explain it.
+  const [leads, clients] = await Promise.all([
+    prisma.hubLead.count({ where: { productId: id } }),
+    prisma.hubClient.count({ where: { productId: id } }),
+  ]);
+  if (leads > 0 || clients > 0) {
+    throw new Error(
+      `Refusing to delete a product with ${leads} lead(s) and ${clients} client(s) still attached.`
+    );
+  }
+
+  // Payments hold their product optionally, so they detach rather than being
+  // deleted — the money outlives the product it was earned from, the same
+  // rule deleteProject follows.
   await prisma.hubProduct.delete({ where: { id } });
   redirect('/products');
 }
