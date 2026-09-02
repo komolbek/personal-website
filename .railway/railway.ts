@@ -12,6 +12,8 @@ export default defineRailway(() => {
   const Necto = service("Necto", {
     source: personalWebsite,
     build: { buildEnvironment: "V3", builder: "DOCKERFILE", dockerfilePath: "/apps/web/Dockerfile", watchPatterns: ["apps/web/**", "packages/db/**", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "turbo.json"] },
+    healthcheck: "/",
+    healthcheckTimeout: 300,
     replicas: { "us-west2": 1 },
     deploy: { sleepApplication: true },
     domains: ["necto.uz"],
@@ -21,6 +23,8 @@ export default defineRailway(() => {
   const NectoAdmin = service("Necto Admin", {
     source: personalWebsite,
     build: { buildEnvironment: "V3", builder: "DOCKERFILE", dockerfilePath: "/apps/admin/Dockerfile", watchPatterns: ["apps/admin/**", "packages/db/**", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "turbo.json"] },
+    healthcheck: "/login",
+    healthcheckTimeout: 300,
     replicas: { "us-west2": 1 },
     deploy: { sleepApplication: true },
     domains: ["admin.necto.uz"],
@@ -30,6 +34,8 @@ export default defineRailway(() => {
   const NectoHub = service("Necto Hub", {
     source: personalWebsite,
     build: { buildEnvironment: "V3", builder: "DOCKERFILE", dockerfilePath: "/apps/hub/Dockerfile", watchPatterns: ["apps/hub/**", "packages/db-hub/**", "packages/db/**", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "turbo.json"] },
+    healthcheck: "/login",
+    healthcheckTimeout: 300,
     replicas: { "us-west2": 1 },
     deploy: { sleepApplication: true },
     domains: ["hub.necto.uz"],
