@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { ArrowLeft, UserCheck, DollarSign } from 'lucide-react';
 import { AddClientDialog } from './ClientDialogs';
 import { getServerT, getLocale } from '@/lib/i18n/server';
-import { createClient, recordPaymentFromClientList } from '@/lib/client-actions';
+import { createClient, recordPayment } from '@/lib/client-actions';
 
 export default async function ClientsPage({ params }: { params: { slug: string } }) {
   const session = await getSession();
@@ -91,7 +91,7 @@ export default async function ClientsPage({ params }: { params: { slug: string }
                     <td className="p-3">{formatDate(client.lastPayment, locale)}</td>
                     <td className="p-3">
                       {session.role !== 'VIEWER' && (
-                        <form action={recordPaymentFromClientList} className="flex items-center gap-1">
+                        <form action={recordPayment} className="flex items-center gap-1">
                           <input type="hidden" name="clientId" value={client.id} />
                           <input type="hidden" name="slug" value={params.slug} />
                           <Input

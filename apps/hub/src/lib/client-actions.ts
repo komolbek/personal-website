@@ -78,7 +78,12 @@ export async function recordPayment(formData: FormData) {
     data: { lastPayment: new Date(), paymentStatus: 'ACTIVE' },
   });
 
+  // Submitted from either the client's own page or the client list, and it
+  // changes what both show — the payment on the detail page, the client's
+  // last payment and status in the list — so both are revalidated regardless
+  // of where it came from.
   revalidatePath(`/products/${slug}/clients/${clientId}`);
+  revalidatePath(`/products/${slug}/clients`);
 }
 
 export async function deleteClient(formData: FormData) {
@@ -124,47 +129,6 @@ export async function createClient(formData: FormData) {
       startDate: new Date(),
       notes: (formData.get('notes') as string) || null,
     },
-  });
-
-  revalidatePath(`/products/${slug}/clients`);
-}
-
-// Duplicates recordPayment above except for the path it revalidates: this
-// one is submitted from the client list, that one from a client's own page.
-// Worth collapsing into one action, but that is a change to money handling
-// and is left for its own commit.
-export async function recordPaymentFromClientList(formData: FormData) {
-  const session = await getSession();
-  requireRole(session, EDITORS);
-
-  const clientId = formData.get('clientId') as string;
-  const slug = formData.get('slug') as string;
-
-  const client = await prisma.hubClient.findUnique({
-    where: { id: clientId },
-    include: { product: true },
-  });
-
-  if (!client) return;
-
-  const amount = parseFloat(formData.get('amount') as string);
-
-  await prisma.hubPayment.create({
-    data: {
-      type: 'INCOME',
-      amount,
-      currency: client.currency,
-      category: 'PRODUCT_REVENUE',
-      productId: client.productId,
-      clientId: client.id,
-      description: `${client.product.name} - ${client.name} subscription`,
-      date: new Date(),
-    },
-  });
-
-  await prisma.hubClient.update({
-    where: { id: clientId },
-    data: { lastPayment: new Date(), paymentStatus: 'ACTIVE' },
   });
 
   revalidatePath(`/products/${slug}/clients`);
