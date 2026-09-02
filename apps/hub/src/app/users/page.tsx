@@ -1,75 +1,17 @@
-import { getSession, hashPassword } from '@/lib/auth';
+import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { StatusBadge } from '@/components/shared/StatusBadge';
-import { logActivity } from '@/lib/activity';
 import { formatDate } from '@/lib/utils';
 import { ShieldCheck, UserPlus, Users as UsersIcon } from 'lucide-react';
 import { RoleSelect } from './RoleSelect';
+import { createUser, updateUserRole, removeUser } from '@/lib/user-actions';
 import { getServerT, getLocale } from '@/lib/i18n/server';
-import type { HubUserRole } from '@necto/db-hub';
-
-const VALID_ROLES: HubUserRole[] = ['ADMIN', 'MANAGER', 'VIEWER'];
-
-async function createUser(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  const name = (formData.get('name') as string)?.trim();
-  const email = (formData.get('email') as string)?.trim().toLowerCase();
-  const password = formData.get('password') as string;
-  const role = formData.get('role') as HubUserRole;
-
-  if (!name || !email || !password || !VALID_ROLES.includes(role)) return;
-
-  const existing = await prisma.hubUser.findUnique({ where: { email } });
-  if (existing) return; // Email already in use
-
-  const passwordHash = await hashPassword(password);
-  const user = await prisma.hubUser.create({
-    data: { name, email, passwordHash, role },
-  });
-
-  await logActivity('created', 'user', user.id, user.email, `Role: ${role}`);
-  revalidatePath('/users');
-}
-
-async function updateUserRole(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  const id = formData.get('id') as string;
-  const role = formData.get('role') as HubUserRole;
-  if (!VALID_ROLES.includes(role)) return;
-
-  // Don't let an admin strip their own admin rights (avoids locking out the last admin).
-  if (id === session.id && role !== 'ADMIN') return;
-
-  const user = await prisma.hubUser.update({ where: { id }, data: { role } });
-  await logActivity('changed role', 'user', user.id, user.email, `New role: ${role}`);
-  revalidatePath('/users');
-}
-
-async function removeUser(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role !== 'ADMIN') return;
-
-  const id = formData.get('id') as string;
-  if (id === session.id) return; // Can't delete yourself
-
-  const user = await prisma.hubUser.delete({ where: { id } });
-  await logActivity('removed', 'user', user.id, user.email);
-  revalidatePath('/users');
-}
 
 export default async function UsersPage() {
   const session = await getSession();
