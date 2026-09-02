@@ -103,3 +103,69 @@ export async function deletePayment(formData: FormData) {
   await prisma.hubPayment.delete({ where: { id } });
   revalidatePath(`/products/${slug}/clients/${clientId}`);
 }
+
+// --- Actions for the client list page (products/[slug]/clients) ---
+
+export async function createClient(formData: FormData) {
+  const session = await getSession();
+  requireRole(session, EDITORS);
+
+  const slug = formData.get('slug') as string;
+
+  await prisma.hubClient.create({
+    data: {
+      productId: formData.get('productId') as string,
+      name: formData.get('name') as string,
+      contactPerson: (formData.get('contactPerson') as string) || null,
+      phone: (formData.get('phone') as string) || null,
+      plan: (formData.get('plan') as string) || null,
+      monthlyFee: formData.get('monthlyFee') ? parseFloat(formData.get('monthlyFee') as string) : null,
+      currency: (formData.get('currency') as any) || 'USD',
+      startDate: new Date(),
+      notes: (formData.get('notes') as string) || null,
+    },
+  });
+
+  revalidatePath(`/products/${slug}/clients`);
+}
+
+// Duplicates recordPayment above except for the path it revalidates: this
+// one is submitted from the client list, that one from a client's own page.
+// Worth collapsing into one action, but that is a change to money handling
+// and is left for its own commit.
+export async function recordPaymentFromClientList(formData: FormData) {
+  const session = await getSession();
+  requireRole(session, EDITORS);
+
+  const clientId = formData.get('clientId') as string;
+  const slug = formData.get('slug') as string;
+
+  const client = await prisma.hubClient.findUnique({
+    where: { id: clientId },
+    include: { product: true },
+  });
+
+  if (!client) return;
+
+  const amount = parseFloat(formData.get('amount') as string);
+
+  await prisma.hubPayment.create({
+    data: {
+      type: 'INCOME',
+      amount,
+      currency: client.currency,
+      category: 'PRODUCT_REVENUE',
+      productId: client.productId,
+      clientId: client.id,
+      description: `${client.product.name} - ${client.name} subscription`,
+      date: new Date(),
+    },
+  });
+
+  await prisma.hubClient.update({
+    where: { id: clientId },
+    data: { lastPayment: new Date(), paymentStatus: 'ACTIVE' },
+  });
+
+  revalidatePath(`/products/${slug}/clients`);
+}

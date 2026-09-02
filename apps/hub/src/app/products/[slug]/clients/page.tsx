@@ -7,72 +7,10 @@ import { StatusBadge } from '@/components/shared/StatusBadge';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import Link from 'next/link';
-import { revalidatePath } from 'next/cache';
 import { ArrowLeft, UserCheck, DollarSign } from 'lucide-react';
 import { AddClientDialog } from './ClientDialogs';
 import { getServerT, getLocale } from '@/lib/i18n/server';
-
-async function createClient(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role === 'VIEWER') return;
-
-  const slug = formData.get('slug') as string;
-
-  await prisma.hubClient.create({
-    data: {
-      productId: formData.get('productId') as string,
-      name: formData.get('name') as string,
-      contactPerson: (formData.get('contactPerson') as string) || null,
-      phone: (formData.get('phone') as string) || null,
-      plan: (formData.get('plan') as string) || null,
-      monthlyFee: formData.get('monthlyFee') ? parseFloat(formData.get('monthlyFee') as string) : null,
-      currency: (formData.get('currency') as any) || 'USD',
-      startDate: new Date(),
-      notes: (formData.get('notes') as string) || null,
-    },
-  });
-
-  revalidatePath(`/products/${slug}/clients`);
-}
-
-async function recordPayment(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role === 'VIEWER') return;
-
-  const clientId = formData.get('clientId') as string;
-  const slug = formData.get('slug') as string;
-
-  const client = await prisma.hubClient.findUnique({
-    where: { id: clientId },
-    include: { product: true },
-  });
-
-  if (!client) return;
-
-  const amount = parseFloat(formData.get('amount') as string);
-
-  await prisma.hubPayment.create({
-    data: {
-      type: 'INCOME',
-      amount,
-      currency: client.currency,
-      category: 'PRODUCT_REVENUE',
-      productId: client.productId,
-      clientId: client.id,
-      description: `${client.product.name} - ${client.name} subscription`,
-      date: new Date(),
-    },
-  });
-
-  await prisma.hubClient.update({
-    where: { id: clientId },
-    data: { lastPayment: new Date(), paymentStatus: 'ACTIVE' },
-  });
-
-  revalidatePath(`/products/${slug}/clients`);
-}
+import { createClient, recordPaymentFromClientList } from '@/lib/client-actions';
 
 export default async function ClientsPage({ params }: { params: { slug: string } }) {
   const session = await getSession();
@@ -153,7 +91,7 @@ export default async function ClientsPage({ params }: { params: { slug: string }
                     <td className="p-3">{formatDate(client.lastPayment, locale)}</td>
                     <td className="p-3">
                       {session.role !== 'VIEWER' && (
-                        <form action={recordPayment} className="flex items-center gap-1">
+                        <form action={recordPaymentFromClientList} className="flex items-center gap-1">
                           <input type="hidden" name="clientId" value={client.id} />
                           <input type="hidden" name="slug" value={params.slug} />
                           <Input
