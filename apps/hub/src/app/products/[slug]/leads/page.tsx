@@ -5,9 +5,9 @@ import { EmptyState } from '@/components/shared/EmptyState';
 import { KanbanBoard } from '@/components/shared/KanbanBoard';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { revalidatePath } from 'next/cache';
 import { ArrowLeft, Users } from 'lucide-react';
 import { AddLeadDialog } from './LeadDialogs';
+import { createLead } from '@/lib/lead-actions';
 import { getServerT } from '@/lib/i18n/server';
 
 const LEAD_STATUS_VALUES = [
@@ -21,31 +21,6 @@ const LEAD_STATUS_VALUES = [
   'LOST',
 ];
 
-async function createLead(formData: FormData) {
-  'use server';
-  const session = await getSession();
-  if (!session || session.role === 'VIEWER') return;
-
-  const productId = formData.get('productId') as string;
-  const slug = formData.get('slug') as string;
-
-  await prisma.hubLead.create({
-    data: {
-      productId,
-      name: formData.get('name') as string,
-      contactPerson: (formData.get('contactPerson') as string) || null,
-      phone: (formData.get('phone') as string) || null,
-      telegram: (formData.get('telegram') as string) || null,
-      instagram: (formData.get('instagram') as string) || null,
-      source: (formData.get('source') as any) || 'OTHER',
-      status: 'NOT_CONTACTED',
-      notes: (formData.get('notes') as string) || null,
-      followUp: formData.get('followUp') ? new Date(formData.get('followUp') as string) : null,
-    },
-  });
-
-  revalidatePath(`/products/${slug}/leads`);
-}
 
 export default async function LeadsPage({ params }: { params: { slug: string } }) {
   const session = await getSession();
