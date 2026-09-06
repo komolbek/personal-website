@@ -33,6 +33,13 @@ const nextConfig = {
       // it does not, because static segments win over dynamic ones and these
       // are two segments deep.
 
+      // --- renamed work -----------------------------------------------------
+      // 4Event is RentEvent; the old slug was live and indexed. These sit above
+      // the generic /projects/:slug rule below, which would otherwise match
+      // first and send the old URL through a second hop.
+      { source: '/projects/4event', destination: '/works/rentevent', statusCode: 301 },
+      { source: '/works/4event', destination: '/works/rentevent', statusCode: 301 },
+
       // --- product and project detail pages -> /works/<slug> ----------------
       { source: '/solutions/:slug', destination: '/works/:slug', statusCode: 301 },
       { source: '/projects/:slug', destination: '/works/:slug', statusCode: 301 },

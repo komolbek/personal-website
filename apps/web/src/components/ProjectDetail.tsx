@@ -14,7 +14,7 @@ import {
 
 /**
  * One template for every client project, replacing the per-slug components for
- * MemoMind, 4Event and StandAI plus a generic fallback.
+ * MemoMind, RentEvent and StandAI plus a generic fallback.
  *
  * `results` is rendered only when the entry has it. REDESIGN.md §2.2 is still
  * open: several of these carry specific figures with no live link behind them,

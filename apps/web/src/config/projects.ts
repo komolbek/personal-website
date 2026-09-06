@@ -48,11 +48,11 @@ export const projects: Project[] = [
     relatedSolutions: [],
   },
   {
-    slug: '4event',
+    slug: 'rentevent',
     title: {
-      en: '4Event — event equipment rental',
-      ru: '4Event — аренда оборудования для мероприятий',
-      uz: '4Event — tadbirlar uchun jihozlar ijarasi',
+      en: 'RentEvent — event equipment rental',
+      ru: 'RentEvent — аренда оборудования для мероприятий',
+      uz: 'RentEvent — tadbirlar uchun jihozlar ijarasi',
     },
     category: 'ecommerce',
     description: {
@@ -77,11 +77,11 @@ export const projects: Project[] = [
     },
     techStack: ['Next.js', 'React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Prisma', 'Tailwind CSS'],
     images: [
-      '/projects/4event/screenshot-1.png',
-      '/projects/4event/screenshot-2.png',
-      '/projects/4event/screenshot-3.png',
+      '/projects/rentevent/screenshot-1.png',
+      '/projects/rentevent/screenshot-2.png',
+      '/projects/rentevent/screenshot-3.png',
     ],
-    thumbnail: '/projects/4event/screenshot-1.png',
+    thumbnail: '/projects/rentevent/screenshot-1.png',
     links: {
       demo: 'https://raadarenda-production.up.railway.app/orders',
     },
