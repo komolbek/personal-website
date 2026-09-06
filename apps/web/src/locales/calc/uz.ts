@@ -368,6 +368,26 @@ export const calcUz: CalcText = {
     },
   },
 
+  contact: {
+    h1: 'Bizga yozing',
+    lead: "24 soat ichida javob beramiz. Narx kerak bo'lsa — ",
+    leadLink: "uni bir daqiqada o'zingiz hisoblang",
+    leadTail: ', bu tezroq.',
+    contactLabel: 'Telefon yoki Telegram',
+    contactHint: "Javob bera olishimiz uchun shuning o'zi yetarli.",
+    nameLabel: 'Ismingiz',
+    nameOptional: 'ixtiyoriy',
+    messageLabel: 'Vazifangiz nima',
+    messageOptional: 'ixtiyoriy',
+    send: 'Yuborish',
+    sending: 'Yuborilmoqda…',
+    sentTitle: 'Yuborildi',
+    sentBody: 'Xabaringizni oldik va 24 soat ichida javob beramiz.',
+    errorContact: 'Javob bera olishimiz uchun telefon yoki Telegram nikini kiriting.',
+    errorSend: 'Yuborilmadi. Bizga Telegramga yozing — u albatta yetib boradi.',
+    orWrite: "Yoki to'g'ridan-to'g'ri:",
+  },
+
   about: {
     h1: 'Studiya haqida',
     p1: "Necto Automations — Toshkentdagi dasturlar ishlab chiqish studiyasi. Biz kompaniya ishlaydigan dasturlarni yaratamiz: buyurtmalar, ombor, jadval, ish buyurtmalari. Shuningdek saytlar va mobil ilovalar.",

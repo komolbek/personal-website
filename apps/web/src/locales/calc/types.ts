@@ -231,6 +231,27 @@ export interface CalcText {
     categories: Record<string, string>;
   };
 
+  contact: {
+    h1: string;
+    lead: string;
+    /** Link text pointing back at the calculator. */
+    leadLink: string;
+    leadTail: string;
+    contactLabel: string;
+    contactHint: string;
+    nameLabel: string;
+    nameOptional: string;
+    messageLabel: string;
+    messageOptional: string;
+    send: string;
+    sending: string;
+    sentTitle: string;
+    sentBody: string;
+    errorContact: string;
+    errorSend: string;
+    orWrite: string;
+  };
+
   about: {
     h1: string;
     p1: string;

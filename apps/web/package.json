@@ -11,7 +11,6 @@
   "dependencies": {
     "@necto/db": "workspace:*",
     "@prisma/client": "^5.22.0",
-    "framer-motion": "^12.35.1",
     "next": "14.2.35",
     "prisma": "^5.22.0",
     "react": "^18",

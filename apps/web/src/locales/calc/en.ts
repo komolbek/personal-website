@@ -352,6 +352,26 @@ export const calcEn: CalcText = {
     },
   },
 
+  contact: {
+    h1: 'Write to us',
+    lead: 'We reply within 24 hours. If you want a price, ',
+    leadLink: 'work it out yourself in a minute',
+    leadTail: ' — it is faster.',
+    contactLabel: 'Phone or Telegram',
+    contactHint: 'That is all we need in order to reply.',
+    nameLabel: 'Your name',
+    nameOptional: 'optional',
+    messageLabel: 'What you need',
+    messageOptional: 'optional',
+    send: 'Send',
+    sending: 'Sending…',
+    sentTitle: 'Sent',
+    sentBody: 'We have your message and will reply within 24 hours.',
+    errorContact: 'Enter a phone number or a Telegram handle so we can reply.',
+    errorSend: 'It did not send. Message us on Telegram — that always gets through.',
+    orWrite: 'Or reach us directly:',
+  },
+
   about: {
     h1: 'About the studio',
     p1: 'Necto Automations is a software studio in Tashkent. We build the systems a company runs on: enquiries, stock, scheduling, job sheets. Websites and mobile apps too.',
