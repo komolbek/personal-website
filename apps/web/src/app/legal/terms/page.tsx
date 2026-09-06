@@ -162,7 +162,7 @@ export default function TermsPage() {
   const c = content[locale] || content.en;
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4">
+    <div className="min-h-screen pt-10 pb-16 px-4">
       <div className="max-w-3xl mx-auto">
         <Link
           href="/"
@@ -172,7 +172,7 @@ export default function TermsPage() {
         </Link>
 
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          <span className="gradient-text">{c.title}</span>
+          <span className="text-ink">{c.title}</span>
         </h1>
 
         <p className="text-gray-500 mb-8">{c.lastUpdated}</p>

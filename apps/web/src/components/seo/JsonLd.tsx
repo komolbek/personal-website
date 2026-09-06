@@ -1,4 +1,15 @@
 import { siteConfig } from '@/config/site';
+import { ADDONS, PKG, PROGRAM_IDS, SITE_IDS } from '@/config/calculator';
+import { getCalcText } from '@/locales/calc';
+import { siteConfig as site } from '@/config/site';
+
+// Programs before sites, as on /pricing.
+const CATALOG = [...PROGRAM_IDS, ...SITE_IDS];
+
+// Rendered in the root layout, which has no locale context — the switcher is a
+// client-side preference, not a route. Russian is the canonical language, so
+// that is what the markup describes.
+const catalogText = getCalcText(site.defaultLocale);
 
 export function JsonLd() {
   const localBusiness = {
@@ -37,49 +48,42 @@ export function JsonLd() {
     ],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'IT Services',
-      itemListElement: [
-        {
+      name: 'Программы, сайты и приложения',
+      // Almost no studio in Tashkent publishes a fixed price (see
+      // Business/market_analysis_tashkent.md). Putting real figures in the
+      // markup is the whole position, so they belong here too — read from
+      // src/config/calculator.ts, never retyped.
+      itemListElement: CATALOG.map((id) => ({
+        '@type': 'Offer',
+        price: String(PKG[id].price),
+        priceCurrency: 'UZS',
+        // The price holds until it is written into a contract; it is not a
+        // standing public offer with no end date.
+        availability: 'https://schema.org/InStock',
+        url: `${siteConfig.url}/pricing`,
+        itemOffered: {
+          '@type': 'Service',
+          name: catalogText.pkg[id].name,
+          description: catalogText.pkg[id].why,
+          provider: { '@type': 'Organization', name: siteConfig.name },
+          areaServed: { '@type': 'City', name: 'Tashkent' },
+        },
+      })).concat(
+        ADDONS.map((a) => ({
           '@type': 'Offer',
+          price: String(a.p),
+          priceCurrency: 'UZS',
+          availability: 'https://schema.org/InStock',
+          url: `${siteConfig.url}/pricing`,
           itemOffered: {
             '@type': 'Service',
-            name: 'Website Development / Разработка сайтов / Sayt yaratish',
-            description: 'Custom website development for businesses in Uzbekistan and Central Asia',
+            name: catalogText.addons[a.id].n,
+            description: catalogText.addons[a.id].s,
+            provider: { '@type': 'Organization', name: siteConfig.name },
+            areaServed: { '@type': 'City', name: 'Tashkent' },
           },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Business Automation / Автоматизация бизнеса / Biznes avtomatlashtirish',
-            description: 'End-to-end business process automation solutions',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'CRM Systems / CRM системы / CRM tizimlari',
-            description: 'Custom CRM system development and implementation',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Mobile App Development / Мобильные приложения / Mobil ilovalar',
-            description: 'iOS and Android mobile application development',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'AI Integration / Интеграция ИИ / AI integratsiya',
-            description: 'Artificial intelligence integration for business processes',
-          },
-        },
-      ],
+        }))
+      ),
     },
   };
 
@@ -102,59 +106,17 @@ export function JsonLd() {
     name: siteConfig.name,
     url: siteConfig.url,
     inLanguage: ['en', 'ru', 'uz'],
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${siteConfig.url}/portfolio?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
+    // The SearchAction that used to live here pointed at /portfolio?q=, which
+    // never existed — no page on this site reads a q parameter. Markup for a
+    // feature that is not there is the same problem as a price that is not
+    // real, so it is gone rather than repointed at /works.
   };
 
-  const faqPage = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'How long does it take to develop a custom system?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Typical projects take 4-12 weeks depending on complexity. A simple booking platform can be ready in 4-6 weeks, while a full CRM or management system takes 8-12 weeks.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Do you offer ongoing support after launch?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes! All products include ongoing technical support, regular updates, and bug fixes. We also offer extended maintenance plans for hosting, monitoring, and feature additions.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'What is the cost of your services?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'SaaS products start from 4,200,000 UZS/month (~$336). Custom development projects are quoted individually based on scope. We offer a free initial consultation.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Can you integrate AI into my existing system?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Absolutely. We specialize in adding AI capabilities to existing systems — from chatbots and document processing to intelligent analytics and recommendation engines.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Do you work with clients outside Uzbekistan?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, we work with clients worldwide. Our team communicates fluently in English, Russian, and Uzbek and uses modern project management tools for smooth collaboration.',
-        },
-      },
-    ],
-  };
+  // The FAQPage block that used to sit here described the homepage FAQ
+  // section, which the redesign replaced with the calculator. Google requires
+  // FAQ markup to match Q&A visible on the page, so it is removed rather than
+  // left describing a section that no longer exists. If the «Как мы работаем»
+  // panels (§7) are ever rewritten as questions and answers, it can come back.
 
   return (
     <>
@@ -169,10 +131,6 @@ export function JsonLd() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }}
       />
     </>
   );
