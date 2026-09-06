@@ -5,9 +5,10 @@ import type { CalcText } from './types';
 // back to Russian mid-page.
 
 export const calcEn: CalcText = {
-  h1: 'Find out the price in a minute, without leaving your number',
+  eyebrow: 'Business software, websites and apps · Tashkent',
+  h1: 'Find out the price in a minute',
   intro:
-    'Tick everything that is going wrong — we will show what you need, what it costs and how long it takes. The figure goes into the contract unchanged.',
+    'Tick what is going wrong — we will show what you need, what it costs and how long it takes. No phone number needed: the figure appears on screen.',
   currency: 'UZS',
   andWord: 'and',
 
@@ -29,12 +30,12 @@ export const calcEn: CalcText = {
   },
 
   q: {
-    area: { t: 'What is going worst in your work', hint: 'tick everything that applies' },
-    size: { t: 'How many people will work in the system' },
-    kind: { t: 'What you need from a website' },
-    data: { t: 'Where your data lives now', hint: 'more than one is fine' },
-    addon: { t: 'What to add', hint: 'more than one is fine' },
-    support: { t: 'Support after launch', hint: 'the first month is already included' },
+    area: { t: 'What is going worst in your business?', hint: 'tick everything that applies' },
+    size: { t: 'How many people will work in the system?' },
+    kind: { t: 'What do you need from a website?' },
+    data: { t: 'Where does your data live now?', hint: 'more than one is fine' },
+    addon: { t: 'Anything to add?', hint: 'more than one is fine' },
+    support: { t: 'Do you need support after launch?', hint: 'the first month is already included' },
   },
 
   areas: {
@@ -162,7 +163,7 @@ export const calcEn: CalcText = {
 
   card: {
     emptyTitle: 'Your figure will appear here',
-    emptyHint: 'Tick everything on the left that is going wrong. Nothing to fill in.',
+    emptyHint: 'Answer the questions and your figure appears here.',
     ranges: { programs: 'Systems', sites: 'Websites', term: 'Timeline' },
     rangeValues: {
       programs: '15–90 million UZS',

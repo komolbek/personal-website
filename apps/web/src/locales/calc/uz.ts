@@ -11,9 +11,10 @@ import type { CalcText } from './types';
 // them, that pattern has to survive.
 
 export const calcUz: CalcText = {
-  h1: 'Telefon raqamingizni qoldirmasdan, bir daqiqada narxni biling',
+  eyebrow: 'Biznes uchun dasturlar, saytlar va ilovalar · Toshkent',
+  h1: 'Bir daqiqada narxni biling',
   intro:
-    "Sizda nima bo'layotganini belgilang — nima kerakligini, qancha turishini va qancha vaqt olishini ko'rsatamiz. Summa shartnomaga o'zgarishsiz kiradi.",
+    "Nima yaxshi ketmayotganini belgilang — nima kerakligini, qancha turishini va qancha vaqt olishini ko'rsatamiz. Telefon raqami kerak emas: summa ekranda paydo bo'ladi.",
   currency: "so'm",
   andWord: 'va',
 
@@ -35,12 +36,12 @@ export const calcUz: CalcText = {
   },
 
   q: {
-    area: { t: 'Ishda nima eng yomon ketyapti', hint: "mos keladiganlarning barchasini belgilang" },
-    size: { t: "Dasturda necha kishi ishlaydi" },
-    kind: { t: 'Saytdan nima kerak' },
-    data: { t: "Ma'lumotlaringiz hozir qayerda", hint: 'bir nechtasini tanlash mumkin' },
-    addon: { t: "Nima qo'shamiz", hint: 'bir nechtasini tanlash mumkin' },
-    support: { t: "Ishga tushgandan keyingi xizmat", hint: 'birinchi oy allaqachon kiritilgan' },
+    area: { t: 'Ishingizda nima eng yomon ketyapti?', hint: 'mos keladiganlarning barchasini belgilang' },
+    size: { t: 'Dasturda necha kishi ishlaydi?' },
+    kind: { t: 'Saytdan nima kerak?' },
+    data: { t: "Ma'lumotlaringiz hozir qayerda?", hint: 'bir nechtasini tanlash mumkin' },
+    addon: { t: "Nima qo'shamiz?", hint: 'bir nechtasini tanlash mumkin' },
+    support: { t: 'Ishga tushgandan keyin xizmat kerakmi?', hint: 'birinchi oy allaqachon kiritilgan' },
   },
 
   areas: {
@@ -176,7 +177,7 @@ export const calcUz: CalcText = {
 
   card: {
     emptyTitle: 'Sizning raqamingiz shu yerda paydo bo‘ladi',
-    emptyHint: "Chapda eng yomon ketayotgan hamma narsani belgilang. Hech narsa to'ldirish shart emas.",
+    emptyHint: "Savollarga javob bering — summa shu yerda paydo bo'ladi.",
     ranges: { programs: 'Dasturlar', sites: 'Saytlar', term: 'Muddat' },
     rangeValues: {
       programs: "15–90 mln so'm",

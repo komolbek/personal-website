@@ -25,6 +25,12 @@ export interface PkgText {
 }
 
 export interface CalcText {
+  /**
+   * What this company makes, stated before anything else. Without it the H1
+   * promises a price for something the visitor cannot name — Krug's first
+   * home-page question, "what is this?", went unanswered.
+   */
+  eyebrow: string;
   h1: string;
   intro: string;
   /** «сум» — the currency word shown beside a figure. */

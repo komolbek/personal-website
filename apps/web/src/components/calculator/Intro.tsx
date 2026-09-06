@@ -19,6 +19,10 @@ export function Intro() {
   return (
     <div className="grid items-end gap-8 pb-2 pt-10 lg:grid-cols-[1fr_384px] lg:gap-[38px]">
       <div>
+        {/* Says what this company makes, before the H1 promises a price for it. */}
+        <p className="m-0 mb-3 text-[13px] uppercase tracking-[0.08em] text-ink-faint">
+          {t.calc.eyebrow}
+        </p>
         <h1 className="m-0 mb-3 max-w-[20ch] text-[clamp(28px,4.4vw,42px)] font-semibold leading-[1.1] tracking-[-0.035em]">
           {t.calc.h1}
         </h1>
