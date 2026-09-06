@@ -78,6 +78,9 @@ export interface CalcText {
   card: {
     emptyTitle: string;
     emptyHint: string;
+    /** Shown once something is ticked but the result is still withheld, so the
+     *  first answer is acknowledged instead of paying out nothing. */
+    emptyHintStarted: string;
     ranges: { programs: string; sites: string; term: string };
     rangeValues: { programs: string; sites: string; term: string };
     fits: string;
@@ -104,6 +107,8 @@ export interface CalcText {
     stageNoteBold: string;
     stageNoteRest: string;
     ladderNote: string;
+    /** {name} and {price} — the ladder buttons were bare numbers. */
+    ladderTo: string;
     cta: string;
     guarantees: [string, string, string];
     autoLabel: string;
@@ -136,6 +141,8 @@ export interface CalcText {
     sentBody: string;
     close: string;
     error: string;
+    /** Why the send button will not fire yet. */
+    tooShort: string;
   };
 
   mobile: {
@@ -214,6 +221,8 @@ export interface CalcText {
     projectsLead: string;
     /** Link text on a card. */
     open: string;
+    /** Label over the three product thumbnails on the home page. */
+    stripLabel: string;
     /** Section headings on a detail page. */
     overview: string;
     screenshots: string;

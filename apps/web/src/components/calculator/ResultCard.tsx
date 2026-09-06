@@ -17,6 +17,8 @@ import { RichText } from './RichText';
 
 interface Props {
   c: CalcText;
+  /** Something is ticked but the result is still withheld. */
+  started: boolean;
   totals: Totals;
   /** Already localised and interpolated by the caller. */
   reasons: string[];
@@ -24,11 +26,11 @@ interface Props {
   sysPackage: PkgId | null;
   onDrop: (src: ItemSource) => void;
   onLadder: (to: Extract<PkgId, 'task' | 'dept' | 'all'>) => void;
-  onSend: () => void;
+  onSend: (trigger: HTMLElement) => void;
 }
 
 /** Shown before anything is ticked — the visitor still leaves knowing the range. */
-function Empty({ c }: { c: CalcText }) {
+function Empty({ c, started }: { c: CalcText; started: boolean }) {
   const rows = [
     { label: c.card.ranges.programs, value: c.card.rangeValues.programs },
     { label: c.card.ranges.sites, value: c.card.rangeValues.sites },
@@ -37,7 +39,9 @@ function Empty({ c }: { c: CalcText }) {
   return (
     <div className="px-[22px] py-6">
       <b className="mb-2 block text-[18px] font-semibold tracking-[-0.02em]">{c.card.emptyTitle}</b>
-      <p className="mb-[14px] text-[15px] text-ink-muted">{c.card.emptyHint}</p>
+      <p className="mb-[14px] text-[15px] text-ink-muted">
+        {started ? c.card.emptyHintStarted : c.card.emptyHint}
+      </p>
       <div className="grid gap-1.5 border-t border-accent-line pt-[13px] text-[14px]">
         {rows.map((r) => (
           <div key={r.label} className="flex justify-between gap-3 text-ink-muted">
@@ -70,7 +74,9 @@ function Row({
           onClick={() => onDrop(item.src)}
           aria-label={fmt(c.card.remove, { name: text.name })}
           title={c.card.removeTitle}
-          className="flex-none px-0.5 text-[17px] leading-none text-ink-faint hover:text-flag"
+          // 44px hit area (WCAG 2.5.5) without a 44px-looking button: the glyph
+          // stays small, the target does not. -mr keeps the layout unchanged.
+          className="-my-3 -mr-2 flex h-11 w-11 flex-none items-center justify-center text-[17px] leading-none text-ink-faint hover:text-flag"
         >
           ×
         </button>
@@ -126,7 +132,7 @@ function Sums({
   );
 }
 
-export function ResultCard({ c, totals, reasons, term, sysPackage, onDrop, onLadder, onSend }: Props) {
+export function ResultCard({ c, started, totals, reasons, term, sysPackage, onDrop, onLadder, onSend }: Props) {
   const { items, extras } = totals;
 
   // A soft, warm-tinted shadow lifts the card off the cream paper. Colour
@@ -137,7 +143,7 @@ export function ResultCard({ c, totals, reasons, term, sysPackage, onDrop, onLad
   if (!items.length) {
     return (
       <aside aria-live="polite" className={shell}>
-        <Empty c={c} />
+        <Empty c={c} started={started} />
       </aside>
     );
   }
@@ -201,24 +207,30 @@ export function ResultCard({ c, totals, reasons, term, sysPackage, onDrop, onLad
 
         {ladder && (ladder[0] || ladder[1]) && (
           <div className="mt-[13px] flex flex-wrap gap-2">
-            {ladder[0] && (
-              <button
-                type="button"
-                onClick={() => onLadder(ladder[0] as 'task' | 'dept' | 'all')}
-                className="rounded-lg border border-accent-line bg-paper px-[11px] py-1.5 text-[13px] text-ink-muted hover:border-accent hover:text-ink"
-              >
-                ← {formatUZS(PKG[ladder[0]].price)}
-              </button>
-            )}
-            {ladder[1] && (
-              <button
-                type="button"
-                onClick={() => onLadder(ladder[1] as 'task' | 'dept' | 'all')}
-                className="rounded-lg border border-accent-line bg-paper px-[11px] py-1.5 text-[13px] text-ink-muted hover:border-accent hover:text-ink"
-              >
-                {formatUZS(PKG[ladder[1]].price)} →
-              </button>
-            )}
+            {(['0', '1'] as const).map((side) => {
+              const id = ladder[Number(side)];
+              if (!id) return null;
+              const name = c.pkg[id].name;
+              const price = formatUZS(PKG[id].price);
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => onLadder(id as 'task' | 'dept' | 'all')}
+                  // A bare number said nothing about what it buys, and a screen
+                  // reader announced only "15 000 000, button".
+                  aria-label={fmt(c.card.ladderTo, { name, price })}
+                  className="flex min-h-11 flex-col items-start rounded-lg border border-accent-line bg-paper px-3 py-1.5 text-left hover:border-accent"
+                >
+                  <span className="text-[12px] leading-tight text-ink-muted">{name}</span>
+                  <span className="num text-[13px] text-ink">
+                    {side === '0' ? '← ' : ''}
+                    {price}
+                    {side === '1' ? ' →' : ''}
+                  </span>
+                </button>
+              );
+            })}
             <span className="self-center text-[13px] text-ink-faint">{c.card.ladderNote}</span>
           </div>
         )}
@@ -227,7 +239,7 @@ export function ResultCard({ c, totals, reasons, term, sysPackage, onDrop, onLad
       <div className="px-[22px] pb-4">
         <button
           type="button"
-          onClick={onSend}
+          onClick={(e) => onSend(e.currentTarget)}
           className="block w-full cursor-pointer rounded-[9px] bg-accent px-[18px] py-[13px] text-center text-[15px] font-semibold text-accent-ink hover:opacity-90"
         >
           {c.card.cta}

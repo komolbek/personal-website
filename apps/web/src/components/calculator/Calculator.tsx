@@ -59,7 +59,9 @@ function Question({
   return (
     <div className="border-t border-line py-[18px] first:border-t-line-strong">
       {/* Wraps rather than squeezing the title into a column at 320px. */}
-      <p className="mb-3 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+      {/* div, not p: a heading inside a paragraph is invalid and the browser
+          would close the paragraph early, breaking this row. */}
+      <div className="mb-3 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
         <span
           className={`num flex-none text-[12px] ${
             done ? 'text-ok' : first ? 'text-accent' : 'text-ink-faint'
@@ -67,11 +69,16 @@ function Question({
         >
           {String(num).padStart(2, '0')}
         </span>
-        <b className={first ? 'text-[19px] font-semibold tracking-[-0.02em]' : 'text-[16px] font-semibold'}>
+        {/* A heading, not bold text: these are the page's main interaction and
+            were missing from the outline entirely, so screen-reader users had
+            no way to move between them. */}
+        <h2
+          className={`m-0 ${first ? 'text-[19px] font-semibold tracking-[-0.02em]' : 'text-[16px] font-semibold'}`}
+        >
           {title}
-        </b>
+        </h2>
         {hint && <em className="ml-auto not-italic text-[13px] text-ink-faint">{hint}</em>}
-      </p>
+      </div>
       {children}
     </div>
   );
@@ -83,6 +90,8 @@ export function Calculator() {
   const [state, setState] = useState<CalcState>(EMPTY_STATE);
   const [dialog, setDialog] = useState(false);
   const started = useRef(false);
+  // So focus can go back where it came from when the dialog closes.
+  const quoteTrigger = useRef<HTMLElement | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const totals = useMemo(() => computeTotals(state), [state]);
@@ -365,13 +374,17 @@ export function Calculator() {
         <div ref={cardRef} className="mt-6 lg:mt-0">
           <ResultCard
             c={c}
+            started={anyArea(state)}
             totals={totals}
             reasons={reasons}
             term={term}
             sysPackage={sysPackage}
             onDrop={drop}
             onLadder={ladder}
-            onSend={() => setDialog(true)}
+            onSend={(el) => {
+              quoteTrigger.current = el;
+              setDialog(true);
+            }}
           />
         </div>
       </div>
@@ -392,6 +405,7 @@ export function Calculator() {
         c={c}
         open={dialog}
         summary={summarise(c, state, totals, term)}
+        restoreFocusTo={quoteTrigger}
         onClose={() => setDialog(false)}
         onSubmit={submit}
       />

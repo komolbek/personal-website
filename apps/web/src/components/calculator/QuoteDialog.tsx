@@ -12,12 +12,15 @@ export function QuoteDialog({
   c,
   open,
   summary,
+  restoreFocusTo,
   onClose,
   onSubmit,
 }: {
   c: CalcText;
   open: boolean;
   summary: string;
+  /** The control that opened it. Focus goes back here on close. */
+  restoreFocusTo?: React.MutableRefObject<HTMLElement | null>;
   onClose: () => void;
   onSubmit: (contact: string) => Promise<boolean>;
 }) {
@@ -25,6 +28,9 @@ export function QuoteDialog({
   const input = useRef<HTMLInputElement>(null);
   const [contact, setContact] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  // Shown only after someone tries to send something too short. A disabled
+  // button that never explains itself is the worst of both worlds.
+  const [tooShort, setTooShort] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -33,17 +39,28 @@ export function QuoteDialog({
       el.showModal();
       input.current?.focus();
     } else if (!open && el.open) {
+      // Restore focus after close(), not before: closing the dialog moves focus
+      // itself, so an earlier focus() call is simply overwritten.
       el.close();
+      restoreFocusTo?.current?.focus();
     }
-  }, [open]);
+  }, [open, restoreFocusTo]);
 
   // Reset only on the way in, so the "sent" state survives until it is closed.
   useEffect(() => {
-    if (open) setStatus('idle');
+    if (open) {
+      setStatus('idle');
+      setTooShort(false);
+    }
   }, [open]);
 
   const send = async () => {
-    if (contact.trim().length < 5) return;
+    if (contact.trim().length < 5) {
+      setTooShort(true);
+      input.current?.focus();
+      return;
+    }
+    setTooShort(false);
     setStatus('sending');
     setStatus((await onSubmit(contact.trim())) ? 'sent' : 'error');
   };
@@ -79,7 +96,14 @@ export function QuoteDialog({
             ref={input}
             type="text"
             value={contact}
-            onChange={(e) => setContact(e.target.value)}
+            onChange={(e) => {
+              setContact(e.target.value);
+              if (tooShort) setTooShort(false);
+            }}
+            inputMode="tel"
+            autoComplete="tel"
+            aria-invalid={tooShort || undefined}
+            aria-describedby={tooShort ? 'quote-contact-error' : undefined}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
@@ -89,15 +113,20 @@ export function QuoteDialog({
             placeholder={c.dialog.placeholder}
             className="mb-[14px] w-full rounded-[9px] border border-line-strong bg-paper px-3 py-[11px] text-[16px] text-ink"
           />
+          {tooShort && (
+            <p id="quote-contact-error" role="alert" className="m-0 mb-3 text-[14px] text-flag">
+              {c.dialog.tooShort}
+            </p>
+          )}
           {status === 'error' && (
-            <p className="m-0 mb-3 text-[14px] text-flag">
-{c.dialog.error}
+            <p role="alert" className="m-0 mb-3 text-[14px] text-flag">
+              {c.dialog.error}
             </p>
           )}
           <button
             type="button"
             onClick={() => void send()}
-            disabled={status === 'sending' || contact.trim().length < 5}
+            disabled={status === 'sending'}
             className="block w-full cursor-pointer rounded-[9px] bg-accent px-[18px] py-[13px] text-center text-[15px] font-semibold text-accent-ink hover:opacity-90 disabled:cursor-default disabled:opacity-50"
           >
             {status === 'sending' ? c.dialog.sending : c.dialog.send}

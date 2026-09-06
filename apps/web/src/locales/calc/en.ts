@@ -164,6 +164,7 @@ export const calcEn: CalcText = {
   card: {
     emptyTitle: 'Your figure will appear here',
     emptyHint: 'Answer the questions and your figure appears here.',
+    emptyHintStarted: 'One more answer and the figure appears here.',
     ranges: { programs: 'Systems', sites: 'Websites', term: 'Timeline' },
     rangeValues: {
       programs: '15–90 million UZS',
@@ -189,6 +190,7 @@ export const calcEn: CalcText = {
     stageNoteRest:
       'Start with one part, launch it and add the rest later — each price is fixed and will not grow.',
     ladderNote: 'the options either side',
+    ladderTo: '{name} — {price}',
     cta: 'Get the quote',
     guarantees: [
       'This figure goes into the contract',
@@ -225,6 +227,7 @@ export const calcEn: CalcText = {
     sentBody: 'We have the quote. We will reply within 24 hours.',
     close: 'Close',
     error: 'It did not send. Message us on Telegram — the quote is already worked out.',
+    tooShort: 'Enter a phone number or a Telegram handle so we can reply.',
   },
 
   mobile: {
@@ -334,6 +337,7 @@ export const calcEn: CalcText = {
     productsLead: 'We designed them, wrote them and run them — they work every day.',
     projectsLead: 'Built for one company\'s particular job.',
     open: 'View',
+    stripLabel: 'Our products',
     overview: 'About the product',
     screenshots: 'What it looks like',
     howItWorks: 'How it works',

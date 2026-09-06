@@ -178,6 +178,7 @@ export const calcUz: CalcText = {
   card: {
     emptyTitle: 'Sizning raqamingiz shu yerda paydo bo‘ladi',
     emptyHint: "Savollarga javob bering — summa shu yerda paydo bo'ladi.",
+    emptyHintStarted: "Yana bitta javob — va bu yerda summa paydo bo'ladi.",
     ranges: { programs: 'Dasturlar', sites: 'Saytlar', term: 'Muddat' },
     rangeValues: {
       programs: "15–90 mln so'm",
@@ -203,6 +204,7 @@ export const calcUz: CalcText = {
     stageNoteRest:
       "Bitta qismdan boshlab, uni ishga tushirib, qolganini keyin qo'shsa bo'ladi — har birining narxi qayd etilgan va oshmaydi.",
     ladderNote: 'yondosh variantlar',
+    ladderTo: '{name} — {price}',
     cta: 'Smetani olish',
     guarantees: [
       'Bu summa shartnomaga kiradi',
@@ -241,6 +243,7 @@ export const calcUz: CalcText = {
     sentBody: 'Smeta bizda. 24 soat ichida javob beramiz.',
     close: 'Yopish',
     error: "Yuborilmadi. Bizga Telegramga yozing — smeta allaqachon hisoblangan.",
+    tooShort: 'Javob bera olishimiz uchun telefon yoki Telegram nikini kiriting.',
   },
 
   mobile: {
@@ -350,6 +353,7 @@ export const calcUz: CalcText = {
     productsLead: "Biz ularni o'ylab topdik, yozdik va o'zimiz yuritamiz — ular har kuni ishlab turadi.",
     projectsLead: 'Muayyan kompaniyaning vazifasi uchun qilingan.',
     open: "Ko'rish",
+    stripLabel: 'Bizning mahsulotlar',
     overview: 'Mahsulot haqida',
     screenshots: "Qanday ko'rinadi",
     howItWorks: 'Qanday ishlaydi',

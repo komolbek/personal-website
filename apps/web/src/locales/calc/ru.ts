@@ -163,6 +163,7 @@ export const calcRu: CalcText = {
   card: {
     emptyTitle: 'Здесь появится ваша цифра',
     emptyHint: 'Ответьте на вопросы — сумма появится здесь.',
+    emptyHintStarted: 'Ещё один ответ — и здесь появится сумма.',
     ranges: { programs: 'Программы', sites: 'Сайты', term: 'Срок' },
     rangeValues: { programs: '15–90 млн сум', sites: '5–14 млн сум', term: 'от 2 недель' },
     fits: 'Вам подойдёт',
@@ -184,6 +185,7 @@ export const calcRu: CalcText = {
     stageNoteRest:
       'Можно начать с одной части, запустить её и добавлять остальное — цена каждой зафиксирована и не вырастет.',
     ladderNote: 'соседние варианты',
+    ladderTo: '{name} — {price}',
     cta: 'Получить смету',
     guarantees: [
       'Эта сумма попадёт в договор',
@@ -220,6 +222,7 @@ export const calcRu: CalcText = {
     sentBody: 'Смета у нас. Ответим в течение 24 часов.',
     close: 'Закрыть',
     error: 'Не отправилось. Напишите нам в Telegram — смета уже посчитана.',
+    tooShort: 'Введите телефон или ник в Telegram — так мы сможем ответить.',
   },
 
   mobile: {
@@ -329,6 +332,7 @@ export const calcRu: CalcText = {
     productsLead: 'Мы их придумали, написали и сами ими занимаемся — они работают каждый день.',
     projectsLead: 'Сделано под задачу конкретной компании.',
     open: 'Смотреть',
+    stripLabel: 'Наши продукты',
     overview: 'О продукте',
     screenshots: 'Как это выглядит',
     howItWorks: 'Как это работает',
