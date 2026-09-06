@@ -29,10 +29,10 @@ export default function Home() {
       <Intro />
       <Calculator />
 
-      {/* Wide screens get this beside the heading instead — see ProductStrip. */}
-      <div className="mb-10">
-        <ProductStrip where="below" />
-      </div>
+      {/* Wide screens get this beside the heading instead — see ProductStrip.
+          The spacing lives on the strip itself; a wrapper with a margin left a
+          40px band of nothing on desktop, where the strip does not render. */}
+      <ProductStrip where="below" />
 
       <ExplainPanels />
     </div>

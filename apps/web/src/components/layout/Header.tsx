@@ -35,7 +35,10 @@ export function Header() {
           href={`https://t.me/${siteConfig.telegram}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-none whitespace-nowrap rounded-lg border border-accent-line px-3 py-[7px] text-[14px] font-semibold text-accent hover:bg-accent-soft sm:px-3.5"
+          // Quieter than a filled button on purpose: this was the most
+          // button-shaped thing on the page, inviting people to leave and
+          // message instead of using the calculator.
+          className="flex-none whitespace-nowrap px-1 py-[7px] text-[14px] font-medium text-ink-muted underline decoration-line-strong underline-offset-4 hover:text-accent hover:decoration-accent sm:px-2"
         >
           <span className="hidden sm:inline">{c.header.telegram}</span>
           <span className="sm:hidden">Telegram</span>

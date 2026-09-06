@@ -144,6 +144,8 @@ export interface CalcText {
     show: string;
   };
 
+  /** Without a heading the four buttons read as navigation, not as answers. */
+  tabsHeading: string;
   tabs: { how: string; price: string; not: string; why: string };
 
   panels: {

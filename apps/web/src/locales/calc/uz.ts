@@ -14,7 +14,7 @@ export const calcUz: CalcText = {
   eyebrow: 'Biznes uchun dasturlar, saytlar va ilovalar · Toshkent',
   h1: 'Bir daqiqada narxni biling',
   intro:
-    "Nima yaxshi ketmayotganini belgilang — nima kerakligini, qancha turishini va qancha vaqt olishini ko'rsatamiz. Telefon raqami kerak emas: summa ekranda paydo bo'ladi.",
+    "Nima yaxshi ketmayotganini belgilang — paket, narx va muddatni ko'rsatamiz. Telefon raqami kerak emas.",
   currency: "so'm",
   andWord: 'va',
 
@@ -248,6 +248,7 @@ export const calcUz: CalcText = {
     show: "Ko'rish",
   },
 
+  tabsHeading: "Odatda nima so'rashadi",
   tabs: {
     how: 'Qanday ishlaymiz',
     price: "To'liq narxlar",

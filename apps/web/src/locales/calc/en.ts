@@ -8,7 +8,7 @@ export const calcEn: CalcText = {
   eyebrow: 'Business software, websites and apps · Tashkent',
   h1: 'Find out the price in a minute',
   intro:
-    'Tick what is going wrong — we will show what you need, what it costs and how long it takes. No phone number needed: the figure appears on screen.',
+    'Tick what is going wrong — we will show the package, the price and the timeline. No phone number needed.',
   currency: 'UZS',
   andWord: 'and',
 
@@ -232,6 +232,7 @@ export const calcEn: CalcText = {
     show: 'View',
   },
 
+  tabsHeading: 'What people usually ask',
   tabs: {
     how: 'How we work',
     price: 'Full price list',

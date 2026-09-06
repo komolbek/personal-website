@@ -33,10 +33,10 @@ export function ProductStrip({ where = 'aside' }: { where?: 'aside' | 'below' })
   const { t } = useLocale();
 
   return (
-    <div className={where === 'aside' ? 'hidden lg:block' : 'border-t border-line pt-8 lg:hidden'}>
-      <p className="mb-3 text-[12px] uppercase tracking-[0.09em] text-ink-faint">
-        {t.home.portfolio.productsHeading}
-      </p>
+    <div className={where === 'aside' ? 'hidden lg:block' : 'mb-10 border-t border-line pt-8 lg:hidden'}>
+      {/* Not uppercase: the eyebrow above the H1 uses that treatment, and two of
+          them side by side read as a pair of column headings. */}
+      <p className="mb-3 text-[13px] text-ink-faint">{t.home.portfolio.productsHeading}</p>
 
       <div className="grid grid-cols-3 gap-3">
         {SHOTS.map((s) => (

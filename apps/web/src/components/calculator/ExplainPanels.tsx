@@ -64,7 +64,10 @@ export function ExplainPanels() {
   const panelClass = 'mt-4 max-w-[78ch] text-[15px] text-ink-muted';
 
   return (
-    <section className="border-t border-line-strong pt-[18px]">
+    <section className="border-t border-line-strong pt-6">
+      {/* Unlabelled, these four read as navigation or filters. The heading says
+          they are answers, and the chevron says they open. */}
+      <h2 className="mb-3 text-[15px] font-semibold text-ink">{c.tabsHeading}</h2>
       <div className="flex flex-wrap gap-2">
         {TAB_IDS.map((id) => {
           const isOpen = open === id;
@@ -83,6 +86,12 @@ export function ExplainPanels() {
               ].join(' ')}
             >
               {c.tabs[id]}
+              <span
+                aria-hidden="true"
+                className={`ml-1.5 inline-block text-[10px] transition-transform ${isOpen ? 'rotate-180' : ''}`}
+              >
+                ▾
+              </span>
             </button>
           );
         })}

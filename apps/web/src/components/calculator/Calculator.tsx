@@ -51,14 +51,25 @@ function Question({
   done: boolean;
   children: React.ReactNode;
 }) {
+  // The first question is where the page wants you to start, so it carries more
+  // weight than the ones that appear as you go. Nothing else on the screen
+  // competes for that job now that the header link is quiet.
+  const first = num === 1;
+
   return (
     <div className="border-t border-line py-[18px] first:border-t-line-strong">
       {/* Wraps rather than squeezing the title into a column at 320px. */}
       <p className="mb-3 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-        <span className={`num flex-none text-[12px] ${done ? 'text-ok' : 'text-ink-faint'}`}>
+        <span
+          className={`num flex-none text-[12px] ${
+            done ? 'text-ok' : first ? 'text-accent' : 'text-ink-faint'
+          }`}
+        >
           {String(num).padStart(2, '0')}
         </span>
-        <b className="text-[16px] font-semibold">{title}</b>
+        <b className={first ? 'text-[19px] font-semibold tracking-[-0.02em]' : 'text-[16px] font-semibold'}>
+          {title}
+        </b>
         {hint && <em className="ml-auto not-italic text-[13px] text-ink-faint">{hint}</em>}
       </p>
       {children}
@@ -251,7 +262,9 @@ export function Calculator() {
 
   return (
     <>
-      <div className="grid items-start gap-0 pb-[30px] pt-6 lg:grid-cols-[1fr_384px] lg:gap-[38px]">
+      <div // pb clears the result card before the panels' rule. pb-2 put the rule
+        // directly under the card's bottom edge, so it read as running through it.
+        className="grid items-start gap-0 pb-10 pt-6 lg:grid-cols-[1fr_384px] lg:gap-[38px]">
         <form onSubmit={(e) => e.preventDefault()}>
           <Question num={++n} title={c.q.area.t} hint={c.q.area.hint} done={anyArea(state)}>
             <MultiChips
