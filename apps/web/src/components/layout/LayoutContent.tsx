@@ -2,7 +2,6 @@
 
 import { Header } from './Header';
 import { Footer } from './Footer';
-import { FloatingContact } from '@/components/ui/FloatingContact';
 import { ScrollToTop } from '@/components/ui/ScrollToTop';
 
 export function LayoutContent({ children }: { children: React.ReactNode }) {
@@ -14,7 +13,6 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
       <Header />
       <main id="main-content">{children}</main>
       <Footer />
-      <FloatingContact />
       <ScrollToTop />
     </>
   );

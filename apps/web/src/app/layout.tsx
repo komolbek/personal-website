@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import Script from 'next/script';
-import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 import { LocaleProvider } from '@/hooks/useLocale';
 import { siteConfig } from '@/config/site';
@@ -113,7 +112,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" suppressHydrationWarning>
+    // data-theme="light" pins the site to the light palette. The dark tokens in
+    // globals.css are complete and contrast-checked, but the pages that predate
+    // this redesign (legal, blog, /works and the product and project details)
+    // still use hardcoded gray-* and bg-white classes, so honouring the OS dark
+    // preference would render dark chrome around white panels. Removing this
+    // attribute is the switch to flip once those pages are on the tokens.
+    <html lang="ru" data-theme="light" suppressHydrationWarning>
       <head>
         {/* Google Analytics (GA4) */}
         {GA_MEASUREMENT_ID && (
@@ -168,17 +173,17 @@ export default function RootLayout({
           </Script>
         )}
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
-      >
+      {/* Colours come from the tokens in globals.css, which sets body's
+          background and colour. The `bg-white text-gray-900` that used to be
+          here overrode them and was invisible only because the site had no
+          dark palette to conflict with. */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <JsonLd />
         <AttributionCapture />
         <LocaleProvider>
           <HtmlLangSetter />
           <LayoutContent>{children}</LayoutContent>
         </LocaleProvider>
-
-        <Analytics />
       </body>
     </html>
   );

@@ -1,39 +1,44 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { scrollBehavior } from '@/lib/motion';
 
+/**
+ * Rendered by LayoutContent, so it is on every page. It used to pull
+ * framer-motion into the shared chunk for a fade on one small button, which
+ * put the whole library in the critical path of the calculator too
+ * (REDESIGN.md §5.6). The fade is a CSS opacity transition now.
+ *
+ * The button stays mounted and is hidden with `invisible` rather than
+ * unmounted, so the transition has something to run on in both directions.
+ */
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > 300);
-    };
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsVisible(window.scrollY > 300);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          onClick={scrollToTop}
-          className="fixed bottom-24 right-6 z-30 w-10 h-10 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
-          aria-label="Scroll to top"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-          </svg>
-        </motion.button>
-      )}
-    </AnimatePresence>
+    <button
+      type="button"
+      onClick={() => window.scrollTo({ top: 0, behavior: scrollBehavior() })}
+      aria-label="Наверх"
+      aria-hidden={!isVisible}
+      tabIndex={isVisible ? 0 : -1}
+      className={[
+        'fixed bottom-24 right-6 z-30 flex h-10 w-10 items-center justify-center rounded-full',
+        'border border-line-strong bg-paper text-ink-muted shadow-lg transition-all duration-200',
+        'hover:border-accent hover:text-accent',
+        isVisible ? 'opacity-100' : 'invisible opacity-0',
+      ].join(' ')}
+    >
+      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+      </svg>
+    </button>
   );
 }
