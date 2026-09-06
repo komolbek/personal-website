@@ -36,6 +36,12 @@ interface DbProduct {
   benefits_en: string[];
   benefits_ru: string[];
   benefits_uz: string[];
+  technologies: string[];
+  images: string[];
+  websiteUrl: string | null;
+  adminUrl: string | null;
+  bookingUrl: string | null;
+  mobileAppUrl: string | null;
   order: number;
   isVisible: boolean;
 }
@@ -66,6 +72,8 @@ interface DbClientProject {
   appStoreUrl: string | null;
   playStoreUrl: string | null;
   websiteUrl: string | null;
+  demoUrl: string | null;
+  techStack: string[];
   completedDate: Date | null;
   featured: boolean;
   isVisible: boolean;
@@ -114,10 +122,24 @@ export function dbProductToSolution(product: DbProduct): Solution {
     icon: validIcons.includes(product.icon) ? product.icon : 'automation',
     features: localeArrayRecord(product.features_en, product.features_ru, product.features_uz),
     benefits: localeArrayRecord(product.benefits_en, product.benefits_ru, product.benefits_uz),
-    technologies: [],
+    // These used to be hardcoded empty because the table had nowhere to store
+    // them, so a product served from the database lost its screenshots, its
+    // stack and its links. The columns exist now.
+    technologies: product.technologies ?? [],
+    images: product.images ?? [],
+    links: productLinks(product),
     relatedProjects: [],
     order: product.order,
   };
+}
+
+function productLinks(product: DbProduct): Solution['links'] {
+  const links: NonNullable<Solution['links']> = {};
+  if (product.websiteUrl) links.website = product.websiteUrl;
+  if (product.adminUrl) links.admin = product.adminUrl;
+  if (product.bookingUrl) links.booking = product.bookingUrl;
+  if (product.mobileAppUrl) links.mobileApp = product.mobileAppUrl;
+  return Object.keys(links).length > 0 ? links : undefined;
 }
 
 export function dbProjectToProject(project: DbClientProject): Project {
@@ -125,6 +147,7 @@ export function dbProjectToProject(project: DbClientProject): Project {
   if (project.appStoreUrl) links.appStore = project.appStoreUrl;
   if (project.playStoreUrl) links.playStore = project.playStoreUrl;
   if (project.websiteUrl) links.website = project.websiteUrl;
+  if (project.demoUrl) links.demo = project.demoUrl;
 
   return {
     slug: project.slug,
@@ -136,7 +159,7 @@ export function dbProjectToProject(project: DbClientProject): Project {
     challenge: localeRecord(project.challenge_en, project.challenge_ru, project.challenge_uz),
     solution: localeRecord(project.solution_en, project.solution_ru, project.solution_uz),
     results: localeRecordOptional(project.results_en, project.results_ru, project.results_uz),
-    techStack: [],
+    techStack: project.techStack ?? [],
     images: project.images,
     thumbnail: project.thumbnail,
     links: Object.keys(links).length > 0 ? links : undefined,

@@ -54,6 +54,18 @@ model Product {
   benefits_en  String[]
   benefits_ru  String[]
   benefits_uz  String[]
+
+  // Added so the database can hold everything src/config/solutions.ts does.
+  // Before this, dbProductToSolution returned technologies: [] and no images or
+  // links at all, so seeding a product silently dropped its screenshots, its
+  // stack and its "open the site" buttons.
+  technologies String[]
+  images       String[]
+  websiteUrl   String?
+  adminUrl     String?
+  bookingUrl   String?
+  mobileAppUrl String?
+
   order        Int      @default(0)
   isVisible    Boolean  @default(true)
   createdAt    DateTime @default(now())
@@ -90,6 +102,9 @@ model ClientProject {
   appStoreUrl   String?
   playStoreUrl  String?
   websiteUrl    String?
+  // 4Event and StandAI are hosted demos rather than public sites.
+  demoUrl       String?
+  techStack     String[]
   completedDate DateTime?
   featured      Boolean   @default(false)
   isVisible     Boolean   @default(true)
