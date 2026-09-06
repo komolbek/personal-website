@@ -4,6 +4,13 @@ import { getSortedSolutions } from '@/config/solutions';
 import { projects as staticProjects } from '@/config/projects';
 import { WorksContent } from './WorksContent';
 
+// Content for this page lives in the database and is edited in
+// admin.necto.uz. Without this the page is baked at build time, so an edit
+// made in the admin never reaches the live site until someone redeploys.
+// Sixty seconds keeps the prerendered speed and makes edits show up on their
+// own.
+export const revalidate = 60;
+
 export default async function WorksPage() {
   const [dbProducts, dbProjects] = await Promise.all([
     prisma.product.findMany({ where: { isVisible: true }, orderBy: { order: 'asc' } }).catch(() => []),

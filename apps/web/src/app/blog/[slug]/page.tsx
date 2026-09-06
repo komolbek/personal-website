@@ -2,6 +2,13 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { BlogPostClient } from './BlogPostClient';
 
+// Content for this page lives in the database and is edited in
+// admin.necto.uz. Without this the page is baked at build time, so an edit
+// made in the admin never reaches the live site until someone redeploys.
+// Sixty seconds keeps the prerendered speed and makes edits show up on their
+// own.
+export const revalidate = 60;
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }

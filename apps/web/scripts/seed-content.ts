@@ -14,6 +14,10 @@
  * Every write is an upsert keyed on slug, so running it twice is harmless and
  * it will not clobber ids or created timestamps.
  *
+ * It never deletes. An entry removed from the config leaves its row behind and
+ * the site keeps serving it — ClimateAsia did exactly that locally. Delete
+ * those by hand, or in admin.necto.uz.
+ *
  *   npx tsx scripts/seed-content.ts            # products and projects
  *   npx tsx scripts/seed-content.ts --products # products only
  *   npx tsx scripts/seed-content.ts --dry-run  # print, write nothing

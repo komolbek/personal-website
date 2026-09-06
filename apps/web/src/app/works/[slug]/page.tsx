@@ -17,6 +17,13 @@ import type { Project, Solution } from '@/types';
 // today; a product added in the CMS under an existing project slug would be
 // shadowed by the product branch below.
 
+// Content for this page lives in the database and is edited in
+// admin.necto.uz. Without this the page is baked at build time, so an edit
+// made in the admin never reaches the live site until someone redeploys.
+// Sixty seconds keeps the prerendered speed and makes edits show up on their
+// own.
+export const revalidate = 60;
+
 export const dynamicParams = true;
 
 type Found =
