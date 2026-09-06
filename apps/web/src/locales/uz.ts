@@ -1,4 +1,6 @@
+import { calcUz } from './calc/uz';
 export const uz = {
+  calc: calcUz,
   nav: {
     home: 'Bosh sahifa',
     services: 'Xizmatlar',
@@ -39,72 +41,25 @@ export const uz = {
       button: 'Bog\'lanish',
     },
   },
-  servicesPage: {
-    title: 'Bizning xizmatlar',
-    subtitle: 'O\'zbekiston va undan tashqaridagi bizneslar uchun to\'liq tsikl dasturiy ta\'minot ishlab chiqish',
-    items: {
-      webDev: {
-        title: 'Veb-ishlab chiqish',
-        desc: 'Zamonaviy freymvorklarda maxsus saytlar, veb-ilovalar va SaaS platformalar — tez, masshtabli, SEO-optimallashtirilgan.',
-        tech: ['React', 'Next.js', 'Node.js', 'PostgreSQL'],
-      },
-      mobileDev: {
-        title: 'Mobil ishlab chiqish',
-        desc: 'iOS va Android uchun nativ va krossplatforma mobil ilovalar — intuitiv interfeys va server bilan uzluksiz integratsiya.',
-        tech: ['React Native', 'Swift', 'Kotlin', 'Firebase'],
-      },
-      crmErp: {
-        title: 'CRM / ERP tizimlar',
-        desc: 'Jarayonlaringizga moslashtirilgan biznesni boshqarish tizimlari — mijozlarni boshqarishdan resurslarni rejalashtirishgacha.',
-        tech: ['CRM', 'ERP', 'Avtomatlashtirish', 'Analitika'],
-      },
-      uiux: {
-        title: 'UI/UX dizayn',
-        desc: 'Foydalanuvchiga yo\'naltirilgan dizayn. Vayerfreymlardan tayyor interfeyslargacha — foydalanuvchilaringiz yoqtiradigan tajriba.',
-        tech: ['Figma', 'Prototiplash', 'Tadqiqot', 'Dizayn tizimlari'],
-      },
-      ai: {
-        title: 'AI integratsiya',
-        desc: 'Sun\'iy intellektni avtomatlashtirish, ma\'lumotlar tahlili, matn qayta ishlash va aqlli qaror qabul qilish uchun qo\'llang.',
-        tech: ['OpenAI', 'LLM', 'Kompyuter ko\'rish', 'NLP'],
-      },
-      consulting: {
-        title: 'IT maslahat',
-        desc: 'Strategik texnologik maslahat: raqamli transformatsiya uchun to\'g\'ri stek, arxitektura va yondashuvni tanlash.',
-        tech: ['Arxitektura', 'Strategiya', 'Audit', 'Migratsiya'],
-      },
-    },
-  },
   solutions: {
     title: 'Bizning mahsulotlar',
     subtitle: 'O\'z ishlab chiqarilgan dasturiy mahsulotlar',
-    backToSolutions: 'Portfolioga qaytish',
-    features: 'Asosiy imkoniyatlar',
-    benefits: 'Afzalliklar',
-    technologies: 'Foydalaniladigan texnologiyalar',
+    backToSolutions: 'Ishlarimizga qaytish',
+    features: 'Nima qila oladi',
+    benefits: 'Bu nima beradi',
+    technologies: 'Nimada qilingan',
     relatedProjects: 'Bog\'liq loyihalar',
-    cta: 'Bu yechim qiziqtirdimi?',
-    ctaButton: 'Taklif olish',
-    process: {
-      title: 'Bizning jarayon',
-      discovery: 'Tahlil',
-      discoveryDesc: 'Ehtiyojlaringizni o\'rganamiz, bozoringizni tahlil qilamiz va loyiha hajmini belgilaymiz',
-      design: 'Dizayn',
-      designDesc: 'Foydalanuvchiga yo\'naltirilgan dizayn va masshtabli arxitektura yaratamiz',
-      development: 'Ishlab chiqish',
-      developmentDesc: 'Zamonaviy texnologiyalar va eng yaxshi amaliyotlar bilan yechimingizni quramiz',
-      launch: 'Ishga tushirish',
-      launchDesc: 'Joylashtiramiz, sinab ko\'ramiz va doimiy qo\'llab-quvvatlash bilan muammosiz ishlashini ta\'minlaymiz',
-    },
+    cta: 'Kompaniyangizga shunga o\'xshash narsa kerakmi?',
+    ctaButton: 'O\'z narxingizni hisoblang',
   },
   projects: {
     title: 'Bizning loyihalar',
     subtitle: 'Muvaffaqiyatli amalga oshirilgan loyihalar portfoliomiz',
-    backToProjects: 'Portfolioga qaytish',
-    challenge: 'Vazifa',
-    solution: 'Bizning yechim',
-    results: 'Natijalar',
-    techStack: 'Texnologik stek',
+    backToProjects: 'Ishlarimizga qaytish',
+    challenge: 'Nima noto\'g\'ri edi',
+    solution: 'Nima qildik',
+    results: 'Nima o\'zgardi',
+    techStack: 'Nimada qilingan',
     viewProject: 'Loyihani ko\'rish',
     viewCase: 'Keys stadi',
     filter: {
@@ -211,7 +166,7 @@ export const uz = {
   footer: {
     rights: 'Barcha huquqlar himoyalangan.',
     createdBy: 'Necto Automations tomonidan yaratilgan',
-    aboutBlurb: 'Toshkentdagi dasturiy ta\'minot ishlab chiqish studiyasi. CRM/ERP tizimlar, marketplace\'lar, AI platformalar va mobil ilovalar yaratamiz — yuridik, ta\'lim, e-tijorat va boshqa sohalarda 15+ mahsulot.',
+    aboutBlurb: 'Toshkentdagi dasturiy ta\'minot ishlab chiqish studiyasi. CRM/ERP tizimlar, marketplace\'lar, AI platformalar va mobil ilovalar yaratamiz. Uchta o\'z mahsulotimiz ishlab turibdi.',
     company: 'Kompaniya',
     services: 'Mahsulotlar',
     resources: 'Resurslar',
@@ -220,7 +175,7 @@ export const uz = {
     privacy: 'Maxfiylik siyosati',
     terms: 'Foydalanish shartlari',
     blog: 'Blog',
-    description: 'Toshkentda dasturiy ta\'minot ishlab chiqish. 15+ mahsulot — CRM, ERP, AI, marketplace va mobil ilovalar.',
+    description: 'Toshkentda dasturiy ta\'minot ishlab chiqish — CRM, ERP, AI, marketplace va mobil ilovalar.',
   },
   language: {
     en: 'English',

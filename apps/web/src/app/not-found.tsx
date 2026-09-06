@@ -43,7 +43,7 @@ export default function NotFound() {
       </div>
 
       <div className="text-center max-w-lg">
-        <h1 className="text-[120px] sm:text-[160px] font-bold gradient-text leading-none mb-4">
+        <h1 className="text-[120px] sm:text-[160px] font-bold text-ink leading-none mb-4">
           {t.title}
         </h1>
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
@@ -64,7 +64,7 @@ export default function NotFound() {
             {t.home}
           </Link>
           <Link
-            href="/portfolio"
+            href="/works"
             className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 hover:border-indigo-300 text-gray-700 hover:text-indigo-600 font-medium rounded-full transition-all duration-300"
           >
             {t.portfolio}

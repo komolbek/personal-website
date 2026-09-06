@@ -5,17 +5,8 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocale } from '@/hooks/useLocale';
 import { getAttribution, type Attribution } from '@/lib/attribution';
-import { BudgetSlider } from '@/components/ui/BudgetSlider';
-import { FadeIn } from '@/components/ui/AnimatedSection';
 
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-    gtag?: (...args: unknown[]) => void;
-  }
-}
-
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 3;
 
 const serviceIcons: Record<string, React.ReactNode> = {
   webdev: (
@@ -78,8 +69,6 @@ export default function ContactPage() {
 
   const [formData, setFormData] = useState({
     service: '',
-    budget: 50_000_000,
-    budgetLabel: '',
     name: '',
     phone: '',
     message: '',
@@ -122,19 +111,10 @@ export default function ContactPage() {
   const canProceed = (): boolean => {
     switch (step) {
       case 0: return formData.service !== '';
-      case 1: return true; // Budget always has a value
-      case 2: return formData.name.trim() !== '' && formData.phone.replace(/\s/g, '').length >= 9;
-      case 3: return true; // Message is optional
+      case 1: return formData.name.trim() !== '' && formData.phone.replace(/\s/g, '').length >= 9;
+      case 2: return true; // Message is optional
       default: return false;
     }
-  };
-
-  const formatBudgetForAPI = (value: number): string => {
-    const usd = Math.round(value / 12_500);
-    if (usd < 5_000) return 'small';
-    if (usd < 15_000) return 'medium';
-    if (usd < 50_000) return 'large';
-    return 'enterprise';
   };
 
   const handleSubmit = async () => {
@@ -147,8 +127,7 @@ export default function ContactPage() {
           name: formData.name,
           phone: '+998' + formData.phone.replace(/\s/g, ''),
           service: formData.service,
-          budget: formatBudgetForAPI(formData.budget),
-          message: formData.message || `${serviceLabels[formData.service]?.[locale] || formData.service} — ${Math.round(formData.budget / 12_500).toLocaleString('en-US')} USD`,
+          message: formData.message || serviceLabels[formData.service]?.[locale] || formData.service,
           ...utmData,
         }),
       });
@@ -158,8 +137,6 @@ export default function ContactPage() {
         if (window.fbq) {
           window.fbq('track', 'Lead', {
             content_name: formData.service || 'general',
-            currency: 'USD',
-            value: Math.round(formData.budget / 12_500),
           });
         }
         // Fire GA4 conversion event
@@ -167,7 +144,6 @@ export default function ContactPage() {
           window.gtag('event', 'generate_lead', {
             event_category: 'contact',
             event_label: formData.service || 'general',
-            value: Math.round(formData.budget / 12_500),
           });
         }
 
@@ -187,7 +163,7 @@ export default function ContactPage() {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && canProceed()) {
       e.preventDefault();
-      if (step === 3) {
+      if (step === TOTAL_STEPS - 1) {
         handleSubmit();
       } else {
         goNext();
@@ -197,15 +173,15 @@ export default function ContactPage() {
 
   // Step titles
   const stepTitles: Record<string, string[]> = {
-    en: ['What do you need?', "What's your budget?", 'How can we reach you?', 'Tell us more'],
-    ru: ['Что вам нужно?', 'Какой у вас бюджет?', 'Как с вами связаться?', 'Расскажите подробнее'],
-    uz: ['Sizga nima kerak?', 'Byudjetingiz qancha?', 'Qanday bog\'lanishimiz mumkin?', 'Batafsilroq aytib bering'],
+    en: ['What do you need?', 'How can we reach you?', 'Tell us more'],
+    ru: ['Что вам нужно?', 'Как с вами связаться?', 'Расскажите подробнее'],
+    uz: ['Sizga nima kerak?', 'Qanday bog\'lanishimiz mumkin?', 'Batafsilroq aytib bering'],
   };
 
   const stepSubtitles: Record<string, string[]> = {
-    en: ['Select the service you\'re interested in', 'Drag the slider to set your approximate budget', 'We\'ll get back to you within 24 hours', 'Optional — you can skip this step'],
-    ru: ['Выберите интересующую вас услугу', 'Перетащите ползунок для примерного бюджета', 'Мы ответим в течение 24 часов', 'Необязательно — можно пропустить'],
-    uz: ['Qiziqtirgan xizmatni tanlang', 'Taxminiy byudjetni belgilang', 'Biz 24 soat ichida javob beramiz', 'Ixtiyoriy — bu qadamni o\'tkazib yuborishingiz mumkin'],
+    en: ['Select the service you\'re interested in', 'We\'ll get back to you within 24 hours', 'Optional — you can skip this step'],
+    ru: ['Выберите интересующую вас услугу', 'Мы ответим в течение 24 часов', 'Необязательно — можно пропустить'],
+    uz: ['Qiziqtirgan xizmatni tanlang', 'Biz 24 soat ichida javob beramiz', 'Ixtiyoriy — bu qadamni o\'tkazib yuborishingiz mumkin'],
   };
 
   const titles = stepTitles[locale] || stepTitles.en;
@@ -247,7 +223,7 @@ export default function ContactPage() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
+      <div className="flex-1 flex items-center justify-center px-4 pt-10 pb-16 overflow-hidden">
         <div className="w-full max-w-2xl overflow-hidden">
           <AnimatePresence mode="wait" custom={direction}>
             {/* Step 0: Service Selection */}
@@ -313,7 +289,7 @@ export default function ContactPage() {
               </motion.div>
             )}
 
-            {/* Step 1: Budget */}
+            {/* Step 1: Contact Details */}
             {step === 1 && (
               <motion.div
                 key="step-1"
@@ -328,37 +304,7 @@ export default function ContactPage() {
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3">
                   {titles[1]}
                 </h1>
-                <p className="text-gray-500 text-lg mb-12">{subtitles[1]}</p>
-
-                <div className="p-8 sm:p-10 rounded-3xl bg-white/60 backdrop-blur-sm border border-gray-200/50">
-                  <BudgetSlider
-                    value={formData.budget}
-                    onChange={(value) => setFormData((prev) => ({ ...prev, budget: value }))}
-                    labels={{
-                      currency: 'UZS',
-                      approx: '≈',
-                    }}
-                  />
-                </div>
-              </motion.div>
-            )}
-
-            {/* Step 2: Contact Details */}
-            {step === 2 && (
-              <motion.div
-                key="step-2"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="text-center"
-              >
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-                  {titles[2]}
-                </h1>
-                <p className="text-gray-500 text-lg mb-10">{subtitles[2]}</p>
+                <p className="text-gray-500 text-lg mb-10">{subtitles[1]}</p>
 
                 <div className="max-w-md mx-auto space-y-5">
                   {/* Name */}
@@ -397,10 +343,10 @@ export default function ContactPage() {
               </motion.div>
             )}
 
-            {/* Step 3: Message */}
-            {step === 3 && (
+            {/* Step 2: Message */}
+            {step === 2 && (
               <motion.div
-                key="step-3"
+                key="step-2"
                 custom={direction}
                 variants={slideVariants}
                 initial="enter"
@@ -410,9 +356,9 @@ export default function ContactPage() {
                 className="text-center"
               >
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-                  {titles[3]}
+                  {titles[2]}
                 </h1>
-                <p className="text-gray-500 text-lg mb-10">{subtitles[3]}</p>
+                <p className="text-gray-500 text-lg mb-10">{subtitles[2]}</p>
 
                 <div className="max-w-lg mx-auto">
                   <textarea
@@ -485,7 +431,7 @@ export default function ContactPage() {
 
           {/* Navigation buttons */}
           {step < TOTAL_STEPS && (
-            <FadeIn delay={0.3}>
+            <div className="reveal">
               <div className="flex items-center justify-between mt-10 max-w-2xl mx-auto">
                 {/* Back button */}
                 {step > 0 ? (
@@ -505,7 +451,7 @@ export default function ContactPage() {
 
                 {/* Next / Submit / Skip */}
                 <div className="flex items-center gap-3">
-                  {step === 3 && (
+                  {step === 2 && (
                     <button
                       type="button"
                       onClick={handleSubmit}
@@ -516,7 +462,7 @@ export default function ContactPage() {
                     </button>
                   )}
 
-                  {step < 3 ? (
+                  {step < TOTAL_STEPS - 1 ? (
                     <button
                       type="button"
                       onClick={goNext}
@@ -543,7 +489,7 @@ export default function ContactPage() {
                   )}
                 </div>
               </div>
-            </FadeIn>
+            </div>
           )}
 
           {/* Step indicators */}

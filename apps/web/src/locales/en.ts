@@ -1,4 +1,6 @@
+import { calcEn } from './calc/en';
 export const en = {
+  calc: calcEn,
   nav: {
     home: 'Home',
     services: 'Services',
@@ -39,72 +41,25 @@ export const en = {
       button: 'Get in Touch',
     },
   },
-  servicesPage: {
-    title: 'Our Services',
-    subtitle: 'End-to-end software development for businesses in Uzbekistan and beyond',
-    items: {
-      webDev: {
-        title: 'Web Development',
-        desc: 'Custom websites, web applications, and SaaS platforms built with modern frameworks for speed, scalability, and SEO.',
-        tech: ['React', 'Next.js', 'Node.js', 'PostgreSQL'],
-      },
-      mobileDev: {
-        title: 'Mobile Development',
-        desc: 'Native and cross-platform mobile apps for iOS and Android with intuitive UX and seamless backend integration.',
-        tech: ['React Native', 'Swift', 'Kotlin', 'Firebase'],
-      },
-      crmErp: {
-        title: 'CRM / ERP Systems',
-        desc: 'Custom business management systems tailored to your workflows — from client management to resource planning and analytics.',
-        tech: ['Custom CRM', 'ERP', 'Automation', 'Analytics'],
-      },
-      uiux: {
-        title: 'UI/UX Design',
-        desc: 'User-centered design that converts. From wireframes to polished interfaces, we craft experiences your users will love.',
-        tech: ['Figma', 'Prototyping', 'User Research', 'Design Systems'],
-      },
-      ai: {
-        title: 'AI Integration',
-        desc: 'Leverage artificial intelligence for automation, data analysis, natural language processing, and intelligent decision-making.',
-        tech: ['OpenAI', 'LLMs', 'Computer Vision', 'NLP'],
-      },
-      consulting: {
-        title: 'IT Consulting',
-        desc: 'Strategic technology consulting to help you choose the right stack, architecture, and approach for your digital transformation.',
-        tech: ['Architecture', 'Strategy', 'Audit', 'Migration'],
-      },
-    },
-  },
   solutions: {
     title: 'Our Products',
     subtitle: 'In-house developed software products',
-    backToSolutions: 'Back to Portfolio',
-    features: 'Key Features',
-    benefits: 'Benefits',
-    technologies: 'Technologies We Use',
+    backToSolutions: 'Back to our work',
+    features: 'What it does',
+    benefits: 'What you get out of it',
+    technologies: 'What it is built with',
     relatedProjects: 'Related Projects',
-    cta: 'Interested in this solution?',
-    ctaButton: 'Get a Quote',
-    process: {
-      title: 'Our Process',
-      discovery: 'Discovery',
-      discoveryDesc: 'We analyze your needs, study your market, and define the project scope',
-      design: 'Design',
-      designDesc: 'Creating user-centric designs and scalable architecture',
-      development: 'Development',
-      developmentDesc: 'Building your solution with modern technologies and best practices',
-      launch: 'Launch',
-      launchDesc: 'Deploying, testing, and ensuring smooth operation with ongoing support',
-    },
+    cta: 'Need something like this for your company?',
+    ctaButton: 'Work out your price',
   },
   projects: {
     title: 'Our Projects',
     subtitle: 'Explore our portfolio of successful implementations',
-    backToProjects: 'Back to Portfolio',
-    challenge: 'The Challenge',
-    solution: 'Our Solution',
-    results: 'Results',
-    techStack: 'Technology Stack',
+    backToProjects: 'Back to our work',
+    challenge: 'What was going wrong',
+    solution: 'What we built',
+    results: 'What changed',
+    techStack: 'What it is built with',
     viewProject: 'View Project',
     viewCase: 'View Case Study',
     filter: {
@@ -211,7 +166,7 @@ export const en = {
   footer: {
     rights: 'All rights reserved.',
     createdBy: 'Created by Necto Automations',
-    aboutBlurb: 'A software development studio in Tashkent. We build CRM/ERP systems, marketplaces, AI platforms, and mobile apps — with 15+ products delivered across legal, education, e-commerce, and more.',
+    aboutBlurb: 'A software development studio in Tashkent. We build CRM/ERP systems, marketplaces, AI platforms, and mobile apps. Three of our own products run in production.',
     company: 'Company',
     services: 'Products',
     resources: 'Resources',
@@ -220,7 +175,7 @@ export const en = {
     privacy: 'Privacy Policy',
     terms: 'Terms of Service',
     blog: 'Blog',
-    description: 'Custom software development in Tashkent. 15+ products delivered — CRM, ERP, AI, marketplaces, and mobile apps.',
+    description: 'Custom software development in Tashkent — CRM, ERP, AI, marketplaces, and mobile apps.',
   },
   language: {
     en: 'English',

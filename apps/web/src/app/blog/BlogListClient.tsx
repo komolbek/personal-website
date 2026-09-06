@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useLocale } from '@/hooks/useLocale';
 import { siteConfig } from '@/config/site';
 import { TelegramIcon } from '@/components/ui/Icons';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/ui/AnimatedSection';
 
 interface BlogPost {
   id: string;
@@ -49,20 +48,20 @@ export function BlogListClient({ posts }: BlogListClientProps) {
 
   if (posts.length === 0) {
     return (
-      <div className="min-h-screen pt-24 pb-16 px-4">
+      <div className="min-h-screen pt-10 pb-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <FadeIn>
+          <div className="reveal">
             <div className="text-center mb-16">
-              <h1 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
+              <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-ink">
                 {t.blog.title}
               </h1>
               <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                 {t.blog.subtitle}
               </p>
             </div>
-          </FadeIn>
+          </div>
 
-          <FadeIn delay={0.2}>
+          <div className="reveal">
             <div className="text-center p-12 md:p-16 rounded-3xl bg-gradient-to-br from-indigo-500/10 to-pink-500/10 border border-indigo-500/20 mb-12">
               <h2 className="text-2xl font-bold mb-4 text-gray-900">
                 {t.blog.noPostsYet}
@@ -80,10 +79,10 @@ export function BlogListClient({ posts }: BlogListClientProps) {
                 {t.blog.followTelegram}
               </a>
             </div>
-          </FadeIn>
+          </div>
 
           {/* Coming Soon Topics */}
-          <FadeIn delay={0.3}>
+          <div className="reveal">
             <div className="max-w-3xl mx-auto">
               <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">
                 {locale === 'ru' ? 'Скоро на блоге' : locale === 'uz' ? 'Tez kunda blogda' : 'Coming Soon'}
@@ -129,29 +128,29 @@ export function BlogListClient({ posts }: BlogListClientProps) {
                 ))}
               </div>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4">
+    <div className="min-h-screen pt-10 pb-16 px-4">
       <div className="max-w-6xl mx-auto">
-        <FadeIn>
+        <div className="reveal">
           <div className="text-center mb-16">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-ink">
               {t.blog.title}
             </h1>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
               {t.blog.subtitle}
             </p>
           </div>
-        </FadeIn>
+        </div>
 
-        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="reveal grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
-            <StaggerItem key={post.id}>
+            <div key={post.id}>
               <Link href={`/blog/${post.slug}`} className="block h-full">
                 <div className="group h-full rounded-3xl bg-white/60 backdrop-blur-sm border border-gray-200/50 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10">
                   {/* Thumbnail or gradient header */}
@@ -197,9 +196,9 @@ export function BlogListClient({ posts }: BlogListClientProps) {
                   </div>
                 </div>
               </Link>
-            </StaggerItem>
+            </div>
           ))}
-        </StaggerContainer>
+        </div>
       </div>
     </div>
   );

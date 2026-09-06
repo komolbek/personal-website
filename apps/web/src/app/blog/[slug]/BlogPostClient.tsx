@@ -4,7 +4,6 @@ import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useLocale } from '@/hooks/useLocale';
-import { FadeIn } from '@/components/ui/AnimatedSection';
 
 interface BlogPost {
   id: string;
@@ -54,9 +53,9 @@ export function BlogPostClient({ post }: BlogPostClientProps) {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4">
+    <div className="min-h-screen pt-10 pb-16 px-4">
       <div className="max-w-3xl mx-auto">
-        <FadeIn>
+        <div className="reveal">
           {/* Back link */}
           <Link
             href="/blog"
@@ -124,7 +123,7 @@ export function BlogPostClient({ post }: BlogPostClientProps) {
               {t.blog.allPosts}
             </Link>
           </div>
-        </FadeIn>
+        </div>
       </div>
     </div>
   );

@@ -24,20 +24,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
     .catch(() => []);
 
+  // Products and projects share one route now (§4.1). Old /solutions/<slug>
+  // and /projects/<slug> URLs 301 here and are deliberately absent from the
+  // sitemap — a sitemap should list destinations, not redirects.
   const solutionPages = (
     dbProducts.length > 0
       ? dbProducts.map((p) => ({ slug: p.slug, lastModified: p.updatedAt }))
       : staticSolutions.map((s) => ({ slug: s.slug, lastModified: new Date() }))
   ).map(({ slug, lastModified }) => ({
-    url: `${baseUrl}/solutions/${slug}`,
+    url: `${baseUrl}/works/${slug}`,
     lastModified,
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));
 
-  // Project pages
   const projectPages = projects.map((project) => ({
-    url: `${baseUrl}/projects/${project.slug}`,
+    url: `${baseUrl}/works/${project.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.8,
@@ -52,22 +54,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${baseUrl}/portfolio`,
+      // The text version of every price the calculator can quote.
+      url: `${baseUrl}/pricing`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/partners`,
+      url: `${baseUrl}/works`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/services`,
+      url: `${baseUrl}/about`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
+      changeFrequency: 'yearly',
+      priority: 0.5,
     },
     {
       url: `${baseUrl}/blog`,

@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function MemoMindTermsPage() {
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4">
+    <div className="min-h-screen pt-10 pb-16 px-4">
       {/* Background decorations */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
@@ -35,7 +35,7 @@ export default function MemoMindTermsPage() {
 
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-4 gradient-text">
+          <h1 className="text-4xl font-bold mb-4 text-ink">
             Terms of Use
           </h1>
           <p className="text-gray-600">

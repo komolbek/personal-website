@@ -6,6 +6,14 @@ import { Locale } from '@/types';
 import { siteConfig } from '@/config/site';
 import { GlobeIcon, ChevronDownIcon } from './Icons';
 
+// Kept here rather than in the dictionaries: it exists only to satisfy the
+// accessible-name rule above, and is never rendered as visible text.
+const localeMenuLabel: Record<string, string> = {
+  ru: 'выбрать язык',
+  uz: 'tilni tanlash',
+  en: 'select language',
+};
+
 export function LanguageSwitcher() {
   const { locale, setLocale, t } = useLocale();
   const [isOpen, setIsOpen] = useState(false);
@@ -31,8 +39,12 @@ export function LanguageSwitcher() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
-        aria-label="Select language"
+        // WCAG 2.5.3: the accessible name has to contain the visible label, or
+        // a voice-control user saying "Русский" cannot activate the control.
+        // The old aria-label="Select language" replaced it outright.
+        aria-label={`${t.language[locale]} — ${localeMenuLabel[locale]}`}
         aria-expanded={isOpen}
+        aria-haspopup="listbox"
       >
         <GlobeIcon className="w-5 h-5 flex-shrink-0" />
         <span className="hidden sm:inline text-sm">{t.language[locale]}</span>

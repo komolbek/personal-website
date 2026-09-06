@@ -6,7 +6,10 @@ import { notifyNewEnquiry } from '@/lib/telegram-notify';
 export const dynamic = 'force-dynamic';
 
 interface ContactFormData {
-  name: string;
+  // Optional since the calculator's quote dialog asks for one contact and
+  // nothing else (REDESIGN.md §3.8). ContactSubmission.name is NOT NULL, so a
+  // label is substituted rather than the column being made nullable.
+  name?: string;
   email?: string;
   message: string;
   company?: string;
@@ -24,15 +27,18 @@ interface ContactFormData {
 export async function POST(request: NextRequest) {
   try {
     const body: ContactFormData = await request.json();
-    const { name, email, message, company, phone, service, budget, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, referrer } = body;
+    const { email, message, company, phone, service, budget, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, referrer } = body;
 
     // Validate required fields (phone is now required, email is optional)
-    if (!name || !phone || !message) {
+    if (!phone || !message) {
       return NextResponse.json(
-        { error: 'Name, phone, and message are required' },
+        { error: 'Phone and message are required' },
         { status: 400 }
       );
     }
+
+    // Reads back in Telegram and Hub as what it is, rather than as a blank.
+    const name = body.name?.trim() || 'Смета с сайта';
 
     // Basic email validation (only if provided)
     if (email) {
