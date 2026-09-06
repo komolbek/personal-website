@@ -1,70 +1,40 @@
 import type { Metadata } from 'next';
-import { Hero } from '@/components/sections/Hero';
-import { PortfolioPreview } from '@/components/sections/PortfolioPreview';
-import { AboutSection } from '@/components/sections/AboutSection';
-import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
-import { CTASection } from '@/components/sections/CTASection';
-import { FAQSection } from '@/components/sections/FAQSection';
+import { Calculator } from '@/components/calculator/Calculator';
+import { ExplainPanels } from '@/components/calculator/ExplainPanels';
+import { Intro } from '@/components/calculator/Intro';
+import { ProductStrip } from '@/components/calculator/ProductStrip';
 import { siteConfig } from '@/config/site';
-import { prisma } from '@/lib/prisma';
-import {
-  dbProductToSolution,
-  dbProjectToProject,
-  dbFeedbackToTestimonial,
-} from '@/lib/transforms';
-import { getSettings } from '@/lib/settings';
 
+// The price goes in the description itself (REDESIGN.md §7): the search result
+// is where a visitor decides whether they can afford to click.
+//
+// Metadata is Russian only. Next resolves it on the server with no locale
+// context — the switcher is a client-side preference, not a route — so there is
+// one canonical language for the tab title and the search snippet, and Russian
+// is it. Per-language metadata needs /uz and /en routes; see the note in
+// REDESIGN.md §6.4 follow-ups.
 export const metadata: Metadata = {
-  title: 'Necto Automations — Разработка ПО и IT-решения в Ташкенте',
-  description: 'Разработка сайтов, CRM-систем, мобильных приложений и автоматизация бизнеса в Ташкенте. 20+ клиентов, 6+ продуктов. Custom software development in Tashkent.',
+  title: 'Necto Automations — программа для вашего бизнеса, цена сразу',
+  description:
+    'Программы для бизнеса в Ташкенте: проекты от 38 000 000 сум, сайты от 5 000 000. Точная цена и срок — в договоре, а не «от». Посчитайте за минуту.',
   alternates: {
     canonical: siteConfig.url,
   },
 };
 
-export default async function Home() {
-  const [dbProducts, dbProjects, dbFeedback, siteSettings] = await Promise.all([
-    prisma.product.findMany({ where: { isVisible: true }, orderBy: { order: 'asc' } }).catch(() => []),
-    prisma.clientProject.findMany({ where: { isVisible: true, featured: true }, orderBy: { order: 'asc' }, take: 3 }).catch(() => []),
-    prisma.feedback.findMany({
-      where: { status: 'APPROVED', featured: true },
-      include: { partner: true },
-      orderBy: { createdAt: 'desc' },
-      take: 6,
-    }).catch(() => []),
-    getSettings([
-      'hero.title_en', 'hero.title_ru', 'hero.title_uz',
-      'hero.subtitle_en', 'hero.subtitle_ru', 'hero.subtitle_uz',
-      'cta.title_en', 'cta.title_ru', 'cta.title_uz',
-      'cta.subtitle_en', 'cta.subtitle_ru', 'cta.subtitle_uz',
-    ]),
-  ]);
-
-  const solutions = dbProducts.map(dbProductToSolution);
-  const projects = dbProjects.map(dbProjectToProject);
-
-  const testimonials = dbFeedback.length > 0
-    ? dbFeedback.map(f => dbFeedbackToTestimonial(f, f.partner?.name))
-    : undefined;
-
-  // Build override objects — only pass if settings have values
-  const heroOverrides = {
-    title: siteSettings['hero.title_ru'] || siteSettings['hero.title_en'] || undefined,
-    subtitle: siteSettings['hero.subtitle_ru'] || siteSettings['hero.subtitle_en'] || undefined,
-  };
-  const ctaOverrides = {
-    title: siteSettings['cta.title_ru'] || siteSettings['cta.title_en'] || undefined,
-    subtitle: siteSettings['cta.subtitle_ru'] || siteSettings['cta.subtitle_en'] || undefined,
-  };
-
+/** The homepage is one tool: pick what is going wrong, get an exact price. */
+export default function Home() {
   return (
-    <>
-      <Hero overrides={heroOverrides} />
-      <PortfolioPreview solutions={solutions} projects={projects} />
-      <AboutSection />
-      <TestimonialsSection dbTestimonials={testimonials} />
-      <FAQSection />
-      <CTASection overrides={ctaOverrides} />
-    </>
+    <div className="mx-auto max-w-[1060px] px-5 pb-24 lg:pb-8">
+      <Intro />
+      <Calculator />
+
+      {/* Wide screens get this beside the heading instead — see ProductStrip. */}
+      <div className="mb-10">
+        <ProductStrip where="below" />
+      </div>
+
+      <ExplainPanels />
+    </div>
   );
 }
