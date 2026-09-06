@@ -44,6 +44,12 @@ const nextConfig = {
       { source: '/partners', destination: '/works', statusCode: 301 },
       { source: '/apps', destination: '/works', statusCode: 301 },
 
+      // --- retracted work ---------------------------------------------------
+      // ClimateAsia was listed as delivered in 2024; the owner confirms it was
+      // not. The URL was live and indexed, so it goes to the listing rather
+      // than dying, and the entry itself is gone from config/projects.ts.
+      { source: '/works/climateasia', destination: '/works', statusCode: 301 },
+
       // --- services became the price list -----------------------------------
       { source: '/services', destination: '/pricing', statusCode: 301 },
 

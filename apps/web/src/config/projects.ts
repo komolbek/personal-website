@@ -171,44 +171,6 @@ export const projects: Project[] = [
     relatedSolutions: [],
   },
   {
-    slug: 'climateasia',
-    title: {
-      en: 'ClimateAsia — a system for a climate equipment business',
-      ru: 'ClimateAsia — программа для климатического бизнеса',
-      uz: 'ClimateAsia — iqlim jihozlari biznesi uchun dastur',
-    },
-    category: 'crm',
-    description: {
-      en: 'A system for a company that sells and installs climate equipment: stock, suppliers, orders, installer visits and after-sales service in one place.',
-      ru: 'Программа для компании, которая продаёт и ставит климатическое оборудование: склад, поставщики, заказы, выезды монтажников и обслуживание после установки — в одном месте.',
-      uz: "Iqlim jihozlarini sotadigan va o'rnatadigan kompaniya uchun dastur: ombor, yetkazib beruvchilar, buyurtmalar, montajchilar chiqishi va o'rnatishdan keyingi xizmat — bitta joyda.",
-    },
-    challenge: {
-      en: 'The work ran on spreadsheets and paper: stock did not match what was on the shelf, service visits were forgotten, and working out what a particular job had earned was next to impossible.',
-      ru: 'Работа велась в таблицах и на бумаге: склад не сходился с тем, что стояло на полке, визиты обслуживания забывались, а посчитать, сколько заработали на конкретном объекте, было почти невозможно.',
-      uz: "Ish jadvallar va qog'ozda yuritilardi: ombor javonda turgan narsa bilan to'g'ri kelmasdi, xizmat chiqishlari unutilardi, muayyan obyektdan qancha ishlangani hisoblash esa deyarli imkonsiz edi.",
-    },
-    solution: {
-      en: 'We built one system for the whole cycle: stock in and out, purchasing, a client record with its history, job costing, the installer schedule and warranty dates. The owner sees what is happening on one screen.',
-      ru: 'Сделали одну программу на весь цикл: приход и расход по складу, закупки у поставщиков, карточка клиента с историей, расчёт стоимости объекта, график выездов и сроки гарантии. Руководитель видит на одном экране, что происходит сейчас.',
-      uz: "Butun tsikl uchun bitta dastur qildik: ombor kirim-chiqimi, yetkazib beruvchilardan xarid, tarixi bilan mijoz kartochkasi, obyekt tannarxi, chiqishlar jadvali va kafolat muddatlari. Rahbar hozir nima bo'layotganini bitta ekranda ko'radi.",
-    },
-    results: {
-      en: 'Inventory accuracy improved from 78% to 99%. Service appointment scheduling efficiency increased by 60%. Management reporting time reduced from weekly manual compilation to real-time automated dashboards.',
-      ru: 'Точность инвентаризации улучшилась с 78% до 99%. Эффективность планирования визитов обслуживания выросла на 60%. Время подготовки отчётов сократилось с еженедельной ручной компиляции до автоматических панелей в реальном времени.',
-      uz: 'Inventar aniqligi 78% dan 99% ga oshdi. Xizmat uchrashuvlarini rejalashtirish samaradorligi 60% ga oshdi. Boshqaruv hisobotlari vaqti haftalik qo\'lda tuzishdan real vaqtdagi avtomatik panellarga qisqardi.',
-    },
-    techStack: ['Next.js', 'React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Prisma', 'Tailwind CSS'],
-    images: [
-      '/projects/climateasia/screenshot-1.png',
-    ],
-    thumbnail: '/projects/climateasia/screenshot-1.png',
-    links: {},
-    featured: true,
-    completedDate: '2024',
-    relatedSolutions: [],
-  },
-  {
     slug: 'sportbooking',
     title: {
       en: 'SportBooking — booking for sports venues',
