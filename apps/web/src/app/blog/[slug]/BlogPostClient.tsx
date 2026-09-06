@@ -59,7 +59,7 @@ export function BlogPostClient({ post }: BlogPostClientProps) {
           {/* Back link */}
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-indigo-600 transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-sm text-ink-faint hover:text-indigo-600 transition-colors mb-8"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -70,10 +70,10 @@ export function BlogPostClient({ post }: BlogPostClientProps) {
           {/* Header */}
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-4">
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${categoryColors[post.category] || 'bg-gray-100 text-gray-700'}`}>
+              <span className={`px-3 py-1 rounded-full text-xs font-medium ${categoryColors[post.category] || 'bg-paper-alt text-ink-muted'}`}>
                 {categoryLabel(post.category)}
               </span>
-              <span className="text-sm text-gray-400">
+              <span className="text-sm text-ink-faint">
                 {t.blog.publishedOn}{' '}
                 {new Date(post.publishedAt).toLocaleDateString(
                   locale === 'ru' ? 'ru-RU' : locale === 'uz' ? 'uz-UZ' : 'en-US',
@@ -82,13 +82,13 @@ export function BlogPostClient({ post }: BlogPostClientProps) {
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-ink mb-4">
               {title}
             </h1>
 
             {post.author && (
-              <p className="text-gray-500">
-                {t.blog.byAuthor} <span className="font-medium text-gray-700">{post.author}</span>
+              <p className="text-ink-faint">
+                {t.blog.byAuthor} <span className="font-medium text-ink-muted">{post.author}</span>
               </p>
             )}
           </div>
@@ -105,17 +105,17 @@ export function BlogPostClient({ post }: BlogPostClientProps) {
           )}
 
           {/* Markdown content */}
-          <article className="prose prose-lg prose-gray max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-a:text-indigo-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-code:text-indigo-600 prose-code:before:content-none prose-code:after:content-none prose-blockquote:border-indigo-500 prose-blockquote:text-gray-600">
+          <article className="prose prose-lg prose-gray max-w-none prose-headings:font-bold prose-headings:text-ink prose-a:text-indigo-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl prose-pre:bg-ink prose-pre:text-paper prose-code:text-indigo-600 prose-code:before:content-none prose-code:after:content-none prose-blockquote:border-indigo-500 prose-blockquote:text-ink-muted">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {content}
             </ReactMarkdown>
           </article>
 
           {/* Back to blog */}
-          <div className="mt-16 pt-8 border-t border-gray-200">
+          <div className="mt-16 pt-8 border-t border-line">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white font-medium rounded-full transition-all duration-300 shadow-lg shadow-indigo-500/25"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-accent-ink font-semibold rounded-[9px] hover:opacity-90 transition-opacity"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

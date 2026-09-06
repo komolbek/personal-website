@@ -55,25 +55,25 @@ export function BlogListClient({ posts }: BlogListClientProps) {
               <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-ink">
                 {t.blog.title}
               </h1>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              <p className="text-ink-muted text-lg max-w-2xl mx-auto">
                 {t.blog.subtitle}
               </p>
             </div>
           </div>
 
           <div className="reveal">
-            <div className="text-center p-12 md:p-16 rounded-3xl bg-gradient-to-br from-indigo-500/10 to-pink-500/10 border border-indigo-500/20 mb-12">
-              <h2 className="text-2xl font-bold mb-4 text-gray-900">
+            <div className="text-center p-12 md:p-16 rounded-3xl bg-accent-soft border border-accent-line mb-12">
+              <h2 className="text-2xl font-bold mb-4 text-ink">
                 {t.blog.noPostsYet}
               </h2>
-              <p className="text-gray-600 text-lg mb-8 max-w-lg mx-auto">
+              <p className="text-ink-muted text-lg mb-8 max-w-lg mx-auto">
                 {t.blog.noPostsYetDesc}
               </p>
               <a
                 href={`https://t.me/${siteConfig.telegram}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white font-medium rounded-full transition-all duration-300 shadow-lg shadow-indigo-500/25"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-accent text-accent-ink font-semibold rounded-[9px] hover:opacity-90 transition-opacity"
               >
                 <TelegramIcon className="w-5 h-5" />
                 {t.blog.followTelegram}
@@ -84,7 +84,7 @@ export function BlogListClient({ posts }: BlogListClientProps) {
           {/* Coming Soon Topics */}
           <div className="reveal">
             <div className="max-w-3xl mx-auto">
-              <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">
+              <h3 className="text-xl font-semibold text-ink mb-6 text-center">
                 {locale === 'ru' ? 'Скоро на блоге' : locale === 'uz' ? 'Tez kunda blogda' : 'Coming Soon'}
               </h3>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -116,12 +116,12 @@ export function BlogListClient({ posts }: BlogListClientProps) {
                 ].map((topic, i) => (
                   <div
                     key={i}
-                    className="flex items-start gap-3 p-4 rounded-2xl bg-white/40 border border-gray-200/50"
+                    className="flex items-start gap-3 p-4 rounded-2xl bg-paper border border-line"
                   >
-                    <span className={`shrink-0 mt-0.5 px-2 py-0.5 rounded-full text-xs font-medium ${categoryColors[topic.cat] || 'bg-gray-100 text-gray-700'}`}>
+                    <span className={`shrink-0 mt-0.5 px-2 py-0.5 rounded-full text-xs font-medium ${categoryColors[topic.cat] || 'bg-paper-alt text-ink-muted'}`}>
                       {(t.blog.categories as Record<string, string>)?.[topic.cat] || topic.cat}
                     </span>
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-ink-muted">
                       {locale === 'ru' ? topic.ru : locale === 'uz' ? topic.uz : topic.en}
                     </span>
                   </div>
@@ -142,7 +142,7 @@ export function BlogListClient({ posts }: BlogListClientProps) {
             <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-ink">
               {t.blog.title}
             </h1>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="text-ink-muted text-lg max-w-2xl mx-auto">
               {t.blog.subtitle}
             </p>
           </div>
@@ -152,10 +152,10 @@ export function BlogListClient({ posts }: BlogListClientProps) {
           {posts.map((post) => (
             <div key={post.id}>
               <Link href={`/blog/${post.slug}`} className="block h-full">
-                <div className="group h-full rounded-3xl bg-white/60 backdrop-blur-sm border border-gray-200/50 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10">
+                <div className="group h-full rounded-3xl bg-paper backdrop-blur-sm border border-line overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10">
                   {/* Thumbnail or gradient header */}
                   {post.thumbnail ? (
-                    <div className="h-48 bg-gray-100 overflow-hidden">
+                    <div className="h-48 bg-paper-alt overflow-hidden">
                       <img
                         src={post.thumbnail}
                         alt={getLocalized(post.title_en, post.title_ru, post.title_uz)}
@@ -163,8 +163,8 @@ export function BlogListClient({ posts }: BlogListClientProps) {
                       />
                     </div>
                   ) : (
-                    <div className="h-48 bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center">
-                      <svg className="w-12 h-12 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="h-48 bg-accent-soft flex items-center justify-center">
+                      <svg className="w-12 h-12 text-accent/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                       </svg>
                     </div>
@@ -172,24 +172,24 @@ export function BlogListClient({ posts }: BlogListClientProps) {
 
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-3">
-                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${categoryColors[post.category] || 'bg-gray-100 text-gray-700'}`}>
+                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${categoryColors[post.category] || 'bg-paper-alt text-ink-muted'}`}>
                         {categoryLabel(post.category)}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-ink-faint">
                         {new Date(post.publishedAt).toLocaleDateString(locale === 'ru' ? 'ru-RU' : locale === 'uz' ? 'uz-UZ' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                       </span>
                     </div>
 
-                    <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                    <h2 className="text-lg font-bold text-ink mb-2 group-hover:text-indigo-600 transition-colors line-clamp-2">
                       {getLocalized(post.title_en, post.title_ru, post.title_uz)}
                     </h2>
 
-                    <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                    <p className="text-ink-muted text-sm line-clamp-3 mb-4">
                       {getLocalized(post.excerpt_en, post.excerpt_ru, post.excerpt_uz)}
                     </p>
 
                     {post.author && (
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-ink-faint">
                         {t.blog.byAuthor} {post.author}
                       </p>
                     )}

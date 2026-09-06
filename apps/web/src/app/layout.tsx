@@ -112,13 +112,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // data-theme="light" pins the site to the light palette. The dark tokens in
-    // globals.css are complete and contrast-checked, but the pages that predate
-    // this redesign (legal, blog, /works and the product and project details)
-    // still use hardcoded gray-* and bg-white classes, so honouring the OS dark
-    // preference would render dark chrome around white panels. Removing this
-    // attribute is the switch to flip once those pages are on the tokens.
-    <html lang="ru" data-theme="light" suppressHydrationWarning>
+    // No data-theme here on purpose: with nothing pinned, the tokens in
+    // globals.css follow prefers-color-scheme, so the site is dark for anyone
+    // whose device is. It was pinned to light while the older pages still used
+    // hardcoded gray-* and bg-white classes; they are on the tokens now.
+    <html lang="ru" suppressHydrationWarning>
       <head>
         {/* Google Analytics (GA4) */}
         {GA_MEASUREMENT_ID && (
@@ -174,7 +172,7 @@ export default function RootLayout({
         )}
       </head>
       {/* Colours come from the tokens in globals.css, which sets body's
-          background and colour. The `bg-white text-gray-900` that used to be
+          background and colour. The `bg-paper text-ink` that used to be
           here overrode them and was invisible only because the site had no
           dark palette to conflict with. */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>

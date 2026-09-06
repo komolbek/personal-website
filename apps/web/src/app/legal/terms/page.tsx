@@ -166,24 +166,24 @@ export default function TermsPage() {
       <div className="max-w-3xl mx-auto">
         <Link
           href="/"
-          className="inline-flex items-center text-sm text-gray-600 hover:text-indigo-600 mb-8 transition-colors"
+          className="inline-flex items-center text-sm text-ink-muted hover:text-indigo-600 mb-8 transition-colors"
         >
           &larr; {t.common.backToHome}
         </Link>
 
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl font-bold text-ink mb-4">
           <span className="text-ink">{c.title}</span>
         </h1>
 
-        <p className="text-gray-500 mb-8">{c.lastUpdated}</p>
+        <p className="text-ink-faint mb-8">{c.lastUpdated}</p>
 
         <div className="prose prose-gray max-w-none">
           {c.sections.map((section, i) => (
             <section key={i} className="mb-8">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              <h2 className="text-2xl font-semibold text-ink mb-4">
                 {section.heading}
               </h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
+              <p className="text-ink-muted leading-relaxed mb-4">
                 {section.body}
                 {section.isContact && (
                   <>
@@ -195,7 +195,7 @@ export default function TermsPage() {
                 )}
               </p>
               {section.list && (
-                <ul className="list-disc pl-6 text-gray-600 space-y-2">
+                <ul className="list-disc pl-6 text-ink-muted space-y-2">
                   {section.list.map((item, j) => (
                     <li key={j}>{item}</li>
                   ))}

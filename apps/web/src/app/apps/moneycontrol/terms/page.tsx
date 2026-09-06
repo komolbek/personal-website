@@ -38,30 +38,30 @@ export default function MoneyControlTermsPage() {
           <h1 className="text-4xl font-bold mb-4 text-ink">
             Terms of Use
           </h1>
-          <p className="text-gray-600">
+          <p className="text-ink-muted">
             Money Control App - Last updated: January 2025
           </p>
         </div>
 
         {/* Content */}
         <div className="prose prose-lg max-w-none">
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-200/50">
+          <div className="bg-paper backdrop-blur-sm rounded-2xl p-8 border border-line">
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Agreement to Terms
               </h2>
-              <p className="text-gray-600 mb-4">
+              <p className="text-ink-muted mb-4">
                 By downloading, installing, or using Money Control (&quot;the App&quot;), you agree to be bound by these
                 Terms of Use. If you do not agree to these terms, please do not use the App.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Description of Service
               </h2>
-              <p className="text-gray-600 mb-4">
+              <p className="text-ink-muted mb-4">
                 Money Control is a personal debt tracking application that helps you manage debts you owe
                 and debts owed to you. The App allows you to record, track, and manage payments with
                 multi-currency support. The App offers both free and premium subscription tiers.
@@ -69,37 +69,37 @@ export default function MoneyControlTermsPage() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Subscriptions and Payments
               </h2>
-              <p className="text-gray-600 mb-4">
+              <p className="text-ink-muted mb-4">
                 Money Control offers auto-renewable subscriptions to unlock premium features:
               </p>
-              <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
-                <li><strong className="text-gray-900">Monthly Premium:</strong> Billed monthly</li>
-                <li><strong className="text-gray-900">Yearly Premium:</strong> Billed annually</li>
+              <ul className="list-disc list-inside text-ink-muted space-y-2 mb-4">
+                <li><strong className="text-ink">Monthly Premium:</strong> Billed monthly</li>
+                <li><strong className="text-ink">Yearly Premium:</strong> Billed annually</li>
               </ul>
-              <p className="text-gray-600 mb-4">
-                <strong className="text-gray-900">Auto-Renewal:</strong> Your subscription will automatically
+              <p className="text-ink-muted mb-4">
+                <strong className="text-ink">Auto-Renewal:</strong> Your subscription will automatically
                 renew unless auto-renew is turned off at least 24 hours before the end of the current billing period.
                 Your account will be charged for renewal within 24 hours prior to the end of the current period.
               </p>
-              <p className="text-gray-600 mb-4">
-                <strong className="text-gray-900">Managing Subscriptions:</strong> You can manage or cancel
+              <p className="text-ink-muted mb-4">
+                <strong className="text-ink">Managing Subscriptions:</strong> You can manage or cancel
                 your subscription at any time through your Apple ID account settings. Go to Settings &gt; [Your Name] &gt;
                 Subscriptions on your iOS device.
               </p>
-              <p className="text-gray-600">
-                <strong className="text-gray-900">Payment:</strong> Payment will be charged to your Apple ID
+              <p className="text-ink-muted">
+                <strong className="text-ink">Payment:</strong> Payment will be charged to your Apple ID
                 account at confirmation of purchase. All payments are processed by Apple and subject to Apple&apos;s terms and conditions.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Free Trial
               </h2>
-              <p className="text-gray-600">
+              <p className="text-ink-muted">
                 If a free trial is offered, any unused portion of the free trial period will be forfeited when you
                 purchase a subscription. Free trial eligibility is determined by Apple and may be limited to one
                 trial per Apple ID.
@@ -107,13 +107,13 @@ export default function MoneyControlTermsPage() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 User Conduct
               </h2>
-              <p className="text-gray-600 mb-4">
+              <p className="text-ink-muted mb-4">
                 You agree to use the App only for lawful purposes. You agree not to:
               </p>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
+              <ul className="list-disc list-inside text-ink-muted space-y-2">
                 <li>Attempt to reverse engineer, decompile, or disassemble the App</li>
                 <li>Use the App for any fraudulent or illegal purposes</li>
                 <li>Interfere with or disrupt the App&apos;s services or servers</li>
@@ -122,10 +122,10 @@ export default function MoneyControlTermsPage() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Intellectual Property
               </h2>
-              <p className="text-gray-600">
+              <p className="text-ink-muted">
                 The App, including its design, features, and content, is owned by Necto Automations and is protected
                 by copyright and other intellectual property laws. You are granted a limited, non-exclusive,
                 non-transferable license to use the App for personal, non-commercial purposes.
@@ -133,10 +133,10 @@ export default function MoneyControlTermsPage() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Your Data
               </h2>
-              <p className="text-gray-600">
+              <p className="text-ink-muted">
                 You retain ownership of any debt records, payment history, and other content you create using
                 the App. All your data is stored locally on your device. We do not collect, transmit, or store
                 your personal financial data on external servers.
@@ -144,10 +144,10 @@ export default function MoneyControlTermsPage() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Disclaimer of Warranties
               </h2>
-              <p className="text-gray-600">
+              <p className="text-ink-muted">
                 The App is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind, either express or
                 implied. We do not guarantee that the App will be error-free, uninterrupted, or free from viruses
                 or other harmful components. The App is a personal tracking tool and should not be relied upon
@@ -156,10 +156,10 @@ export default function MoneyControlTermsPage() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Limitation of Liability
               </h2>
-              <p className="text-gray-600">
+              <p className="text-ink-muted">
                 To the maximum extent permitted by law, we shall not be liable for any indirect, incidental,
                 special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred
                 directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting
@@ -168,10 +168,10 @@ export default function MoneyControlTermsPage() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Termination
               </h2>
-              <p className="text-gray-600">
+              <p className="text-ink-muted">
                 We reserve the right to terminate or suspend your access to the App at any time, without prior
                 notice, for conduct that we believe violates these Terms of Use or is harmful to other users,
                 us, or third parties, or for any other reason at our sole discretion.
@@ -179,10 +179,10 @@ export default function MoneyControlTermsPage() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Changes to Terms
               </h2>
-              <p className="text-gray-600">
+              <p className="text-ink-muted">
                 We may modify these Terms of Use at any time. We will notify you of any material changes by
                 posting the new Terms on this page and updating the &quot;Last updated&quot; date. Your continued use
                 of the App after such changes constitutes your acceptance of the new Terms.
@@ -190,20 +190,20 @@ export default function MoneyControlTermsPage() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Governing Law
               </h2>
-              <p className="text-gray-600">
+              <p className="text-ink-muted">
                 These Terms of Use shall be governed by and construed in accordance with applicable laws,
                 without regard to conflict of law principles.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h2 className="text-2xl font-semibold mb-4 text-ink">
                 Contact Us
               </h2>
-              <p className="text-gray-600">
+              <p className="text-ink-muted">
                 If you have any questions about these Terms of Use, please contact us at:{' '}
                 <a
                   href="mailto:kamol.developer@gmail.com"

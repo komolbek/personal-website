@@ -38,7 +38,7 @@ export function LanguageSwitcher() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 rounded-lg hover:bg-paper-alt transition-colors"
         // WCAG 2.5.3: the accessible name has to contain the visible label, or
         // a voice-control user saying "Русский" cannot activate the control.
         // The old aria-label="Select language" replaced it outright.
@@ -52,12 +52,12 @@ export function LanguageSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 py-2 w-40 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+        <div className="absolute right-0 mt-2 py-2 w-40 bg-paper rounded-lg shadow-lg border border-line z-50">
           {siteConfig.locales.map((loc) => (
             <button
               key={loc}
               onClick={() => handleSelect(loc)}
-              className={`w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors ${
+              className={`w-full text-left px-4 py-2 hover:bg-paper-alt transition-colors ${
                 locale === loc ? 'text-blue-600 font-medium' : ''
               }`}
             >
